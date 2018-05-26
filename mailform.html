@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"> <title>Shalom Worship Centre</title> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="shalom,prayer,christianity,mail,contact"> <meta name="description" content="Contact form of Shalom Worship Centre">
+<meta name="author" content="Shalom Worship Centre"> <!-- CSS --> <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"><link rel="stylesheet" href="assets/css/style.css">
+<link rel="shortcut icon" href="assets/ico/favicon.ico">
+</head>
+<body>
+<div class="contact-form">
+<form method="post" action="assets/sendmail.php"> 
+<label for="name" class="nameLabel">Name</label>
+	<input id="name" type="text" name="name" placeholder="Enter your name..."><br><br>
+<label for="email" class="emailLabel">Email</label>
+	<input id="email" type="text" name="email" placeholder="Enter your email..."><br><br>
+<label for="subject">Subject</label>
+	<input id="subject" type="text" name="subject" placeholder="About..."><br><br>
+<label for="message" class="messageLabel">Message</label>
+	<textarea id="message" name="message" placeholder="Your message..."></textarea><br><br><br>
+<button type="submit">Send</button>
+</form>
+</div>
+<script src="assets/js/jquery-1.8.2.min.js"></script>
+<script src="assets/js/contactform.js"></script>
+</body>
+</html>
