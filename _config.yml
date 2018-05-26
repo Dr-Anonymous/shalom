@@ -1,0 +1,13 @@
+url: http://shalom.ga
+title: Shalom Worship Centre
+description: Praise and worship centre
+show_downloads: false
+google_analytics: 
+theme: 
+timezone: Asia/Calcutta
+exclude: [exclude]
+keep_files: [keep]
+include: [include]
+permalink: pretty
+plugins:
+  - jemoji
