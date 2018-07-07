@@ -1,3 +1,6 @@
+---
+---
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,8 +22,31 @@
 <link rel="stylesheet" href="/assets/css/style.css">
 
 <!-- Favicon and touch icons -->
-<link rel="shortcut icon" href="../assets/ico/favicon.ico">
-
+<link rel="shortcut icon" href="/assets/ico/favicon.ico">
+<style> html body {width: 100%;height: 100%;padding: 0px;margin: 0px;overflow: hidden;font-family: arial;font-size: 10px;color: #6e6e6e;background-color: #000;} #preview-frame {width: 100%;background-color: #fff;}</style>
+<script src="/assets/js/jquery-1.8.2.min.js"></script>
+	<script>
+         //function to fix height of iframe!
+         var calcHeight = function() {
+           //var headerDimensions = 0; //$('#header-bar').height();
+           $('#preview-frame').height($(window).height());
+         }
+         
+         $(document).ready(function() {
+           calcHeight();
+           /*$('#header-bar a.close').mouseover(function() {
+             $('#header-bar a.close').addClass('activated');
+           }).mouseout(function() {
+             $('#header-bar a.close').removeClass('activated');
+           });*/
+         }); 
+         
+         $(window).resize(function() {
+           calcHeight();
+         }).load(function() {
+           calcHeight();
+         });
+      </script>
 </head>
 
 <body>
@@ -67,7 +93,7 @@
             <div class='container'>
                 <div class='row'>
                     <div class='span12'>
-                        <i class='icon-user page-title-icon'></i>
+                        <i class='icon-file page-title-icon'></i>
                         <h2>Messages</h2>
                         
                     </div>
@@ -78,10 +104,8 @@
         <!-- Portfolio -->
     <div class='portfolio portfolio-page container'>
   	<div class='row'>
-      <div class="embed-responsive">
-        <iframe class="embed-responsive-item" src="https://script.google.com/macros/s/AKfycbzOgLqYoghDVo1M7f7GGebR6l4cyeBqZJ2dAvJvr75D/dev" allowfullscreen></iframe>
-      </div>
-		</div> 
+		<iframe id="preview-frame" src="https://script.google.com/macros/s/AKfycbzOgLqYoghDVo1M7f7GGebR6l4cyeBqZJ2dAvJvr75D/dev" name="preview-frame" frameborder="0" noresize="noresize" style="height: 902px;"> </iframe>
+	</div> 
 	</div>
 <!-- Footer -->
 <footer>
@@ -99,7 +123,6 @@
 </div>
 </footer>
 <!-- Javascript -->
-<script src="/assets/js/jquery-1.8.2.min.js"></script>
 <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="/assets/js/jquery.quicksand.js"></script>
 </body>
