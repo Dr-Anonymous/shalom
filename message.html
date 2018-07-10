@@ -1,3 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="testimony,prayer,christianity,healing">
+<meta name="description" content="Messages">
+<meta name="author" content="Shalom Worship Centre">
+
+<!-- CSS -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+<link rel="stylesheet" href="https://shalomworshipcentre.in/assets/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://shalomworshipcentre.in/assets/css/font-awesome.css">
+<link rel="stylesheet" href="https://shalomworshipcentre.in/assets/css/style.css">
+<style>
+.card {
+  background: #fbf4f4;
+  border-radius: 2px;
+  display: inline-table;
+  height: auto;
+  margin: 0.5%;
+  position: relative;
+  width: 24%;
+}
+.shadow {
+  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
+</style>
+</head>
+
 <body onload="callGoogleScript();">
 <script>
     var id= urlPara("id");
@@ -7,7 +39,7 @@
     
      // Make an AJAX call to Google Script
   function callGoogleScript() {
-    var url = "https://script.google.com/macros/s/AKfycbzf4MM1TWILuc5UwcfQXxqUJScUGhcoNUpFX-BCyJnk6Luvzyc/exec?callback=loadData&id=" ;
+    var url = "https://script.google.com/macros/s/AKfycbzf4MM1TWILuc5UwcfQXxqUJScUGhcoNUpFX-BCyJnk6Luvzyc/exec?callback=loadData&id=";
 
 var request = jQuery.ajax({
       crossDomain: true,
@@ -19,9 +51,11 @@ var request = jQuery.ajax({
   }
   // print the returned data
   function loadData(e) {
-  var div = document.getElementById('main_content');
-       div.innerHTML = e.result1;
-             console.log(e.result2);
+        var div = document.getElementById('main_content');
+        var div2 = document.getElementById('path');
+        div.innerHTML = e.result1;
+        if (e.result2)
+        div2.innerHTML= e.result2;
 
   }
   
@@ -31,6 +65,82 @@ var request = jQuery.ajax({
 var url = new URL(url_string);
 return url.searchParams.get(p);
 }
-
 </script>
+        <!-- Header -->
+        <div class="container">
+            <div class="header row">
+                <div class="span12">
+                    <div class="navbar">
+                        <div class="navbar-inner">
+							<h1>
+                                <a class="brand" href="https://shalomworshipcentre.in/">Shalom Worship Centre</a>
+                            </h1>
+                            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </a>
+                             <div class="nav-collapse collapse">
+                                <ul class="nav pull-right">
+                                    <li>
+                                        <a href="https://shalomworshipcentre.in"><i class="icon-home"></i><br />Home</a>
+                                    </li>
+                                    <li >
+                                        <a href="https://shalomworshipcentre.in/Our Ministries.html"><i class="icon-camera"></i><br />Our Minisitries</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://shalomworshipcentre.in/testimonies"><i class="icon-user"></i><br />Testimonies</a>
+                                    </li>
+                                    <li class="current-page">
+                                        <a href="https://shalomworshipcentre.in/messages"><i class="icon-tasks"></i><br />Messages</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://shalomworshipcentre.in/contact.html"><i class="icon-envelope-alt"></i><br />Contact</a>
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class='page-title'>
+            <div class='container'>
+                <div class='row'>
+                    <div class='span12'>
+                        <i class='icon-tasks page-title-icon'></i>
+                        <h2 id="path">Messages</h2>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Portfolio -->
+    <div class='portfolio portfolio-page container'>
+  	<div class='row' id="main_content">
+	<p>Loading...........</p>
+    </div> 
+	</div>
+<!-- Footer -->
+<footer>
+<div class="container">
+<div class="row">
+<div class="social span4">
+<a class="facebook" href="https://www.facebook.com/shalomworshipcentre.kkd"></a>
+<a class="youtube" href="https://www.youtube.com/c/ShalomWorshipCentreKakinada"></a>
+<a class="googleplus" href="https://plus.google.com/+ShalomWorshipCentreKakinada"></a>
+</div>
+<div class="copyright span4"><p>Copyright-Shalom Worship Centre.</p></div>
+<!--Google Ads -->
+<div class="copyright span4 app"></div>
+</div>
+</div>
+</footer>
+<!-- Javascript -->
+<script src="https://shalomworshipcentre.in/assets/js/jquery-1.8.2.min.js"></script>
+<script src="https://shalomworshipcentre.in/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://shalomworshipcentre.in/assets/js/jquery.quicksand.js"></script>
 </body>
+</html>
