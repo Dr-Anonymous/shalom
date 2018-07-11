@@ -37,14 +37,17 @@
 
 <body onload="callGoogleScript();">
 <script>
-        // Make an AJAX call to Google Script
-  function callGoogleScript(value) {
+
+function callGoogleScript(value) {
+
+	document.getElementById('main_content').innerHTML = "<p>Loading...</p>";
 	  var id= value; //urlPara("id");
-    if (!id){
+    if (!id)
     id="1k0cFPCH61QX9NgBXVUhXOo6cko454HMi";
-    } 
+	
     var url = "https://script.google.com/macros/s/AKfycbzf4MM1TWILuc5UwcfQXxqUJScUGhcoNUpFX-BCyJnk6Luvzyc/exec?callback=loadData&id=";
 
+// Make an AJAX call to Google Script
 var request = jQuery.ajax({
       crossDomain: true,
       url: url + encodeURIComponent(id),
@@ -55,11 +58,9 @@ var request = jQuery.ajax({
   }
   // print the returned data
   function loadData(e) {
-        var div = document.getElementById('main_content');
-        var div2 = document.getElementById('path');
-        div.innerHTML = e.result1;
+        document.getElementById('main_content').innerHTML = e.result1;
         if (e.result2)
-        div2.innerHTML= e.result2;
+        document.getElementById('path').innerHTML= e.result2;
 
   }
   
@@ -114,8 +115,7 @@ return url.searchParams.get(p);
                 <div class='row'>
                     <div class='span12'>
                         <i class='icon-tasks page-title-icon'></i>
-                        <h2 id="path">Messages</h2>
-                        
+                        <h2 id="path">Messages</h2>    
                     </div>
                 </div>
             </div>
@@ -124,10 +124,8 @@ return url.searchParams.get(p);
         <!-- Portfolio -->
     <div class='portfolio portfolio-page container'>
   	<div class='row' id="main_content">
-	<p>Loading...</p>
-	<i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>
-    </div> 
-	</div>
+	</div> 
+    </div>
 <!-- Footer -->
 <footer>
 <div class="container">
