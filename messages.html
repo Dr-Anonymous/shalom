@@ -41,7 +41,7 @@
 function callGoogleScript(value) {
 
 	document.getElementById('main_content').innerHTML = "<p>Loading...</p>";
-	  var id= value; //urlPara("id");
+	  var id= value;
     if (!id)
     id="1k0cFPCH61QX9NgBXVUhXOo6cko454HMi";
 	
@@ -61,15 +61,7 @@ var request = jQuery.ajax({
         document.getElementById('main_content').innerHTML = e.result1;
         if (e.result2)
         document.getElementById('path').innerHTML= e.result2;
-
   }
-  
- //get url parameters
- function urlPara(p){
- var url_string = window.location.href;
-var url = new URL(url_string);
-return url.searchParams.get(p);
-}
 </script>
         <!-- Header -->
         <div class="container">
