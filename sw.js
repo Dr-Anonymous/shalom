@@ -3,4 +3,4 @@ self.addEventListener('message', function(e) {
    self.postMessage("Terminated");
   self.close();
      self.postMessage("Not dead");
-}, false);
+});
