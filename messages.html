@@ -143,7 +143,7 @@ var request = jQuery.ajax({
 	document.getElementById('path').innerHTML= "Messages >";
   }
 	
-var worker = new Worker('sw.js');
+var worker = new Worker('/sw.js');
 worker.addEventListener('message', function(e) {
   console.log('Worker said: ', e.data);
 }, false);
