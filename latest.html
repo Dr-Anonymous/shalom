@@ -1,7 +1,8 @@
 ---
 ---
+<body onload="callGoogleScript();">
 <script>
-function callGoogleScript(value) {
+function callGoogleScript() {
 	document.getElementById('main_content').innerHTML = "<p>Loading...</p>";
 	
     var url = "https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback=loadData";
@@ -20,3 +21,4 @@ var request = jQuery.ajax({
   </script>
   <div class='row' id="main_content">
 	</div>
+</body>
