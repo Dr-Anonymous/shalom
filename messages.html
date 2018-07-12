@@ -145,10 +145,12 @@ var request = jQuery.ajax({
 	
 var worker = new Worker('/sw.js');
 worker.addEventListener('message', function(e) {
-  console.log('Worker said: ', e.data);
+  console.log('Worker says: ', e.data);
 }, false);
 
-worker.postMessage('Hello World'); // Send data to our worker.
+worker.postMessage('Hello'); // Send data to our worker.
+worker.terminate();
+worker.postMessage('Im dead'); // Test if still alive.
 </script>
 </body>
 </html>
