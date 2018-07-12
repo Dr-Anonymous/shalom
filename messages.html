@@ -57,14 +57,7 @@ var request = jQuery.ajax({
     });
 
   }
-  // print the returned data
-  function loadData(e) {
-        document.getElementById('main_content').innerHTML = e.result1;
-        if (e.result2)
-        document.getElementById('path').innerHTML= e.result2;
-	  else
-	document.getElementById('path').innerHTML= "Messages >";
-  }
+ 
 </script>
         <!-- Header -->
         <div class="container">
@@ -140,5 +133,27 @@ var request = jQuery.ajax({
 <script src="/assets/js/jquery-1.8.2.min.js"></script>
 <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="/assets/js/jquery.quicksand.js"></script>
+<script>
+ // print the returned data from jsonp
+  function loadData(e) {
+        document.getElementById('main_content').innerHTML = e.result1;
+        if (e.result2)
+        document.getElementById('path').innerHTML= e.result2;
+	  else
+	document.getElementById('path').innerHTML= "Messages >";
+  }
+	
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').then(function(registration) {
+      // Registration was successful
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }, function(err) {
+      // registration failed :(
+      console.log('ServiceWorker registration failed: ', err);
+    });
+  });
+}	
+</script>
 </body>
 </html>
