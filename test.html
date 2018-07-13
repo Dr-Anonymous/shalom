@@ -3,7 +3,7 @@
 <body>
 
 <p>Count numbers: <output id="result"></output></p>
-<button onclick="startWorker()">Start Worker</button> 
+<!--<button onclick="startWorker()">Start Worker</button> -->
 <button onclick="stopWorker()">Stop Worker</button>
 
 <script>
@@ -21,7 +21,7 @@ function startWorker() {
         document.getElementById("result").innerHTML = "Sorry! No Web Worker support.";
     }
 }
-
+startWorker();
 function stopWorker() { 
   if(typeof(Worker) !== "undefined") {
         if(typeof(w) !== "undefined") {
