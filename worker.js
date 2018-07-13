@@ -8,6 +8,7 @@ function timedCount() {
 
 timedCount();
 */
+function callGoogleScript() {
 var url = "https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback=loadData";
 // Make an AJAX call to Google Script
 var request = jQuery.ajax({
@@ -16,7 +17,8 @@ var request = jQuery.ajax({
       method: "GET",
       dataType: "jsonp"
     });
-  
+}
+callGoogleScript();
   // print the returned data from jsonp
   function loadData(e) {
      postMessage(e.result1);}
