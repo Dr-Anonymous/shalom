@@ -23,8 +23,11 @@ function startWorker() {
 }
 
 function stopWorker() { 
-    w.terminate();
-    w = undefined;
+   f(typeof(Worker) !== "undefined") {
+        if(typeof(w) !== "undefined") {
+            w.terminate();
+            w = undefined;
+}}
 }
 </script>
 
