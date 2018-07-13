@@ -8,10 +8,12 @@ function timedCount() {
 
 timedCount();
 */
+var myArray= [];
 function loadXMLDoc() {
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
-               postMessage(xmlhttp.responseText["result1"]);
+            myArray= xmlhttp.responseText;
+            postMessage(myArray);
         }
     };
 
