@@ -16,7 +16,7 @@ var request = jQuery.ajax({
       method: "GET",
       dataType: "jsonp"
     });
-  }
+  
   // print the returned data from jsonp
   function loadData(e) {
      postMessage(e.result1);}
