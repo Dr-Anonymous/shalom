@@ -14,7 +14,7 @@ function loadXMLDoc() {
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
            if (xmlhttp.status == 200) {
-               postMessage(xmlhttp.responseText);
+               xmlhttp.responseText;
            }
            else if (xmlhttp.status == 400) {
               postMessage('There was an error 400');
@@ -29,3 +29,7 @@ function loadXMLDoc() {
     xmlhttp.send();
 }
 loadXMLDoc();
+
+function loadData(e) {	  
+    postMessage(e.result1);
+}
