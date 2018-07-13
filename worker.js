@@ -1,9 +1,9 @@
-var i = 495;
+var i = 0;
 
 function timedCount() {
     i = i + 1;
     postMessage(i);
-    setTimeout("timedCount()",500);
+    setTimeout("timedCount()",10);
 }
 
 timedCount();
