@@ -15,7 +15,8 @@ function startWorker() {
             w = new Worker("worker.js");
         }
         w.onmessage = function(event) {
-            document.getElementById("result").innerHTML = event.data["result1"];
+            console.log(event.data);
+            document.getElementById("result").innerHTML = event.data;
             stopWorker();
         };
     } else {
