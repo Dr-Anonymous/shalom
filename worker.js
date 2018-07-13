@@ -8,13 +8,13 @@ function timedCount() {
 
 timedCount();
 */
-import {jQuery.ajax()} from '/assets/js/jquery-1.8.2.min.js';
+import '/assets/js/jquery-1.8.2.min.js';
 //let val = hello(); // val is "Hello";
 
 function callGoogleScript() {
 var url = "https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback=loadData";
 // Make an AJAX call to Google Script
-let request = jQuery.ajax({
+var request = jQuery.ajax({
       crossDomain: true,
       url: url ,
       method: "GET",
