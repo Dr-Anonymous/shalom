@@ -14,7 +14,7 @@ function loadXMLDoc() {
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
            if (xmlhttp.status == 200) {
-               postMessage(xmlhttp.responseText);
+               postMessage(xmlhttp.responseText["result1"]);
            }
            else if (xmlhttp.status == 400) {
               postMessage('There was an error 400');
@@ -25,7 +25,7 @@ function loadXMLDoc() {
         }
     };
 
-    xmlhttp.open("GET", "https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback=loadData", true);
+    xmlhttp.open("GET", "https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec", true);
     xmlhttp.send();
 }
 loadXMLDoc();
