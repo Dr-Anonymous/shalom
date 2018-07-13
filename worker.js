@@ -1,4 +1,4 @@
-var i = 0;
+var i = 495;
 
 function timedCount() {
     i = i + 1;
