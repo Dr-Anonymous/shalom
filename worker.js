@@ -1,10 +1,7 @@
-var url = '';
-self.addEventListener('message', function(event){
-    url= event.data;
-});
-
 var req = new XMLHttpRequest();
 req.overrideMimeType("application/json");
+self.addEventListener('message', function(event){
+   var url= event.data;
 req.open('GET', url, true);
 req.onload  = function() {
    var jsonResponse = JSON.parse(req.responseText.slice(1,-1));
@@ -12,3 +9,7 @@ req.onload  = function() {
     postMessage(jsonResponse);
 };
 req.send(null);
+
+
+});
+
