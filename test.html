@@ -7,7 +7,7 @@
 <body>
 
 <p><output id="result"></output></p>
-
+<button id="btnAdd">Add</button>
 <script>
 var w;
 function startWorker() {
@@ -34,7 +34,7 @@ function stopWorker() {
 }
 // add to home
     let deferredPrompt;
-
+var btnAdd =document.getElementById("btnAdd");
 window.addEventListener('beforeinstallprompt', (e) => {
   // Prevent Chrome 67 and earlier from automatically showing the prompt
   e.preventDefault();
