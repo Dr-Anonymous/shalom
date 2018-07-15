@@ -19,7 +19,7 @@ function startWorker(url, div) {
         }
         w.onmessage = function(event) {
             document.getElementById(div).innerHTML = event.data.result1;
-            stopWorker();
+           // stopWorker();
         };
     } else {
         document.getElementById(div).innerHTML = "Sorry! No Web Worker support.";
