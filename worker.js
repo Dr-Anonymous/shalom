@@ -11,7 +11,7 @@ timedCount();
 function loadXMLDoc() {
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
-           var myArray= JSON.parse(this.responseText);
+           var myArray= (this.responseText);
             postMessage(myArray);
         }
     };
