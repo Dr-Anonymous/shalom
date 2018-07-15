@@ -14,7 +14,6 @@ function startWorker() {
             w.postMessage("https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback= ");
         }
         w.onmessage = function(event) {
-            console.log(event.data);
             document.getElementById("result").innerHTML = event.data.result1;
             stopWorker();
         };
