@@ -8,17 +8,13 @@ function timedCount() {
 
 timedCount();
 */
-function loadXMLDoc() {
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
-           var myArray= (this.responseText);
-            postMessage(myArray);
-        }
-    };
 
-}
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", "https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback= ", true);
-    xmlhttp.send();
- 
-loadXMLDoc();
+var req = new XMLHttpRequest();
+req.overrideMimeType("application/json");
+req.open('GET', "https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback= ", true);
+req.onload  = function() {
+   var jsonResponse = JSON.parse(req.responseText);
+   // do something with jsonResponse
+    postMessage(jsonResponse);
+};
+req.send(null);
