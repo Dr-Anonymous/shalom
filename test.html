@@ -11,7 +11,7 @@ function startWorker() {
     if(typeof(Worker) !== "undefined") {
         if(typeof(w) == "undefined") {
             w = new Worker("worker.js");
-            w.postMessage('Hello World');
+            w.postMessage("https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback= ");
         }
         w.onmessage = function(event) {
             console.log(event.data);
