@@ -9,7 +9,7 @@ var w;
 function startWorker() {
     if(typeof(Worker) !== "undefined") {
         if(typeof(w) == "undefined") {
-            w = new Worker("worker.js");
+            w = new Worker("latest.js");
             w.postMessage("https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback= ");
         }
         w.onmessage = function(event) {
