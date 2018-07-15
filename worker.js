@@ -13,7 +13,7 @@ var req = new XMLHttpRequest();
 req.overrideMimeType("application/json");
 req.open('GET', "https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback= ", true);
 req.onload  = function() {
-   var jsonResponse = (req.responseText);
+   var jsonResponse = JSON.parse(req.responseText.slice(0,-1));
    // do something with jsonResponse
     postMessage(jsonResponse);
 };
