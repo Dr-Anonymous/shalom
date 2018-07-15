@@ -15,7 +15,7 @@ function startWorker() {
             w = new Worker("worker.js");
         }
         w.onmessage = function(event) {
-            console.log(JSON.parse(event.data));
+            console.log(event.data);
             document.getElementById("result").innerHTML = event.data;
             stopWorker();
         };
