@@ -12,7 +12,7 @@ var myArray= [];
 function loadXMLDoc() {
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
-            myArray= xmlhttp.responseText;
+            myArray= JSON.parse(xmlhttp.responseText);
             postMessage(myArray);
         }
     };
