@@ -143,7 +143,7 @@ function startWorker() {
             w = new Worker("/latest.js");
             w.postMessage("https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback= ");
         w.onmessage = function(event) {
-            document.getElementById("latest").innerHTML = "Latest upload: "+event.data.result1+ "<br>";
+            document.getElementById("latest").innerHTML = "Latest upload: "+event.data.result1+ "<br><br>";
             stopWorker();
         };
     } else {
