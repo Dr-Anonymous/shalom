@@ -7,24 +7,25 @@
 <body>
 
 <p><output id="result"></output></p>
+    <div id="some"></div>    
 <button id="btnAdd">Add</button>
 <script>
 var w;
-function startWorker() {
+function startWorker(url, div) {
     if(typeof(Worker) !== "undefined") {
         if(typeof(w) == "undefined") {
             w = new Worker("latest.js");
-            w.postMessage("https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback= ");
+            w.postMessage(url);
         }
         w.onmessage = function(event) {
-            document.getElementById("result").innerHTML = event.data.result1;
+            document.getElementById(div).innerHTML = event.data.result1;
             stopWorker();
         };
     } else {
-        document.getElementById("result").innerHTML = "Sorry! No Web Worker support.";
+        document.getElementById(div).innerHTML = "Sorry! No Web Worker support.";
     }
 }
-startWorker();
+
 function stopWorker() {
   if(typeof(Worker) !== "undefined") {
         if(typeof(w) !== "undefined") {
@@ -32,8 +33,11 @@ function stopWorker() {
             w = undefined;
 }}
 }
+startWorker("https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback= ","result");
+startWorker(""https://script.google.com/macros/s/AKfycbzf4MM1TWILuc5UwcfQXxqUJScUGhcoNUpFX-BCyJnk6Luvzyc/exec?callback= ","some");
+
 // add to home
-    let deferredPrompt;
+/*    let deferredPrompt;
 var btnAdd =document.getElementById("btnAdd");
 window.addEventListener('beforeinstallprompt', (e) => {
   // Prevent Chrome 67 and earlier from automatically showing the prompt
@@ -61,10 +65,8 @@ btnAdd.addEventListener('click', (e) => {
 });
 
 
-
 });
-    
-    
+*/
 </script>
 </body>
 </html>
