@@ -6,7 +6,7 @@
     </head>
 <body>
 
-<p><output id="result"></output></p>
+    <div id="result"></div>
     <div id="some"></div>    
 <button id="btnAdd">Add</button>
 <script>
@@ -14,12 +14,12 @@ var w;
 function startWorker(url, div) {
     if(typeof(Worker) !== "undefined") {
         if(typeof(w) == "undefined") {
-            w = new Worker("latest.js");
+            w = new Worker("/latest.js");
             w.postMessage(url);
         }
         w.onmessage = function(event) {
             document.getElementById(div).innerHTML = event.data.result1;
-           // stopWorker();
+            stopWorker();
         };
     } else {
         document.getElementById(div).innerHTML = "Sorry! No Web Worker support.";
