@@ -13,7 +13,6 @@
     var w;
 function startWorker(url, div) {
     if(typeof(Worker) !== "undefined") {
-        w = "a";
         if (typeof(w) == "undefined"){
         w = new Worker("/latest.js");
             w.postMessage(url);
@@ -23,7 +22,7 @@ function startWorker(url, div) {
             stopWorker(w);
         } 
         }else{
-              document.getElementById(div).innerHTML = "Sorry! already defined.";
+              document.getElementById(div).innerHTML = "Sorry! worker already defined.";
         }
     } else {
         document.getElementById(div).innerHTML = "Sorry! No Web Worker support.";
@@ -38,7 +37,7 @@ function stopWorker(w) {
       }
    }
 }
-startWorker("https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback= ","result");
+//startWorker("https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback= ","result");
 startWorker("https://script.google.com/macros/s/AKfycbzf4MM1TWILuc5UwcfQXxqUJScUGhcoNUpFX-BCyJnk6Luvzyc/exec?id=1k0cFPCH61QX9NgBXVUhXOo6cko454HMi&callback= ","some");
 
     function nextChar(c) {
