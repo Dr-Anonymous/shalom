@@ -11,8 +11,7 @@
 <button id="btnAdd">Add</button>
 <script>
 
- function startWorker(n, url, div) {
-     var w = n;
+ function startWorker(w, url, div) {
     if(typeof(Worker) !== "undefined") {
         if (typeof(w) == "undefined"){
         w = new Worker("/latest.js");
