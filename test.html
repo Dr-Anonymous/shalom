@@ -10,8 +10,8 @@
     <div id="some"></div>    
 <button id="btnAdd">Add</button>
 <script>
-var w;
-function startWorker(url, div) {
+    
+function startWorker(w, url, div) {
     if(typeof(Worker) !== "undefined") {
         if(typeof(w) == "undefined") {
             w = new Worker("/latest.js");
@@ -33,10 +33,17 @@ function stopWorker() {
             w = undefined;
 }}
 }
-startWorker("https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback= ","result");
-startWorker("https://script.google.com/macros/s/AKfycbzf4MM1TWILuc5UwcfQXxqUJScUGhcoNUpFX-BCyJnk6Luvzyc/exec?id=1k0cFPCH61QX9NgBXVUhXOo6cko454HMi&callback= ","some");
+startWorker("a", "https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback= ","result");
+startWorker("b", "https://script.google.com/macros/s/AKfycbzf4MM1TWILuc5UwcfQXxqUJScUGhcoNUpFX-BCyJnk6Luvzyc/exec?id=1k0cFPCH61QX9NgBXVUhXOo6cko454HMi&callback= ","some");
 
-// add to home
+    function nextChar(c) {
+    return String.fromCharCode(c.charCodeAt(0) + 1);
+}
+//to call next char
+//nextChar('a');
+
+    
+    // add to home
 /*    let deferredPrompt;
 var btnAdd =document.getElementById("btnAdd");
 window.addEventListener('beforeinstallprompt', (e) => {
