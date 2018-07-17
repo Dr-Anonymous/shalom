@@ -19,14 +19,14 @@ function startWorker(url, div) {
         }
             w.onmessage = function(event) {
             document.getElementById(div).innerHTML = event.data.result1;
-            stopWorker(w);
+            //stopWorker();
         };
     } else {
         document.getElementById(div).innerHTML = "Sorry! No Web Worker support.";
     }
 }
 
-function stopWorker(w) {
+function stopWorker() {
   if(typeof(Worker) !== "undefined") {
       if (typeof(w) !== "undefined"){
             w.terminate();
