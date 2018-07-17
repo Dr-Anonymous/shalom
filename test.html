@@ -10,7 +10,7 @@
     <div id="some"></div>    
 <button id="btnAdd">Add</button>
 <script>
-    
+var w;
 function startWorker(w, url, div) {
     if(typeof(Worker) !== "undefined" && typeof(w) == "undefined") {
             w = new Worker("/latest.js");
