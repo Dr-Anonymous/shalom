@@ -12,11 +12,10 @@
 <script>
     
 function startWorker(w, url, div) {
-    if(typeof(Worker) !== "undefined") {
-        if(typeof(w) == "undefined") {
+    if(typeof(Worker) !== "undefined" && typeof(w) == "undefined") {
             w = new Worker("/latest.js");
             w.postMessage(url);
-        }
+        
         w.onmessage = function(event) {
             document.getElementById(div).innerHTML = event.data.result1;
             stopWorker(w);
