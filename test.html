@@ -19,19 +19,18 @@ function startWorker(w, url, div) {
         }
         w.onmessage = function(event) {
             document.getElementById(div).innerHTML = event.data.result1;
-            stopWorker();
+            stopWorker(w);
         };
     } else {
         document.getElementById(div).innerHTML = "Sorry! No Web Worker support.";
     }
 }
 
-function stopWorker() {
-  if(typeof(Worker) !== "undefined") {
-        if(typeof(w) !== "undefined") {
+function stopWorker(w) {
+  if(typeof(Worker) !== "undefined" && typeof(w) !== "undefined") {
             w.terminate();
             w = undefined;
-}}
+}
 }
 startWorker("a", "https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback= ","result");
 startWorker("b", "https://script.google.com/macros/s/AKfycbzf4MM1TWILuc5UwcfQXxqUJScUGhcoNUpFX-BCyJnk6Luvzyc/exec?id=1k0cFPCH61QX9NgBXVUhXOo6cko454HMi&callback= ","some");
