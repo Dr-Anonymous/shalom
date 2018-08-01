@@ -41,7 +41,7 @@
 
 function callGoogleScript(value) {
 
-	document.getElementById('main_content').innerHTML = "<p>Loading...</p>";
+	document.getElementById('main_content').innerHTML = "<p>Loading all files ...</p>";
 	  var id= value;
     if (!id)
     id="1k0cFPCH61QX9NgBXVUhXOo6cko454HMi";
@@ -140,7 +140,7 @@ var request = jQuery.ajax({
 var w;
 function startWorker() {
     if(typeof(Worker) !== "undefined" && typeof(w) == "undefined") {
-            document.getElementById("latest").innerHTML = "Getting the last uploaded file ....";
+            document.getElementById("latest").innerHTML = "Getting the last uploaded file ....<br><br>";
             w = new Worker("/latest.js");
             w.postMessage("https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback= ");
         w.onmessage = function(event) {
