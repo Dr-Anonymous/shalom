@@ -146,7 +146,7 @@ function startWorker() {
         document.getElementById("result").innerHTML = "Sorry! No Web Worker support.";
     }
 }
-startWorker();
+//startWorker();   //this entire section not being called
 function stopWorker() {
   if(typeof(Worker) !== "undefined" && typeof(w) !== "undefined") {
             w.terminate();
