@@ -1,2 +1,2 @@
 # shalom
-files of shalomworshipcentre.in
+files of shalomworshipcentre.in and shalom.tk
