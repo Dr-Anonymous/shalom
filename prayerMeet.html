@@ -11,7 +11,7 @@ document.getElementById('main').innerHTML = "<p>Loading meeting link. Please wai
 // Make an AJAX call to Google Script
 var request = jQuery.ajax({
       crossDomain: true,
-      url: "https://script.google.com/macros/s/AKfycbxGoWfDAFhBF8Ke31IX4CU1pixoEDsJgjPI9w9PUP5sgzMKWQ0/exec",
+      url: "https://script.google.com/macros/s/AKfycbxGoWfDAFhBF8Ke31IX4CU1pixoEDsJgjPI9w9PUP5sgzMKWQ0/exec?callback=loadData",
       headers: {"SameSite": "None"},
       method: "GET",
       dataType: "jsonp"
