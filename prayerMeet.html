@@ -1,0 +1,23 @@
+<html>
+<head>
+<script>
+document.getElementById('main').innerHTML = "<p>Loading meeting link. Please wait ...</p>";
+
+// Make an AJAX call to Google Script
+var request = jQuery.ajax({
+      crossDomain: true,
+      url: "https://script.google.com/macros/s/AKfycbxGoWfDAFhBF8Ke31IX4CU1pixoEDsJgjPI9w9PUP5sgzMKWQ0/exec",
+      method: "GET",
+      dataType: "jsonp"
+    });
+
+// load the returned url
+  function loadData(e) {
+        document.getElementById('main').innerHTML = e;
+  }
+</script>
+</head>
+<body>
+<div id="main"></div>
+</body>
+</html>
