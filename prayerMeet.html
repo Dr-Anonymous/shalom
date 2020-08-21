@@ -12,7 +12,7 @@ document.getElementById('main').innerHTML = "<p>Loading meeting link. Please wai
 var request = jQuery.ajax({
       crossDomain: true,
       url: "https://script.google.com/macros/s/AKfycbxGoWfDAFhBF8Ke31IX4CU1pixoEDsJgjPI9w9PUP5sgzMKWQ0/exec",
-      headers: {"SameSite": "None"}
+      headers: {"SameSite": "None"},
       method: "GET",
       dataType: "jsonp"
     });
