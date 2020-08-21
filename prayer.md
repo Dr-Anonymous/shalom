@@ -1,5 +1,6 @@
 <html>
 <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Prayer Meet</title>
 </head>
 <body>
@@ -18,7 +19,7 @@ var request = jQuery.ajax({
 
 // load the returned url
   function loadData(e) {
-        window.location.replace(e);
+       window.location.href(e);
   }
 </script>
 </body>
