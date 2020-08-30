@@ -4,7 +4,7 @@
       <title>Prayer Meet</title>
 </head>
 <body>
-      <center><div id="main"></div></center>
+      <centre><div id="main"></div></centre>
 <script src="/assets/js/jquery-1.8.2.min.js"></script>
 <script>
 document.getElementById('main').innerHTML = "<p>Loading meeting link. Please wait ...</p>";
