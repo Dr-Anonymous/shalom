@@ -27,8 +27,7 @@ var request = jQuery.ajax({
 
 // load the returned url
   function loadData(e) {
-      $('#main').html("<a id='link' href='"+e+"'>Click here</a>");
-      $("#link").click();
+      $('#main').html("<a id='link' href='"+e+"'><img src='/assets/img/logo.png'><br><br>Click here to open the app</a>");
       }
 </script>
 </body>
