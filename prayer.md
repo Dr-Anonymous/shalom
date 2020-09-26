@@ -7,7 +7,7 @@
       <div id="main"></div>
 <script src="/assets/js/jquery-1.8.2.min.js"></script>
 <script>
-document.getElementById('main').innerHTML = "<p>Loading meeting link. Please wait ...</p>";
+$('main').html("<p>Loading meeting link. Please wait ...</p>");
 
 // Make an AJAX call to Google Script
 var request = jQuery.ajax({
@@ -19,9 +19,9 @@ var request = jQuery.ajax({
 
 // load the returned url
   function loadData(e) {
-       //window.location.href= e;
-       window.open(e,"_parent");
-  }
+      $('#main').html("<a id='link' href='"+e+"'>Clicl here</a>");
+      $("#link").trigger('click');
+      }
 </script>
 </body>
 </html>
