@@ -5,7 +5,15 @@
       <script src="/assets/js/jquery-1.8.2.min.js"></script>
 </head>
 <body>
-<center><div id="main"></div></center>
+      <style>
+.center {
+  padding: 70px 0;
+  border: 3px solid green;
+  text-align: center;
+}
+</style>
+<div class="center" id="main"></div>
+      
 <script>
 $('#main').html("<p>Loading meeting link. Please wait ...</p>");
 
