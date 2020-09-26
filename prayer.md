@@ -5,7 +5,7 @@
       <script src="/assets/js/jquery-1.8.2.min.js"></script>
 </head>
 <body>
-<div id="main"></div>
+<center><div id="main"></div></center>
 <script>
 $('#main').html("<p>Loading meeting link. Please wait ...</p>");
 
@@ -20,7 +20,7 @@ var request = jQuery.ajax({
 // load the returned url
   function loadData(e) {
       $('#main').html("<a id='link' href='"+e+"'>Click here</a>");
-      $("#link").trigger('click');
+      $("#link").click();
       }
 </script>
 </body>
