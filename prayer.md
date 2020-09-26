@@ -20,7 +20,7 @@ var request = jQuery.ajax({
 // load the returned url
   function loadData(e) {
        //window.location.href= e;
-       window.open(e,"_self");
+       window.open(e,"_parent");
   }
 </script>
 </body>
