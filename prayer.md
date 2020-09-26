@@ -31,7 +31,7 @@ var request = jQuery.ajax({
 
 // load the returned url
   function loadData(e) {
-      $('#main').html("<a id='link' href='"+e+"'><img src='/assets/img/logo.png'><br><br>Click here to open the app</a>");
+      $('#main').html("<a id='link' href='"+e+"'><img src='/assets/img/logo.png'><br><br>Click here to open the app</a><br> and then \'Ask to join\'");
       window.open(e,"_blank");
       }
 </script>
