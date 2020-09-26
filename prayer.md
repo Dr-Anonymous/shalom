@@ -2,12 +2,12 @@
 <head>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Prayer Meet</title>
+      <script src="/assets/js/jquery-1.8.2.min.js"></script>
 </head>
 <body>
-      <div id="main"></div>
-<script src="/assets/js/jquery-1.8.2.min.js"></script>
+<div id="main"></div>
 <script>
-$('main').html("<p>Loading meeting link. Please wait ...</p>");
+$('#main').html("<p>Loading meeting link. Please wait ...</p>");
 
 // Make an AJAX call to Google Script
 var request = jQuery.ajax({
@@ -19,7 +19,7 @@ var request = jQuery.ajax({
 
 // load the returned url
   function loadData(e) {
-      $('#main').html("<a id='link' href='"+e+"'>Clicl here</a>");
+      $('#main').html("<a id='link' href='"+e+"'>Click here</a>");
       $("#link").trigger('click');
       }
 </script>
