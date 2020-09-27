@@ -16,7 +16,7 @@
   text-align: center;
 }
 </style>
-      <div class="center"><img src='/assets/img/logo.png'><br><br><p>Every Sunday and Friday at <b>7:00 pm</b> IST.</p><br><br>
+      <div class="center"><img src='/assets/img/logo.png'><br>Online Prayer Meet<br><br><p>Every Sunday and Friday at <b>7:00 pm</b> IST.</p><br><br>
       <div id="main"><p>Loading meeting link. Please wait ...</p></div>
       </div>
 <script>
