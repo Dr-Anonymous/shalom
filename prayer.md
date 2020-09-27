@@ -16,10 +16,10 @@
   text-align: center;
 }
 </style>
-<div class="center" id="main"></div>
-      
+      <div class="center"><img src='/assets/img/logo.png'><br><br><p>Every Sunday and Friday at <b>7:00 pm</b> IST.</p><br><br>
+      <div id="main"><p>Loading meeting link. Please wait ...</p></div>
+      </div>
 <script>
-$('#main').html("<p>Loading meeting link. Please wait ...</p>");
 
 // Make an AJAX call to Google Script
 var request = jQuery.ajax({
@@ -31,7 +31,7 @@ var request = jQuery.ajax({
 
 // load the returned url
   function loadData(e) {
-      $('#main').html("<a id='link' href='"+e+"'><img src='/assets/img/logo.png'><br><br>Click here to open the app</a><br> and then \'Ask to join\'");
+      $('#main').html("<p><a id='link' href='"+e+"'>Click here to open the app</a>,<br> then \'Ask to join\'</p>");
       }
 </script>
 </body>
