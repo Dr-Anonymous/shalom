@@ -1,0 +1,36 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="utf-8"> <title>Shalom Worship Centre</title> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta name="keywords" content="ministry,prayer,christianity,church"> <meta name="description" content="Online Ministries, work done by Shalom Worship Centre"> <meta name="author" content="Shalom Worship Centre"> <!-- CSS --> <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400"> <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans"> <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster"> <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"><link rel="stylesheet" href="assets/css/font-awesome.css"><link rel="stylesheet" href="assets/css/style.css"> <!-- Favicon and touch icons --> <link rel="shortcut icon" href="assets/ico/favicon.ico"> </head>
+<body> <!-- Header --> <div class="container"> <div class="header row"> <div class="span12"> <div class="navbar"> <div class="navbar-inner"> <h1> <a class="brand" href="/">Shalom Worship Centre</a> </h1> <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a> <div class="nav-collapse collapse"> <ul class="nav pull-right"> <li> <a href="/"><i class="icon-home"></i><br />Home</a> </li> <li class="current-page"> <a href="#"><i class="icon-camera"></i><br />Our Minisitries</a> </li> <li> <a href="testimonies/"><i class="icon-user"></i><br />Testimonies</a> </li> <li> <a href="/messages"><i class="icon-tasks"></i><br/>Messages</a> </li><li> <a href="contact.html"><i class="icon-envelope-alt"></i><br />Contact</a> </li> </ul> </div> </div> </div> </div> </div> </div>
+<!-- Page Title --> <div class="page-title"> <div class="container"> <div class="row"> <div class="span12"> <i class="icon-camera page-title-icon"></i> <h2>Online Ministry</h2> </div> </div> </div> </div>
+<!-- Services Full Width Text -->
+      <style>
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  border: 3px solid green;
+  text-align: center;
+}
+</style>
+<script>
+
+// Make an AJAX call to Google Script
+var request = jQuery.ajax({
+      crossDomain: true,
+      url: "https://script.google.com/macros/s/AKfycbxGoWfDAFhBF8Ke31IX4CU1pixoEDsJgjPI9w9PUP5sgzMKWQ0/exec?callback=loadData",
+      method: "GET",
+      dataType: "jsonp"
+    });
+
+// load the returned url
+  function loadData(e) {
+      $('#main').html("<p><a id='link' href='"+e+"'>Click here to open the app</a>,<br> then \'Ask to join\'</p>");
+      }
+</script>
+
+<div class="services-half-width container"> <div class="row">
+<div class="services-half-width-text span6"><p><div>Every Sunday and Friday at <b>7:00 pm</b> IST.
+      <div id="main"><p>Loading meeting link. Please wait ...</p></div></div>. This is done through various channels like this website, an <a href="/messages">audio sermon library</a>, a <a href="https://www.facebook.com/shalomworshipcentre.kkd">Facebook page</a> for daily word and a <a href="https://www.youtube.com/channel/UCxsHq2M611rQtPlZ6OA3HdA/videos">YouTube channel</a> for videos. With the advent of COVID pandemic, we have also started <a href="/live">online live</a> sessions of our Friday and Sunday services.</p></div></div></div>
+<!-- Footer --> <footer> <div class="container"> <div class="row"> <div class="social span4"> <a class="facebook" href="https://www.facebook.com/shalomworshipcentre.kkd"></a> <a class="youtube" href="https://www.youtube.com/c/ShalomWorshipCentreKakinada"></a> <a class="googleplus" href="https://plus.google.com/+ShalomWorshipCentreKakinada"></a></div><div class="copyright span4"><p>Copyright 2016 Shalom Worship Centre.</p></div> <!--Google Ads --> <div class="copyright span4 app"></div></div></div></footer>
+<!-- Javascript --><script src="assets/js/jquery-1.8.2.min.js"></script> <script src="assets/bootstrap/js/bootstrap.min.js"></script><script src="assets/js/jquery.quicksand.js"></script></body></html>
