@@ -4,8 +4,8 @@
 <!-- Services Full Width Text -->
 <script src="/assets/js/jquery-1.8.2.min.js"></script>
 <script>
-// Make an AJAX call to Google Script
-//var request = jQuery.ajax({ //this function commented out
+//this function commented out
+/* var request = jQuery.ajax({ 
       crossDomain: true,
       url: "https://script.google.com/macros/s/AKfycbxGoWfDAFhBF8Ke31IX4CU1pixoEDsJgjPI9w9PUP5sgzMKWQ0/exec?callback=loadData",
       method: "GET",
@@ -16,6 +16,7 @@
   function loadData(e) {
       $('#main').html("<a id='link' href='"+e+"' style='text-decoration: underline;color: #152eeb;'>Click here to open the app</a>, then \'Ask to join\'.");
       }
+ */
 </script>
 
 <div class="services-half-width container"><div class="row"><div class="services-half-width-text span12">
