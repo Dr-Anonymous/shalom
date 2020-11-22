@@ -238,7 +238,7 @@
       },
       directionNav: {
         setup: function() {
-         /* var directionNavScaffold = $('<ul class="' + namespace + 'direction-nav"><li><a class="' + namespace + 'prev" href="#">' + vars.prevText + '</a></li><li><a class="' + namespace + 'next" href="#">' + vars.nextText + '</a></li></ul>');
+          var directionNavScaffold = $('<ul class="' + namespace + 'direction-nav"><li><a class="' + namespace + 'prev" href="#">' + vars.prevText + '</a></li><li><a class="' + namespace + 'next" href="#">' + vars.nextText + '</a></li></ul>');
         
           // CONTROLSCONTAINER:
           if (slider.controlsContainer) {
@@ -247,7 +247,7 @@
           } else {
             slider.append(directionNavScaffold);
             slider.directionNav = $('.' + namespace + 'direction-nav li a', slider);
-          }*/
+          }
         
           methods.directionNav.update();
         
@@ -827,7 +827,7 @@
     
     // Primary Controls
     controlNav: true,               //Boolean: Create navigation for paging control of each clide? Note: Leave true for manualControls usage
-    directionNav: true,             //Boolean: Create navigation for previous/next navigation? (true/false)
+    directionNav: false,             //Boolean: Create navigation for previous/next navigation? (true/false)
     prevText: "Previous",           //String: Set the text for the "previous" directionNav item
     nextText: "Next",               //String: Set the text for the "next" directionNav item
     
