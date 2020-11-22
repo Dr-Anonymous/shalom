@@ -4,7 +4,7 @@
 <!-- Services Full Width Text -->
 <script src="/assets/js/jquery-1.8.2.min.js"></script>
 <script>
- var request = jQuery.ajax({ 
+jQuery.ajax({ 
       crossDomain: true,
       url: "https://script.google.com/macros/s/AKfycbxGoWfDAFhBF8Ke31IX4CU1pixoEDsJgjPI9w9PUP5sgzMKWQ0/exec?callback=loadData",
       method: "GET",
@@ -19,11 +19,11 @@
 
 <div class="services-half-width container"><div class="row"><div class="services-half-width-text span12">
       <div>Live program schedule:<br>
-       <li>Sunday on YouTube at <b>10 AM</b></li>
-       <li>Sunday and Friday on GoogleMeet at <b>7:00 PM</b> IST.</li></div><br><br>
+       <li>Sunday on YouTube at <b>10:30 AM</b></li>
+       <li>Sunday and Friday on GoogleMeet at <b>7:00 PM</b>.</li></div><br><br>
      <!-- <div id="main"><a id="link" href="https://meet.google.com/khq-pory-yow" style="text-decoration: underline;color: #152eeb;">Click here to open the app</a>, then 'Ask to join'.</div> -->
       <div id="main">Loading meeting link. Please wait ...</div><br>
       <!--<br><br><div>More at <a href="/messages">Audio message library</a> and <a href="https://www.youtube.com/channel/UCxsHq2M611rQtPlZ6OA3HdA/videos">YouTube channel</a></div>-->
 </div></div></div>
-<!-- Footer --> <footer> <div class="container"> <div class="row"> <div class="social span4"> <a class="facebook" href="https://www.facebook.com/shalomworshipcentre.kkd"></a> <a class="youtube" href="https://www.youtube.com/channel/UCxsHq2M611rQtPlZ6OA3HdA"></a> <a class="googleplus" href="https://plus.google.com/+ShalomWorshipCentreKakinada"></a></div><div class="copyright span4"><p>Copyright 2020 Shalom Worship Centre.</p></div> <!--Google Ads --> <div class="copyright span4 app"></div></div></div></footer>
+<!-- Footer --> <footer> <div class="container"> <div class="row"> <div class="social span4"> <a class="facebook" href="https://www.facebook.com/shalomworshipcentre.kkd"></a> <a class="youtube" href="https://www.youtube.com/PrasadCherukuri"></a></div><div class="copyright span4"><p>Copyright 2020 Shalom Worship Centre.</p></div> <!--Google Ads --> <div class="copyright span4 app"></div></div></div></footer>
 <!-- Javascript --> <script src="/assets/bootstrap/js/bootstrap.min.js"></script></body>
