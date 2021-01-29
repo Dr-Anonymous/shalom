@@ -18,9 +18,9 @@ jQuery.ajax({
 </script>
 
 <div class="services-half-width container"><div class="row"><div class="services-half-width-text span12">
-      <div>Live program schedule:<br>
-       <li>Sunday on YouTube at <b>10:30 AM</b></li>
-       <li>Sunday and Friday on GoogleMeet at <b>7:00 PM</b>.</li></div><br><br>
+      <div>YouTube Live schedule:<br>
+       <li>Sunday at <b>10:30 AM</b></li>
+       <li>Friday at <b>7:30 PM</b>.</li></div><br><br>
      <!-- <div id="main"><a id="link" href="https://meet.google.com/khq-pory-yow" style="text-decoration: underline;color: #152eeb;">Click here to open the app</a>, then 'Ask to join'.</div> -->
       <div id="main">Loading meeting link. Please wait ...</div><br>
       <!--<br><br><div>More at <a href="/messages">Audio message library</a> and <a href="https://www.youtube.com/channel/UCxsHq2M611rQtPlZ6OA3HdA/videos">YouTube channel</a></div>-->
