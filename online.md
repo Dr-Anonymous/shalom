@@ -13,8 +13,8 @@ jQuery.ajax({
 
 // load the returned url
   function loadData(e) {
-      window.open(e, '_blank')|| window.location.replace(e);
       $('#main').html("<a id='link' href='"+e+"' style='text-decoration: underline;color: #152eeb;'>Click here to open the app</a>.");
+      $('#link').click();
       }
 </script>
 
