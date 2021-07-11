@@ -20,7 +20,7 @@ jQuery.ajax({
 
 <div class="services-half-width container"><div class="row"><div class="services-half-width-text span12">
       <div>YouTube Live schedule:<br>
-       <li>Sunday at <b>10:00 AM</b></li>
+       <li>Sunday at <b>08:30 AM(first service) and 10:30 AM(second service)</b></li>
        <li>Friday at <b>7:30 PM</b>.</li></div><br><br>
      <!-- <div id="main"><a id="link" href="https://meet.google.com/khq-pory-yow" style="text-decoration: underline;color: #152eeb;">Click here to open the app</a>, then 'Ask to join'.</div> -->
       <div id="main">Loading meeting link. Please wait ...</div><br>
