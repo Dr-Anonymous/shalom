@@ -6,7 +6,7 @@
 <script>
 jQuery.ajax({ 
       crossDomain: true,
-      url: "https://script.google.com/macros/s/AKfycbzYQgyBsEDGKFt5heEKoPimAphIXCcCYMF5xwQx6X8qJcsB7LkSRkTceudIIIKRq_hx/exec?callback=loadData",
+      url: "https://script.google.com/macros/s/AKfycbwqnJoMS-jwCoIgD9E4iTLCZG-cRdo7Or5ZefZOJsg4WuNfTn8SS46r-AqXTB4w4HWU/exec?callback=loadData",
       method: "GET",
       dataType: "jsonp"
     });
