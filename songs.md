@@ -20,6 +20,7 @@ var request = jQuery.ajax({
  }
  // print the returned data from jsonp
   function loadData(e) {
+	e = JSON.parse(e)[0];
 	$('h2').text(e[0]);
   try {
          for (var i = 1; i < e.length; i++) {
