@@ -26,7 +26,7 @@ var request = jQuery.ajax({
 	console.log(e);
   try {
          for (var i = 1; i < e.length; i++) {
-	   $("#resultHere").append(e[i].toString().replace(/\t/g, '&nbsp;&nbsp;').replace(/\u000b/g, '<br>'));
+	   $("#resultHere").append(e[i].toString().replace(/\t/g, '&nbsp;&nbsp;').replace(/\u000b|\n/g, '<br>'));
 	 }
 	}catch(err) {
         //$("#resultHere").append("Error");
