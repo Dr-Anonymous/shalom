@@ -22,15 +22,14 @@ var request = jQuery.ajax({
   function loadData(e) {
 	e = JSON.parse(e);
 	e = e[0];
-	$('h2').text(e[0]);
-	e.shift();
+	$('h2').text(e[0]); //0 item is heading
 	console.log(e);
   try {
          for (var i = 1; i < e.length; i++) {
-	   $("#resultHere").text(e);
+	   $("#resultHere").append(e[i].replace("\u000b", "<br>"));
 	 }
 	}catch(err) {
-        //$("#main_content").html("No such redirect present");
+        //$("#resultHere").append("Error");
 	}
 }
 
