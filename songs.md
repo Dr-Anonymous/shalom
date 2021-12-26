@@ -9,7 +9,7 @@ if(isNaN(requested))
 {
 console.log(requested);
 } else {
-var url = "https://script.google.com/macros/s/AKfycbwd0RFDHY-PITsSV8Zc_r2w5eaNjXgK4kcUpy2q8FM0PXVSiyO3QGYU5BQfTMXP38OSIA/exec?callback=loadData&id="+ requested;
+var url = "https://script.google.com/macros/s/AKfycbyzWToyyIN8TP-7OMsUNkT2Xrbxv0oZCOFGnL72Tt8w_YVsdo6FYO-Y6L2_dEfYN7uFiw/exec?callback=loadData&id="+ requested;
 // Make an AJAX call to Google Script
 var request = jQuery.ajax({
       crossDomain: true,
@@ -26,6 +26,7 @@ var request = jQuery.ajax({
 	console.log(e);
   try {
          for (var i = 1; i < e.length; i++) {
+	   if (e[i]==""){ continue; }
 	   $("#resultHere").append(e[i].toString().replace(/\t/g, '&nbsp;&nbsp;').replace(/\u000b|\n/g, '<br>'));
 	 }
 	}catch(err) {
