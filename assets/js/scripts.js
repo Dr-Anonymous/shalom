@@ -32,7 +32,7 @@ function statusChangeCallback(response) {
       appId      : '877821148937882',
       xfbml      : true,
 	cookie	 : true,
-      version    : 'v2.9'
+      version    : 'v12.0'
     });
 	FB.getLoginStatus(function(response) {
     statusChangeCallback(response);
