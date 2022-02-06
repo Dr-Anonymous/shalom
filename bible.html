@@ -8,12 +8,6 @@
 
 <div class="services-full-width container"><div id = "bible" class="presentation container span12">Select a book and chapter to start reading</div></div>
 <script>
- var requested= window.location.pathname.slice(1);
-if(isNaN(requested))
-{
-console.log(requested);
-} else {
-
 var url = "https://script.google.com/macros/s/AKfycbzbybWimuDLj6iFAmhB7e7oGvq6Jha_enGTN9SxMJ_jSeRM78WdEXe2-dQvg_74ezr4/exec?callback=loadData&book=1&chapter=1" ;//+ requested;
 // Make an AJAX call to Google Script
 var request = jQuery.ajax({
@@ -33,7 +27,6 @@ var request = jQuery.ajax({
 	}catch(err) {
         //$("#main_content").html("No such redirect present");
 	}
-}
 </script>
 <!-- Footer --> <footer> <div class="container"> <div class="row"> <div class="social span4"> <a class="facebook" href="https://www.facebook.com/shalomworshipcentre.kkd"></a> <a class="youtube" href="https://www.youtube.com/c/ShalomWorshipCentreKakinada"></a> <a class="googleplus" href="https://plus.google.com/+ShalomWorshipCentreKakinada"></a></div><div class="copyright span4"><p>Copyright 2016 Shalom Worship Centre.</p></div> <!--Google Ads --> <div class="copyright span4 app"></div></div></div></footer>
 <!-- Javascript --><script src="assets/js/jquery-1.8.2.min.js"></script> <script src="assets/bootstrap/js/bootstrap.min.js"></script><script src="assets/js/jquery.quicksand.js"></script></body></html> 
