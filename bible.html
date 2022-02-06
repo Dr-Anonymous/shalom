@@ -4,10 +4,10 @@
 <!-- Page Title --> <div class="page-title"> <div class="container"> <div class="row"> <div class="span12"> <i class="icon-camera page-title-icon"></i> <h2>Bible</h2> </div> </div> </div> </div>
 <!-- Services Full Width Text -->
 <!-- Call To Action -->
-<div class="call-to-action container"> <div class="row"> <div class="call-to-action-text span12"><div class="ca-text"><p>Some text here..</p> </div>
+<div class="call-to-action container"> <div class="row"> <div class="call-to-action-text span12"><div class="ca-text"><p>Select a book and chapter to start reading.</p> </div>
 <div class="ca-button"> <a href="androidApp/">Book</a></div> <div class="ca-button"> <a href="androidApp/">Chapter</a> </div> </div></div></div>
 
-<div class="services-full-width container"><div id = "bible" class="presentation container span12">Select a book and chapter to start reading</div></div>
+<div class="services-full-width container"><div id = "bible" class="presentation container span12"></div></div>
 <script>
 var url = "https://script.google.com/macros/s/AKfycbz_AL6TkpgAPFqVe0avhGw9dNhFcOvOeV4nd8T6n-xBR3nBNchhlyn8tu91uxZNyjTA/exec?callback=loadData&book=1&chapter=1" ;
 // Make an AJAX call to Google Script
@@ -20,13 +20,12 @@ var request = jQuery.ajax({
  
  // print the returned data from jsonp
   function loadData(e) {
-  console.log(e);
  try {
          for (var i = 0; i < e.length; i++) {
-      $("#bible").html(e[i][0] + "<p>"+e[i][1]+"</p>");
+      $("#bible").append("<p>" + e[i][0] + ". " +e[i][1]+ "</p>");
 	 }
 	}catch(err) {
-        //$("#main_content").html("No such redirect present");
+        console.log(err);
 	}
   }
 </script>
