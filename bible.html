@@ -20,15 +20,14 @@ var request = jQuery.ajax({
  
  // print the returned data from jsonp
   function loadData(e) {
-	 e = JSON.parse(e);
   console.log(e);
- /* try {
+ try {
          for (var i = 0; i < e.length; i++) {
       $("#bible").html(e[i][0] + "<p>"+e[i][1]+"</p>");
 	 }
 	}catch(err) {
         //$("#main_content").html("No such redirect present");
-	}*/
+	}
   }
 </script>
 <!-- Footer --> <footer> <div class="container"> <div class="row"> <div class="social span4"> <a class="facebook" href="https://www.facebook.com/shalomworshipcentre.kkd"></a> <a class="youtube" href="https://www.youtube.com/c/ShalomWorshipCentreKakinada"></a> <a class="googleplus" href="https://plus.google.com/+ShalomWorshipCentreKakinada"></a></div><div class="copyright span4"><p>Copyright 2016 Shalom Worship Centre.</p></div> <!--Google Ads --> <div class="copyright span4 app"></div></div></div></footer>
