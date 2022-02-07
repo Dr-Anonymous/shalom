@@ -25,25 +25,30 @@ $(document).ready(function(){
 <!-- Page Title --> <div class="page-title"> <div class="container"> <div class="row"> <div class="span12"> <i class="icon-book page-title-icon"></i> <h2>Bible</h2> </div> </div> </div> </div>
 <!-- Services Full Width Text -->
 <!-- Call To Action -->
-<div class="call-to-action container"> <div class="row"> <div class="call-to-action-text span12"><div class="ca-text">
+<div class="call-to-action container"> <div class="row"> <div class="call-to-action-text span12" style="overflow: visible;"><div class="ca-text">
 <div class="dropdown">
     <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Select Book
     <span class="caret"></span></button>
     <ul class="dropdown-menu">
-      <li><a tabindex="-1" href="#">HTML</a></li>
-      <li><a tabindex="-1" href="#">CSS</a></li>
       <li class="dropdown-submenu">
-        <a class="test" tabindex="-1" href="#">New dropdown <span class="caret"></span></a>
+        <a class="test" tabindex="-1" href="#">Book 1<span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <li><a tabindex="-1" href="#">2nd level dropdown</a></li>
-          <li><a tabindex="-1" href="#">2nd level dropdown</a></li>
-          <li class="dropdown-submenu">
-            <a class="test" href="#">Another dropdown <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="#">3rd level dropdown</a></li>
-              <li><a href="#">3rd level dropdown</a></li>
-            </ul>
-          </li>
+          <li><a tabindex="-1" href="#">Chapter 1</a></li>
+          <li><a tabindex="-1" href="#">Chapter 2</a></li>
+        </ul>
+      </li>
+      <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Book 2<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a tabindex="-1" href="#">Chapter 1</a></li>
+          <li><a tabindex="-1" href="#">Chapter 2</a></li>
+        </ul>
+      </li>
+      <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Book 3<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a tabindex="-1" href="#">Chapter 1</a></li>
+          <li><a tabindex="-1" href="#">Chapter 2</a></li>
         </ul>
       </li>
     </ul>
