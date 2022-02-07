@@ -10,9 +10,8 @@
 <div class="services-full-width container"><div id = "bible" class="presentation container span12" style="text-align: left;"></div></div>
 <script>
 function getVerse(b, c) {
-    var url = "https://script.google.com/macros/s/AKfycbzb9H_Dm9LiSQsWzTJ9JfMSBy799GLeod4pCuNEsv2e34TIL08KH8v6L5gkArmqNTSM/exec?callback=loadData&book=" + b + "&chapter=" + c;
-    // Make an AJAX call to Google Script
-    var request = jQuery.ajax({
+    var url = "https://script.google.com/macros/s/AKfycbyAYRUXR-Omreu1HRiNn0jRYxv6U_WrPwYw2C10OVBPM21R_2u_6IHjXq9KbJwq7tEc/exec?callback=loadData&book=" + b + "&chapter=" + c ,
+        request = jQuery.ajax({
         crossDomain: true,
         url: url,
         method: "GET",
@@ -21,6 +20,7 @@ function getVerse(b, c) {
 }
 
 function loadData(e) {
+    $("#bible").empty();
     try {
         for (var i = 0; i < e.length; i++) {
             if (e[i][1].substring(0, 1) == "[") {
