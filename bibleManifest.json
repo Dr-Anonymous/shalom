@@ -1,0 +1,16 @@
+{
+  "short_name": "Bible online",
+  "name": "Bible | Shalom Worship Centre",
+  "icons": [
+    {
+      "src": "/assets/ico/favicon.ico",
+      "type": "image/png",
+      "sizes": "50x50"
+    }
+  ],
+  "start_url": "/bible/",
+  "background_color": "#888",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#5d5d5d"
+}
