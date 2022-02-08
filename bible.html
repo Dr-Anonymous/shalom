@@ -86,14 +86,17 @@
 			</div>
 		</div>
 		<div class="services-full-width container">
-         <h3 id="book"></h3><h4 id="chapter"></h4>
+			<h3 id="book"></h3>
+			<h4 id="chapter"></h4>
 			<div id = "bible" class="presentation container span12" style="text-align: left;">
 				<p>Select a book and chapter to start reading.</p>
 			</div>
 		</div>
 		<script>
 			function getVerse(name, b, c) {
-			    $("#bible").html("<p>Loading chapter...</p>");
+			$("#book").text(name);
+			$("#book").text(c);
+			$("#bible").html("<p>Loading chapter...</p>");
 			    var url = "https://script.google.com/macros/s/AKfycbyAYRUXR-Omreu1HRiNn0jRYxv6U_WrPwYw2C10OVBPM21R_2u_6IHjXq9KbJwq7tEc/exec?callback=loadData&book=" + b + "&chapter=" + c ,
 			        request = jQuery.ajax({
 			        crossDomain: true,
@@ -229,3 +232,4 @@
 			});
 		</script>
 	</body>
+</html>
