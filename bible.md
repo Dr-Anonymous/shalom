@@ -31,19 +31,13 @@ $(document).ready(function(){
     <span class="caret"></span></button>
     <ul class="dropdown-menu">
       <li class="dropdown-submenu">
-        <a class="test" tabindex="-1" href="#">Book 1<span class="caret"></span></a>
+        <a class="test" val="1" tabindex="-1" href="#">Book 1</a>
         <ul class="dropdown-menu">
-          <li><a tabindex="-1" href="#">Chapter 1</a></li>
-          <li><a tabindex="-1" href="#">Chapter 2</a></li>
+          <li><a val="1" tabindex="-1" href="#" onclick="getVerse($(this).parent().parent().attr('val'), $(this).attr('val'));">Chapter 1</a></li>
+          <li><a val="2" tabindex="-1" href="#" onclick="getVerse($(this).parent().parent().attr('val'), $(this).attr('val'));">Chapter 2</a></li>
         </ul>
       </li>
-      <li class="dropdown-submenu">
-        <a class="test" tabindex="-1" href="#">Book 2<span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a tabindex="-1" href="#">Chapter 1</a></li>
-          <li><a tabindex="-1" href="#">Chapter 2</a></li>
-        </ul>
-      </li>
+      
       <li class="dropdown-submenu">
         <a class="test" tabindex="-1" href="#">Book 3<span class="caret"></span></a>
         <ul class="dropdown-menu">
@@ -51,6 +45,7 @@ $(document).ready(function(){
           <li><a tabindex="-1" href="#">Chapter 2</a></li>
         </ul>
       </li>
+      
     </ul>
   </div>
  </div>
