@@ -2,166 +2,161 @@
 ---
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Messages || Shalom Worship Centre</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="keywords" content="testimony,prayer,christianity,healing">
-<meta name="description" content="Messages">
-<meta name="author" content="Shalom Worship Centre">
-
-<!-- CSS -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
-<link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="/assets/css/font-awesome.css">
-<link rel="stylesheet" href="/assets/css/style.css">
-<link rel="shortcut icon" href="/assets/ico/favicon.ico">
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#5d5d5d">
-<style>
-.card {
-  background: #fbf4f4;
-  border-radius: 2px;
-  display: inline-table;
-  height: auto;
-  margin: 0.5%;
-  position: relative;
-  width: 24%;
-}
-.shadow {
-  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
-}
-</style>
-</head>
-
-<body onload="callGoogleScript();">
-<script>
-
-function callGoogleScript(value) {
-
-	document.getElementById('main_content').innerHTML = "<p>Loading. Please wait ...</p>";
-	var id= value;
-// Make an AJAX call to Google Script
-var request = jQuery.ajax({
-      crossDomain: true,
-      url: "https://script.google.com/macros/s/AKfycbzf4MM1TWILuc5UwcfQXxqUJScUGhcoNUpFX-BCyJnk6Luvzyc/exec?callback=loadData&id="+id,
-      method: "GET",
-      dataType: "jsonp"
-    });
-
-  }
- 
-</script>
-        <!-- Header -->
-        <div class="container">
-            <div class="header row">
-                <div class="span12">
-                    <div class="navbar">
-                        <div class="navbar-inner">
-			    <h1>
-                                <a class="brand" href="/">Shalom Worship Centre</a>
-                            </h1>
-                            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </a>
-                             <div class="nav-collapse collapse">
-                                <ul class="nav pull-right">
-                                    <li>
-                                        <a href="/"><i class="icon-home"></i><br />Home</a>
-                                    </li>
-                                    <li >
-                                        <a href="/Our Ministries.html"><i class="icon-camera"></i><br />Our Ministries</a>
-                                    </li>
-                                    <li>
-                                        <a href="/testimonies"><i class="icon-user"></i><br />Testimonies</a>
-                                    </li>
-                                    <li class="current-page">
-                                        <a href="/messages"><i class="icon-tasks"></i><br />Messages</a>
-                                    </li>
-                                    <li>
-                                        <a href="/contact.html"><i class="icon-envelope-alt"></i><br />Contact</a>
-                                   </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+   <head>
+      <meta charset="utf-8">
+      <title>Messages || Shalom Worship Centre</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="keywords" content="testimony,prayer,christianity,healing">
+      <meta name="description" content="Messages">
+      <meta name="author" content="Shalom Worship Centre">
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+      <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+      <link rel="stylesheet" href="/assets/css/font-awesome.css">
+      <link rel="stylesheet" href="/assets/css/style.css">
+      <link rel="shortcut icon" href="/assets/ico/favicon.ico">
+      <link rel="manifest" href="/manifest.json">
+      <meta name="theme-color" content="#5d5d5d">
+      <style>
+         .card {
+         background: #fbf4f4;
+         border-radius: 2px;
+         display: inline-table;
+         height: auto;
+         margin: 0.5%;
+         position: relative;
+         width: 24%;
+         }
+         .shadow {
+         box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+         }
+      </style>
+   </head>
+   <body onload="callGoogleScript();">
+      <script>
+         function callGoogleScript(value) {
+         	document.getElementById('main_content').innerHTML = "<p>Loading. Please wait ...</p>";
+         	
+         var id= value,
+            request = jQuery.ajax({
+               crossDomain: true,
+               url: "https://script.google.com/macros/s/AKfycbzf4MM1TWILuc5UwcfQXxqUJScUGhcoNUpFX-BCyJnk6Luvzyc/exec?callback=loadData&id="+id,
+               method: "GET",
+               dataType: "jsonp"
+             });
+         
+           }
+          
+      </script>
+      <!-- Header -->
+      <div class="container">
+         <div class="header row">
+            <div class="span12">
+               <div class="navbar">
+                  <div class="navbar-inner">
+                     <h1>
+                        <a class="brand" href="/">Shalom Worship Centre</a>
+                     </h1>
+                     <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                     <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                     </a>
+                     <div class="nav-collapse collapse">
+                        <ul class="nav pull-right">
+                           <li>
+                              <a href="/"><i class="icon-home"></i><br />Home</a>
+                           </li>
+                           <li >
+                              <a href="/Our Ministries.html"><i class="icon-camera"></i><br />Our Ministries</a>
+                           </li>
+                           <li>
+                              <a href="/testimonies"><i class="icon-user"></i><br />Testimonies</a>
+                           </li>
+                           <li class="current-page">
+                              <a href="/messages"><i class="icon-tasks"></i><br />Messages</a>
+                           </li>
+                           <li>
+                              <a href="/contact.html"><i class="icon-envelope-alt"></i><br />Contact</a>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
             </div>
-        </div>
-
-        <div class='page-title'>
-            <div class='container'>
-                <div class='row'>
-                    <div class='span12'>
-                        <i class='icon-tasks page-title-icon'></i>
-                        <h2 id="path">Messages</h2>    
-                    </div>
-                </div>
+         </div>
+      </div>
+      <div class='page-title'>
+         <div class='container'>
+            <div class='row'>
+               <div class='span12'>
+                  <i class='icon-tasks page-title-icon'></i>
+                  <h2 id="path">Messages</h2>
+               </div>
             </div>
-        </div>
-
-        <!-- Portfolio -->
-    <div class='portfolio portfolio-page container'>
-	 <div class='row' id="latest">
-	</div>   
-  	<div class='row' id="main_content">
-	</div> 
-    </div>
-<!-- Footer -->
-<footer>
-<div class="container">
-<div class="row">
-<div class="social span4">
-<a class="facebook" href="https://www.facebook.com/shalomworshipcentre.kkd"></a>
-<a class="youtube" href="https://www.youtube.com/c/ShalomWorshipCentreKakinada"></a>
-<a class="googleplus" href="https://plus.google.com/+ShalomWorshipCentreKakinada"></a>
-</div>
-<div class="copyright span4"><p>Copyright-Shalom Worship Centre.</p></div>
-<!--Google Ads -->
-<div class="copyright span4 app"></div>
-</div>
-</div>
-</footer>
-<!-- Javascript -->
-<script src="/assets/js/jquery-1.8.2.min.js"></script>
-<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="/assets/js/jquery.quicksand.js"></script>
-<script>
-// get latest message from service worker
-var w;
-function startWorker() {
-    if(typeof(Worker) !== "undefined" && typeof(w) == "undefined") {
-            document.getElementById("latest").innerHTML = "Getting the last uploaded file ....<br><br>";
-            w = new Worker("/latest.js");
-            w.postMessage("https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback= ");
-        w.onmessage = function(event) {
-            document.getElementById("latest").innerHTML = "Latest upload: "+event.data.result1+ "<br><br>";
-            stopWorker();
-        };
-    } else {
-        document.getElementById("result").innerHTML = "Sorry! No Web Worker support.";
-    }
-}
-//startWorker();   //this entire section not being called
-function stopWorker() {
-  if(typeof(Worker) !== "undefined" && typeof(w) !== "undefined") {
-            w.terminate();
-            w = undefined;
-}
-}
-	
- // print the returned data from jsonp
-  function loadData(e) {
-        document.getElementById('main_content').innerHTML = e.result1;
-        if (e.result2)
-        document.getElementById('path').innerHTML= e.result2;
-	  else
-	document.getElementById('path').innerHTML= "Messages >";
-  }
-</script>
-</body>
+         </div>
+      </div>
+      <!-- Portfolio -->
+      <div class='portfolio portfolio-page container'>
+         <div class='row' id="latest">
+         </div>
+         <div class='row' id="main_content">
+         </div>
+      </div>
+      <!-- Footer -->
+      <footer>
+         <div class="container">
+            <div class="row">
+               <div class="social span4">
+                  <a class="facebook" href="https://www.facebook.com/shalomworshipcentre.kkd"></a>
+                  <a class="youtube" href="https://www.youtube.com/c/ShalomWorshipCentreKakinada"></a>
+               </div>
+               <div class="copyright span4">
+                  <p>Copyright-Shalom Worship Centre.</p>
+               </div>
+               <!--Google Ads -->
+               <div class="copyright span4 app"></div>
+            </div>
+         </div>
+      </footer>
+      <!-- Javascript -->
+      <script src="/assets/js/jquery-1.8.2.min.js"></script>
+      <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+      <script src="/assets/js/jquery.quicksand.js"></script>
+      <script>
+         // get latest message from service worker
+         var w;
+         function startWorker() {
+             if(typeof(Worker) !== "undefined" && typeof(w) == "undefined") {
+                     document.getElementById("latest").innerHTML = "Getting the last uploaded file ....<br><br>";
+                     w = new Worker("/latest.js");
+                     w.postMessage("https://script.google.com/macros/s/AKfycbwX-bdUXwFHyej-VLVdxQc9v5izgvXJUKiKcWWHVYhnlp1B2Np9/exec?callback= ");
+                 w.onmessage = function(event) {
+                     document.getElementById("latest").innerHTML = "Latest upload: "+event.data.result1+ "<br><br>";
+                     stopWorker();
+                 };
+             } else {
+                 document.getElementById("result").innerHTML = "Sorry! No Web Worker support.";
+             }
+         }
+         //startWorker();   //this entire section not being called
+         function stopWorker() {
+           if(typeof(Worker) !== "undefined" && typeof(w) !== "undefined") {
+                     w.terminate();
+                     w = undefined;
+         }
+         }
+         	
+          // print the returned data from jsonp
+           function loadData(e) {
+                 document.getElementById('main_content').innerHTML = e.result1;
+                 if (e.result2)
+                 document.getElementById('path').innerHTML= e.result2;
+         	  else
+         	document.getElementById('path').innerHTML= "Messages >";
+           }
+      </script>
+   </body>
 </html>
