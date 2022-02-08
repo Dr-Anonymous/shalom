@@ -35,11 +35,28 @@
       </style>
       <script>
          $(document).ready(function(){
+            //dropdown menu
            $('.dropdown-submenu a.test').on("click", function(e){
              $(this).next('ul').toggle();
              e.stopPropagation();
              e.preventDefault();
            });
+           //dropdown populate
+           var telBook = [
+              [1, "book1", 3],
+              [2, "book2", 5],
+              [3, "book3", 8]
+           ];
+            var option = '';
+            for (var i=0; i<telBook.length; i++){
+               option += '<li class="dropdown-submenu"><a class="test" href="#">'+ telBook[i][1]+'</a><ul class="dropdown-menu">';
+               for (var n=1; n < telBook[i][2]; n++){
+                           option += '<li><a class="test" href="#" onclick="getVerse('+ telBook[i][0]+ ' ,' + n + ');">'+ n +'</a></li>';
+               }
+               option += '</ul></li>';
+               }
+            $('#books').append(option);
+
          });
       </script>
    </head>
@@ -84,23 +101,9 @@
             <div class="call-to-action-text span12" style="overflow: visible;">
                <div class="ca-text">
                   <div class="dropdown">
-                     <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Select Book
-                     <span class="caret"></span></button>
-                     <ul class="dropdown-menu">
-                        <li class="dropdown-submenu">
-                           <a class="test" tabindex="-1" href="#">Book 1</a>
-                           <ul class="dropdown-menu">
-                              <li><a class="test" tabindex="-1" href="#" onclick="getVerse(1, 1);">Chapter 1</a></li>
-                              <li><a class="test" tabindex="-1" href="#" onclick="getVerse(1, 2);">Chapter 2</a></li>
-                           </ul>
-                        </li>
-                        <li class="dropdown-submenu">
-                           <a class="test" tabindex="-1" href="#">Book 2</a>
-                           <ul class="dropdown-menu">
-                              <li><a class="test" tabindex="-1" href="#" onclick="getVerse(2, 1);">Chapter 1</a></li>
-                              <li><a class="test" tabindex="-1" href="#" onclick="getVerse(2, 2);">Chapter 2</a></li>
-                           </ul>
-                        </li>
+                     <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Select Book</button>
+                     <ul id="books" class="dropdown-menu">
+                        <!-- chapters here -->
                      </ul>
                   </div>
                </div>
@@ -116,6 +119,7 @@
       </div>
       <script>
          function getVerse(b, c) {
+             $("#bible").html("<p>Loading chapter...</p>");
              var url = "https://script.google.com/macros/s/AKfycbyAYRUXR-Omreu1HRiNn0jRYxv6U_WrPwYw2C10OVBPM21R_2u_6IHjXq9KbJwq7tEc/exec?callback=loadData&book=" + b + "&chapter=" + c ,
                  request = jQuery.ajax({
                  crossDomain: true,
@@ -147,11 +151,13 @@
                <div class="social span4">
                  <a class="facebook" href="https://www.facebook.com/shalomworshipcentre.kkd"></a>
                  <a class="youtube" href="https://www.youtube.com/c/ShalomWorshipCentreKakinada"></a>
+               </div>
                <div class="copyright span4">
                   <p>Copyright 2022 Shalom Worship Centre.</p>
                </div>
                <!--Google Ads --> 
-               <div class="copyright span4 app"></div>
+               <div class="copyright span4 app">
+               </div>
             </div>
          </div>
       </footer>
