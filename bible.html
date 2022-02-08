@@ -28,18 +28,14 @@
 		<script src="/assets/js/jquery.quicksand.js"></script>
 		<script>
 			$(document).ready(function(){
-			   //dropdown menu
-			  $('.dropdown-submenu a.test').on("click", function(e){
-			    $(this).next('ul').toggle();
-			    e.stopPropagation();
-			    e.preventDefault();
-			  });
 			let dropdowns = document.querySelectorAll('.dropdown-toggle')
 			dropdowns.forEach((dd)=>{
 			    dd.addEventListener('click', function (e) {
-				var el = this.nextElementSibling
-				el.style.display = el.style.display==='block'?'none':'block'
+				var el = this.nextElementSibling;
+				el.style.display = el.style.display==='block'?'none':'block';
+				
 			    })
+				
 			})
 			  //dropdown populate
 			  var telBook = [
@@ -112,9 +108,9 @@
 			  ];
 			   var option = '';
 			   for (var i=0; i<telBook.length; i++){
-			      option += '<li class="dropdown-submenu"><a class="test" href="#">'+ telBook[i][1]+'</a><ul class="dropdown-menu">';
+			      option += '<li class="dropdown dropend"><a class="dropdown-item dropdown-toggle" href="#">'+ telBook[i][1]+'</a><ul class="dropdown-menu">';
 			      for (var n=1; n < (telBook[i][2]+1); n++){
-			                  option += '<li><a class="test" href="#" onclick="getVerse(\''+ telBook[i][1] + '\' ,' + telBook[i][0]+ ' ,' + n + ');">'+ n +'</a></li>';
+			                  option += '<li><a class="dropdown-item" href="#" onclick="getVerse(\''+ telBook[i][1] + '\' ,' + telBook[i][0]+ ' ,' + n + ');">'+ n +'</a></li>';
 			      }
 			      option += '</ul></li>';
 			      }
@@ -164,7 +160,7 @@
 				<div class="call-to-action-text span12" style="overflow: visible;">
 					<div class="ca-text">
 						<div class="dropdown">
-							<button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown">Select Book <span class="caret"></span></button>
+							<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Select Book</button>
 							<ul id="books" class="dropdown-menu">
 								<!-- chapters here -->
 							</ul>
