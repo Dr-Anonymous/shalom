@@ -33,7 +33,7 @@
 			    dd.addEventListener('click', function (e) {
 				var el = this.nextElementSibling;
 				el.style.display = el.style.display==='block'?'none':'block';
-				
+				$('.collapse').collapse();
 			    })
 				
 			})
@@ -161,7 +161,7 @@
 					<div class="ca-text">
 						<div class="dropdown">
 							<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Select Book</button>
-							<ul id="books" class="dropdown-menu">
+							<ul id="books" class="dropdown-menu collapse">
 								<!-- chapters here -->
 							</ul>
 						</div>
