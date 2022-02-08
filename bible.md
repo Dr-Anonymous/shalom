@@ -33,16 +33,16 @@ $(document).ready(function(){
       <li class="dropdown-submenu">
         <a class="test" val="1" tabindex="-1" href="#">Book 1</a>
         <ul class="dropdown-menu">
-          <li><a val="1" class="test" tabindex="-1" href="#" onclick="getVerse($(this).closest('a').attr('val'), $(this).attr('val'));">Chapter 1</a></li>
-          <li><a val="2" class="test" tabindex="-1" href="#" onclick="getVerse($(this).closest('a').attr('val'), $(this).attr('val'));">Chapter 2</a></li>
+          <li><a val="1" class="test" tabindex="-1" href="#" onclick="getVerse($(this).parents('a').attr('val'), $(this).attr('val'));">Chapter 1</a></li>
+          <li><a val="2" class="test" tabindex="-1" href="#" onclick="getVerse($(this).parents('a').attr('val'), $(this).attr('val'));">Chapter 2</a></li>
         </ul>
       </li>
       
       <li class="dropdown-submenu">
         <a class="test" val="2" tabindex="-1" href="#">Book 2</a>
         <ul class="dropdown-menu">
-          <li><a class="test" val="1" tabindex="-1" href="#" onclick="getVerse($(this).closest('a').attr('val'), $(this).attr('val'));">Chapter 1</a></li>
-          <li><a class="test" val="2" tabindex="-1" href="#" onclick="getVerse($(this).closest('a').attr('val'), $(this).attr('val'));">Chapter 2</a></li>
+          <li><a class="test" val="1" tabindex="-1" href="#" onclick="getVerse($(this).parents('a').attr('val'), $(this).attr('val'));">Chapter 1</a></li>
+          <li><a class="test" val="2" tabindex="-1" href="#" onclick="getVerse($(this).parents('a').attr('val'), $(this).attr('val'));">Chapter 2</a></li>
         </ul>
       </li>
       
