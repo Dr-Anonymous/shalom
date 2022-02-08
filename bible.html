@@ -108,7 +108,7 @@
 			  ];
 			   var option = '';
 			   for (var i=0; i<telBook.length; i++){
-			      option += '<li class="dropdown dropend"><a class="dropdown-item dropdown-toggle" href="#">'+ telBook[i][1]+'</a><ul class="dropdown-menu">';
+			      option += '<li class="dropdown dropend"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" href="#">'+ telBook[i][1]+'</a><ul class="dropdown-menu">';
 			      for (var n=1; n < (telBook[i][2]+1); n++){
 			                  option += '<li><a class="dropdown-item" href="#" onclick="getVerse(\''+ telBook[i][1] + '\' ,' + telBook[i][0]+ ' ,' + n + ');">'+ n +'</a></li>';
 			      }
