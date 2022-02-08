@@ -33,7 +33,7 @@ $(document).ready(function(){
       <li class="dropdown-submenu">
         <a class="test" val="1" tabindex="-1" href="#">Book 1</a>
         <ul class="dropdown-menu">
-          <li><a val="1" tabindex="-1" href="#" onclick="getVerse($(this).parent().parent().attr('val'), $(this).attr('val'));">Chapter 1</a></li>
+          <li><a val="1" tabindex="-1" href="#" onclick="getVerse($(this).parent().parent().parent().attr('val'), $(this).attr('val'));">Chapter 1</a></li>
           <li><a val="2" tabindex="-1" href="#" onclick="getVerse($(this).parent().parent().attr('val'), $(this).attr('val'));">Chapter 2</a></li>
         </ul>
       </li>
@@ -54,6 +54,7 @@ $(document).ready(function(){
 <div class="services-full-width container"><div id = "bible" class="presentation container span12" style="text-align: left;"><p>Select a book and chapter to start reading.</p></div></div>
 <script>
 function getVerse(b, c) {
+    console.log(b+"  "+c);
     var url = "https://script.google.com/macros/s/AKfycbyAYRUXR-Omreu1HRiNn0jRYxv6U_WrPwYw2C10OVBPM21R_2u_6IHjXq9KbJwq7tEc/exec?callback=loadData&book=" + b + "&chapter=" + c ,
         request = jQuery.ajax({
         crossDomain: true,
