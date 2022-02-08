@@ -223,7 +223,7 @@
 			   for (var i=0; i<telBook.length; i++){
 			      option += '<li class="dropdown-submenu"><a class="test" href="#">'+ telBook[i][1]+'</a><ul class="dropdown-menu">';
 			      for (var n=1; n < (telBook[i][2]+1); n++){
-			                  option += '<li><a class="test" href="#" onclick="getVerse('+telBook[i][1] + ' ,' + telBook[i][0]+ ' ,' + n + ');">'+ n +'</a></li>';
+			                  option += '<li><a class="test" href="#" onclick="getVerse('+ \'telBook[i][1]\' + ' ,' + telBook[i][0]+ ' ,' + n + ');">'+ n +'</a></li>';
 			      }
 			      option += '</ul></li>';
 			      }
