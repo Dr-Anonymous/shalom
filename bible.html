@@ -116,8 +116,8 @@
 			});
 			
 			function darkMode(current){
-			if (current.attr("value") == "light"){
-				current.attr("value","dark");
+			if ($(current).attr("value") == "light"){
+				$(current).attr("value","dark");
 				$('.services-full-width').addClass('bg-dark');
 				$('.services-full-width').addClass('text-light');
 			}else{
