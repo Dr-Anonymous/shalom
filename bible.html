@@ -121,14 +121,15 @@
 				$('.services-full-width').addClass('bg-dark');
 				$('.services-full-width').addClass('text-light');
 			}else{
+				$(current).attr("value","light");
 				$('.services-full-width').removeClass('bg-dark');
 				$('.services-full-width').removeClass('text-light');
 			}
 			}
 				
 			function changeLanguage(current){
-			if (current.attr("value") == "telugu"){
-				//current.attr("value","english");
+			if ($(current).attr("value") == "telugu"){
+				//$(current).attr("value","english");
 				alert("Current language is Telugu.\n English not yet available.");
 			}else{
 				//nothing still
