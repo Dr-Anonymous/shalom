@@ -7,7 +7,7 @@
 		<title>Bible Online</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="keywords" content="ministry,prayer,christianity,church">
-		<meta name="description" content="Ministries, work done by Shalom Worship Centre">
+		<meta name="description" content="Free Telugu-English Online Bible">
 		<meta name="author" content="Shalom Worship Centre">
 		<!-- CSS --> 
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400">
@@ -64,7 +64,7 @@
 		<!-- Call To Action -->
 		<div class="call-to-action container">
 			<div class="row">
-				<div class="call-to-action-text span12" style="overflow: visible;">
+				<div class="call-to-action-text span6" style="overflow: visible;">
 					<div class="ca-text">
 						<div class="dropdown">
 							<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Select Book</button>
@@ -76,11 +76,12 @@
 					<!--<div class="ca-button"> <a href="javascript:;">English</a></div>
 					<div class="ca-button"> <a href="javascript:;">Dark Mode</a></div>-->
 				</div>
+				<div class="call-to-action-text span6">
+					<h3><span id="book" val=""></span> <span id="chapter"></span></h3>
+				</div>
 			</div>
 		</div>
 		<div class="services-full-width container">
-			<h3 id="book"></h3>
-			<h4 id="chapter"></h4>
 			<div id = "bible" class="presentation container span12" style="text-align: left;">
 				<p>Select a book and chapter to start reading.</p>
 			</div>
@@ -90,9 +91,10 @@
 			function getVerse(name, b, c) {
 			$("#books").hide();
 			$("#book").text(name);
+			$("#book").attr("value", b);
 			$("#chapter").text(c);
 			$("#bible").html("<p>Loading chapter...</p>");
-			    var url = "https://script.google.com/macros/s/AKfycbyAYRUXR-Omreu1HRiNn0jRYxv6U_WrPwYw2C10OVBPM21R_2u_6IHjXq9KbJwq7tEc/exec?callback=loadData&book=" + b + "&chapter=" + c ,
+			    var url = "https://script.google.com/macros/s/AKfycbwWayH6BSwvW3uO0eO7EaUmg1aYBzLsz31LN2ZMxJkHp-H-oK_2V3U4jd3u27mPxHqr/exec?callback=loadData&book=" + b + "&chapter=" + c ,
 			        request = jQuery.ajax({
 			        crossDomain: true,
 			        url: url,
