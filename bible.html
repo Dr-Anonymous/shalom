@@ -214,14 +214,14 @@
 			
 			<div class="container position-fixed">
 				<div class="float-start"> 
-				<button id="prev" type="button" class="btn btn-outline-secondary" onclick="getVerse($('#book').text(), $('#book').attr('value'), parseInt($('#chapter').text())-1);">
+				<button id="prev" type="button" class="btn btn-outline-secondary d-none" onclick="getVerse($('#book').text(), $('#book').attr('value'), parseInt($('#chapter').text())-1);">
 				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
 				<path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"></path>
 				</svg>
 				</button>
 				</div>
 				<div class="float-end">
-				<button id="next" type="button" class="btn btn-outline-secondary" onclick="getVerse($('#book').text(), $('#book').attr('value'), parseInt($('#chapter').text())+1);">
+				<button id="next" type="button" class="btn btn-outline-secondary d-none" onclick="getVerse($('#book').text(), $('#book').attr('value'), parseInt($('#chapter').text())+1);">
 				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
 				<path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
 				</svg>
@@ -259,8 +259,18 @@
 			$("#book").text(name);
 			$("#book").attr("value", b);
 			$("#chapter").text(c);
+				
+			if (b ==1 && c == 1)
+				$("#prev").addClass("d-none");
+				else
+					$("#prev").removeClass("d-none");
+			if (b ==66 && c == 22)
+				$("#next").addClass('d-none');
+				else
+					$("#next").removeClass('d-none');
+							
 			$("#bible").html("<p>Loading chapter...</p>");
-			    var url = "https://script.google.com/macros/s/AKfycbwWayH6BSwvW3uO0eO7EaUmg1aYBzLsz31LN2ZMxJkHp-H-oK_2V3U4jd3u27mPxHqr/exec?callback=loadData&book=" + b + "&chapter=" + c ,
+			    var url = "https://script.google.com/macros/s/AKfycbzQNNh36F7zrV78ITo8eD8EpPfqgXBz5ze6myX8Vpy0WBHCbKuwUF2dk9qKc04YWNuw/exec?callback=loadData&book=" + b + "&chapter=" + c ,
 			        request = jQuery.ajax({
 			        crossDomain: true,
 			        url: url,
