@@ -212,6 +212,15 @@
 					</svg>
 				      	</button>
 				</div>
+				<div class="col">
+					<button type="button" class="btn btn-secondary" onclick="load($('p').first().text());">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-volume-up" viewBox="0 0 16 16">
+					<path d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"></path>
+					<path d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.706.706z"></path>
+					<path d="M10.025 8a4.486 4.486 0 0 1-1.318 3.182L8 10.475A3.489 3.489 0 0 0 9.025 8c0-.966-.392-1.841-1.025-2.475l.707-.707A4.486 4.486 0 0 1 10.025 8zM7 4a.5.5 0 0 0-.812-.39L3.825 5.5H1.5A.5.5 0 0 0 1 6v4a.5.5 0 0 0 .5.5h2.325l2.363 1.89A.5.5 0 0 0 7 12V4zM4.312 6.39 6 5.04v5.92L4.312 9.61A.5.5 0 0 0 4 9.5H2v-3h2a.5.5 0 0 0 .312-.11z"></path>
+					</svg>
+             				</button>
+				</div>
 			</div>
 			
 			<div class="container position-fixed">
@@ -249,6 +258,9 @@
 					</div>
 					<!--Google Ads --> 
 					<div class="copyright span4 app">
+						<audio id="audio" controls style="visibility: collapse;">
+						<source id="source" src="" type="audio/mpeg"/>
+						</audio>
 					</div>
 				</div>
 			</div>
@@ -327,6 +339,96 @@
 			        console.log(err);
 			    }
 			}
+			
+//==============audio output			
+function load(data) {
+    if (data.charAt(0) == '[') {
+        data = data.slice(data.indexOf(']') + 2, -1).replace(/౹/, '');
+    } else {
+        var n = /\d+/,
+            number = data.match(n);
+        data = data.replace(number + '. ', '').replace(/౹/, '');
+    }
+    var url = "https://script.google.com/macros/s/AKfycbxqzRSjo-AjSDqEN7JwAmjSpNsUDQc6-nlkrFdFPTzBdh6y48Vd0swqjzpwvZlAu8nadg/exec?callback=readOut&data=" + data,
+        request = jQuery.ajax({
+            crossDomain: true,
+            url: url,
+            method: "GET",
+            dataType: "jsonp"
+        });
+}
+
+function readOut(e) {
+    var binary = convertDataURIToBinary(e);
+    var blob = new Blob([binary], {
+        type: 'audio/mpeg'
+    });
+    var blobUrl = URL.createObjectURL(blob);
+    $("#source").attr("src", blobUrl);
+    $("#audio")[0].pause();
+    $("#audio")[0].load(); //suspends and restores all audio element
+    $("#audio")[0].oncanplaythrough = $("#audio")[0].play();
+
+
+}
+
+function convertDataURIToBinary(dataURI) {
+    var raw = window.atob(dataURI);
+    var rawLength = raw.length;
+    var array = new Uint8Array(new ArrayBuffer(rawLength));
+    for (i = 0; i < rawLength; i++) {
+        array[i] = raw.charCodeAt(i);
+    }
+    return array;
+}
+
+
+//====audio player
+var playing = false,
+    currentP,
+    playList = [];
+$('#audio').on('ended', function() {
+    playing = false;
+    // enable button/link
+    //console.log('stopped');
+    currentP.css('text-decoration', 'none');
+    currentP = currentP.next('p');
+    while (playList.length > 0) {
+        load(playList[0]);
+        playList.shift();
+    }
+});
+
+$('#audio').on('playing', function() {
+    playing = true;
+    currentP.css('text-decoration', 'underline');
+    // disable button/link
+});
+
+
+$("#audio").on("loadedmetadata", function() {
+    if (currentP.next('p').text() != '') {
+        playThis(currentP.next('p'));
+        /*	setTimeout(function() 
+		  {
+			playThis(currentP.next('p'));
+		  }, (Math.round($("#audio")[0].duration)/2) * 1000);
+      */
+    }
+});
+$('p').click(function(event) {
+	playList = [];
+	playThis(this);
+});
+
+function playThis(e) {
+    if (!playing) {
+        currentP = $(e);
+        load($(e).text());
+    } else {
+        playList.push($(e).text())
+    }
+}
 		</script>
 	</body>
 </html>
