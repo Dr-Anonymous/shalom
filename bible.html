@@ -382,11 +382,11 @@ function convertDataURIToBinary(dataURI) {
     return array;
 }
 
-function ap(){
-//====audio player
 var playing = false,
     currentP,
     playList = [];
+function ap(){
+//====audio player
 $('#audio').on('ended', function() {
     playing = false;
     //enable button/link
