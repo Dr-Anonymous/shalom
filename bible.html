@@ -175,6 +175,23 @@
 				</div>
 			</div>
 		</div>
+		<!-- Navigation -->
+		<div class="container position-fixed">
+			<div class="float-start">
+				<button id="prev" type="button" class="btn btn-outline-secondary d-none" onclick="navig(-1);">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+						<path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"></path>
+					</svg>
+				</button>
+			</div>
+			<div class="float-end" style="margin-right: -10%;">
+				<button id="next" type="button" class="btn btn-outline-secondary d-none" onclick="navig(1);">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+						<path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
+					</svg>
+				</button>
+			</div>
+		</div>
 		<!-- Services Full Width Text -->
 		<!-- Call To Action -->
 		<div class="call-to-action container">
@@ -221,24 +238,7 @@
              				</button>
 				</div>
 			</div>
-			
-			<div class="container position-fixed">
-				<div class="float-start"> 
-				<button id="prev" type="button" class="btn btn-outline-secondary d-none" onclick="navig(-1);">
-				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
-				<path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"></path>
-				</svg>
-				</button>
-				</div>
-				<div class="float-end">
-				<button id="next" type="button" class="btn btn-outline-secondary d-none" onclick="navig(1);">
-				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
-				<path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
-				</svg>
-				</button>
-				</div>
-			</div>
-			
+						
 			<div id = "bible" class="presentation container" style="text-align: left;">
 				<p>Select a book and chapter to start reading.</p>
 			</div>
@@ -333,7 +333,7 @@
 			            }
 					
 			        navig(0);
-					enableClick();
+					//enableClick();
 					}
 			    } catch (err) {
 			        console.log(err);
@@ -397,8 +397,13 @@
 			$('#audio').on('ended', function() {
 			 playing = false;
 			 //enable button/link
-			enableClick();
+			 //enableClick();
 			 currentP.css('text-decoration', 'none');
+			 
+			 if (currentP.next('p').text() != ''){
+				 $('html, body').animate({ scrollTop: currentP.offset().top }, 1000);
+			 playThis(currentP.next('p'));
+			}
 			 //currentP = currentP.next('p');
 			 /*while (playList.length > 0) {
 			     toVoice(playList[0]);
@@ -410,31 +415,28 @@
 			 playing = true;
 			 currentP.css('text-decoration', 'underline');
 			 // disable button/link
-			
-			//if (currentP.next('p').text() != '') {
-			  //   playThis(currentP.next('p'));
-			     /*	setTimeout(function() 
-			 {
-			playThis(currentP.next('p'));
-			 }, (Math.round($("#audio")[0].duration)/2) * 1000);
-			   */
-			// } 
 			});
 			
 			
-			function enableClick(){
+			function enableClick1(){
+			/*
 			$('#bible p').on('click', function(event) {
 			playThis(this);
 			});
+			*/
 			}//====end of ap()
 			
 			function playThis(e) {
 			 if (!playing) {
 			     currentP = $(e);
-			currentP.off('click');
+				//currentP.off('click');
 			     toVoice(currentP.text());
 			 } else {
-			console.log('already playin');
+				 if ($('#audio')[0].paused){
+				 $('#audio')[0].play();
+				 return;
+				 }
+				$('#audio')[0].pause();
 			     //playList.push($(e).text())
 			 }
 			}
