@@ -22,119 +22,124 @@
 		<meta name="theme-color" content="#5d5d5d">
 		<!-- javascript -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+		<script src="/assets/js/autocomplete.js"></script>
 		<script>
-			  //dropdown populate
-			  var telBook = [
-			[0, 0, 0],
-			[1,	"ఆదికాండము", 50],
-			[2,	"నిర్గమకాండము", 40],
-			[3,	"లేవీయకాండము", 27],
-			[4,	"సంఖ్యాకాండము", 36],
-			[5,	"ద్వితీయోపదేశకాండము", 34],
-			[6,	"యెహోషువ",	24],
-			[7,	"న్యాయాధిపతులు",	21],
-			[8,	"రూతు",	4],
-			[9,	"1 సమూయేలు", 31],
-			[10,	"2 సమూయేలు", 24],
-			[11,	"1 రాజులు",	22],
-			[12,	"2 రాజులు",	25],
-			[13,	"1 దినవృత్తాంతములు",	29],
-			[14,	"2 దినవృత్తాంతములు",	36],
-			[15,	"ఎజ్రా",	10],
-			[16,	"నెహెమ్యా",	13],
-			[17,	"ఎస్తేరు",	10],
-			[18,	"యోబు",	42],
-			[19,	"కీర్తనలు",	150],
-			[20,	"సామెతలు",	31],
-			[21,	"ప్రసంగి",	12],
-			[22,	"పరమగీతము",	8],
-			[23,	"యెషయా",	66],
-			[24,	"యిర్మీయా",	52],
-			[25,	"విలాపవాక్యములు",	5],
-			[26,	"యెహెజ్కేలు",	48],
-			[27,	"దానియేలు",	12],
-			[28,	"హోషేయ",	14],
-			[29,	"యోవేలు",	3],
-			[30,	"ఆమోసు",	9],
-			[31,	"ఓబద్యా",	1],
-			[32,	"యోనా",	4],
-			[33,	"మీకా",	7],
-			[34,	"నహూము",	3],
-			[35,	"హబక్కూకు",	3],
-			[36,	"జెఫన్యా",	3],
-			[37,	"హగ్గయి",	2],
-			[38,	"జెకర్యా",	14],
-			[39,	"మలాకీ",	4],
-			[40,	"మత్తయి",	28],
-			[41,	"మార్కు",	16],
-			[42,	"లూకా",	24],
-			[43,	"యోహాను",	21],
-			[44,	"అపొస్తలుల కార్యములు",	28],
-			[45,	"రోమా",	16],
-			[46,	"1 కొరింథీయులకు",	16],
-			[47,	"2 కొరింథీయులకు",	13],
-			[48,	"గలతీయులకు",	6],
-			[49,	"ఎఫెసీయులకు",	6],
-			[50,	"ఫిలిప్పీయులకు",	4],
-			[51,	"కొలొస్సయులకు",	4],
-			[52,	"1 థెస్సలొనీకయులకు",	5],
-			[53,	"2 థెస్సలొనీకయులకు",	3],
-			[54,	"1 తిమోతికి",	6],
-			[55,	"2 తిమోతికి",	4],
-			[56,	"తీతుకు",	3],
-			[57,	"ఫిలేమోనుకు",	1],
-			[58,	"హెబ్రీయులకు", 13],
-			[59,	"యాకోబు",	5],
-			[60,	"1 పేతురు",	5],
-			[61,	"2 పేతురు",	3],
-			[62,	"1 యోహాను",	5],
-			[63,	"2 యోహాను",	1],
-			[64,	"3 యోహాను",	1],
-			[65,	"యూదా",	1],
-			[66,	"ప్రకటన",	22]
-			  ],
-			   option = '';
+			//dropdown populate
+			var telBook = [
+			[0, 0, 0, 0],
+			[1,	"ఆదికాండము", 50, "Genesis"],
+			[2,	"నిర్గమకాండము", 40, "Exodus"],
+			[3,	"లేవీయకాండము", 27, "Leviticus"],
+			[4,	"సంఖ్యాకాండము", 36, "Numbers"],
+			[5,	"ద్వితీయోపదేశకాండము", 34, "Deuteronomy"],
+			[6,	"యెహోషువ",	24, "Joshua"],
+			[7,	"న్యాయాధిపతులు", 21, "Judges"],
+			[8,	"రూతు", 4, "Ruth"],
+			[9,	"1 సమూయేలు", 31, "1 Samuel"],
+			[10, "2 సమూయేలు", 24, "2 Samuel"],
+			[11, "1 రాజులు", 22, "1 Kings"],
+			[12, "2 రాజులు", 25, "2 Kings"],
+			[13, "1 దినవృత్తాంతములు", 29, "1 Chronicles"],
+			[14, "2 దినవృత్తాంతములు", 36, "2 Chronicles"],
+			[15, "ఎజ్రా",	10, "Ezra"],
+			[16, "నెహెమ్యా", 13, "Nehemiah"],
+			[17, "ఎస్తేరు",	10, "Esther"],
+			[18, "యోబు",	42, "Job"],
+			[19, "కీర్తనలు",	150, "Psalm"],
+			[20, "సామెతలు", 31, "Proverbs"],
+			[21, "ప్రసంగి",	12, "Ecclesiastes"],
+			[22, "పరమగీతము",	8, "Song of Solomon"],
+			[23, "యెషయా", 66, "Isaiah"],
+			[24, "యిర్మీయా", 52, "Jeremiah"],
+			[25, "విలాపవాక్యములు", 5, "Lamentations"],
+			[26, "యెహెజ్కేలు", 48, "Ezekiel"],
+			[27, "దానియేలు", 12, "Daniel"],
+			[28, "హోషేయ",	14, "Hosea"],
+			[29, "యోవేలు",	3, "Joel"],
+			[30, "ఆమోసు",	9, "Amos"],
+			[31, "ఓబద్యా",	1, "Obadiah"],
+			[32, "యోనా",	4, "Jonah"],
+			[33, "మీకా",	7, "Micah"],
+			[34, "నహూము",	3, "Nahum"],
+			[35, "హబక్కూకు",	3, "Habakkuk"],
+			[36, "జెఫన్యా",	3, "Zephaniah"],
+			[37, "హగ్గయి",	2, "Haggai"],
+			[38, "జెకర్యా",	14, "Zechariah"],
+			[39, "మలాకీ",	4, "Malachi"],
+			[40, "మత్తయి",	28, "Matthew"],
+			[41, "మార్కు",	16, "Mark"],
+			[42, "లూకా",	24, "Luke"],
+			[43, "యోహాను",	21, "John"],
+			[44, "అపొస్తలుల కార్యములు",	28, "Acts"],
+			[45, "రోమా",	16, "Romans"],
+			[46, "1 కొరింథీయులకు", 16, "1 Corinthians"],
+			[47, "2 కొరింథీయులకు", 13, "2 Corinthians"],
+			[48, "గలతీయులకు",	6, "Galatians"],
+			[49, "ఎఫెసీయులకు",	6, "Ephesians"],
+			[50, "ఫిలిప్పీయులకు",	4, "Philippians"],
+			[51, "కొలొస్సయులకు",	4, "Colossians"],
+			[52, "1 థెస్సలొనీకయులకు",	5, "1 Thessalonians"],
+			[53, "2 థెస్సలొనీకయులకు",	3, "2 Thessalonians"],
+			[54, "1 తిమోతికి", 6, "1 Timothy"],
+			[55, "2 తిమోతికి", 4, "2 Timothy"],
+			[56, "తీతుకు", 3, "Titus"],
+			[57, "ఫిలేమోనుకు", 1, "Philemon"],
+			[58, "హెబ్రీయులకు", 13, "Hebrews"],
+			[59, "యాకోబు",	5, "James"],
+			[60, "1 పేతురు",	5, "1 Peter"],
+			[61, "2 పేతురు",	3, "2 Peter"],
+			[62, "1 యోహాను", 5, "1 John"],
+			[63, "2 యోహాను", 1, "2 John"],
+			[64, "3 యోహాను", 1, "3 John"],
+			[65, "యూదా", 1, "Jude"],
+			[66, "ప్రకటన", 22, "Revelation"]
+			],
+			 option = '';
 			$(document).ready(function(){
-			let dropdowns = document.querySelectorAll('.dropdown-toggle')
+			let dropdowns = document.querySelectorAll('#books, .dropdown-toggle')
 			dropdowns.forEach((dd)=>{
-			    dd.addEventListener('click', function (e) {
-				var el = this.nextElementSibling;
-				el.style.display = el.style.display==='block'?'none':'block';
-			    });	
+			  dd.addEventListener('click', function (e) {
+			var el = this.nextElementSibling;
+			if (el)
+			el.style.display = el.style.display==='block'?'none':'block';
+			  });
 			});
-
-			   for (var i=1; i<telBook.length; i++){
-			      option += '<li class="dropdown dropend"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" href="javascript:;">'+ telBook[i][1]+'</a><ul class="dropdown-menu">';
-			      for (var n=1; n < (telBook[i][2]+1); n++){
-			                  option += '<li><a class="dropdown-item" href="javascript:;" onclick="getVerse(\''+ telBook[i][1] + '\', ' + telBook[i][0]+ ', ' + n + ');">'+ n +'</a></li>';
-			      }
-			      option += '</ul></li>';
-			      }
-			   $('#books').append(option);
-
+			
+			 for (var i=1; i<telBook.length; i++){
+			    if (i == 1)
+				option += '<li>Old Testament</li><li><hr class="dropdown-divider"></li>';
+				if (i == 40)
+				option += '<li><hr class="dropdown-divider"></li><li>New Testament</li><li><hr class="dropdown-divider"></li>';
+				
+				option += '<li class="dropdown dropend"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" href="javascript:;">'+ telBook[i][1]+'</a><ul class="dropdown-menu">';
+				for (var n=1; n < (telBook[i][2]+1); n++){
+			             option += '<li><a class="dropdown-item" href="javascript:;" onclick="getVerse(\''+ telBook[i][1] + '\', ' + telBook[i][0]+ ', ' + n + ');">'+ n +'</a></li>';
+				}
+			    option += '</ul></li>';
+			    }
+			 $('#books').append(option);
+			});
 			//end of on document.ready.function
-			});
 			
 			function darkMode(current){
 			if ($(current).attr("value") == "light"){
-				$(current).attr("value","dark");
-				$('.services-full-width').addClass('bg-dark');
-				$('.services-full-width').addClass('text-light');
+			$(current).attr("value","dark");
+			$('.services-full-width').addClass('bg-dark');
+			$('.services-full-width').addClass('text-light');
 			}else{
-				$(current).attr("value","light");
-				$('.services-full-width').removeClass('bg-dark');
-				$('.services-full-width').removeClass('text-light');
+			$(current).attr("value","light");
+			$('.services-full-width').removeClass('bg-dark');
+			$('.services-full-width').removeClass('text-light');
 			}
 			}
-				
+			
 			function changeLanguage(current){
 			if ($(current).attr("value") == "telugu"){
-				//$(current).attr("value","english");
-				alert("Current language is Telugu.\nEnglish is not yet available.");
+			//$(current).attr("value","english");
+			alert("Current language is Telugu.\nEnglish is not yet available.");
 			}else{
-				//nothing still
+			//nothing still
 			}		
 			}
 			
@@ -175,23 +180,21 @@
 				</div>
 			</div>
 		</div>
-		
 		<!-- Services Full Width Text -->
 		<!-- Call To Action -->
 		<div class="call-to-action container">
 			<div class="row">
 				<div class="call-to-action-text col" style="overflow: visible;">
-					<div class="ca-text">
-						<div class="dropdown">
-							<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Select Book</button>
+					<div class="ca-text input-group">
+						<div class="dropdown input-group-append">
+							<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"></button>
 							<ul id="books" class="dropdown-menu">
 								<!-- chapters here -->
 							</ul>
 						</div>
+						<input type="text" class="form-control" id="book" val="" placeholder="Enter Book" autocomplete="off">
+						<input type="text" class="form-control" id="chapter" placeholder="Enter Chapter" autocomplete="off">
 					</div>
-				</div>
-				<div class="call-to-action-text col">
-					<h3><span id="book" val=""></span> <span id="chapter"></span></h3>
 				</div>
 			</div>
 		</div>
@@ -199,36 +202,34 @@
 			<div class="row">
 				<div class="col">
 					<button type="button" class="btn btn-secondary" value="light" onclick="darkMode(this);">
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-brightness-alt-high" viewBox="0 0 16 16">
-					 <path d="M8 3a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 3zm8 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zm-13.5.5a.5.5 0 0 0 0-1h-2a.5.5 0 0 0 0 1h2zm11.157-6.157a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm-9.9 2.121a.5.5 0 0 0 .707-.707L3.05 5.343a.5.5 0 1 0-.707.707l1.414 1.414zM8 7a4 4 0 0 0-4 4 .5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5 4 4 0 0 0-4-4zm0 1a3 3 0 0 1 2.959 2.5H5.04A3 3 0 0 1 8 8z"></path>
-					</svg>
-             				</button>
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-brightness-alt-high" viewBox="0 0 16 16">
+							<path d="M8 3a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 3zm8 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zm-13.5.5a.5.5 0 0 0 0-1h-2a.5.5 0 0 0 0 1h2zm11.157-6.157a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm-9.9 2.121a.5.5 0 0 0 .707-.707L3.05 5.343a.5.5 0 1 0-.707.707l1.414 1.414zM8 7a4 4 0 0 0-4 4 .5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5 4 4 0 0 0-4-4zm0 1a3 3 0 0 1 2.959 2.5H5.04A3 3 0 0 1 8 8z"></path>
+						</svg>
+					</button>
 				</div>
 				<div class="col">
 					<button type="button" class="btn btn-secondary" value="telugu" onclick="changeLanguage(this);">
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-word" viewBox="0 0 16 16">
-					<path d="M4.879 4.515a.5.5 0 0 1 .606.364l1.036 4.144.997-3.655a.5.5 0 0 1 .964 0l.997 3.655 1.036-4.144a.5.5 0 0 1 .97.242l-1.5 6a.5.5 0 0 1-.967.01L8 7.402l-1.018 3.73a.5.5 0 0 1-.967-.01l-1.5-6a.5.5 0 0 1 .364-.606z"></path>
-					<path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"></path>
-					</svg>
-				      	</button>
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-word" viewBox="0 0 16 16">
+							<path d="M4.879 4.515a.5.5 0 0 1 .606.364l1.036 4.144.997-3.655a.5.5 0 0 1 .964 0l.997 3.655 1.036-4.144a.5.5 0 0 1 .97.242l-1.5 6a.5.5 0 0 1-.967.01L8 7.402l-1.018 3.73a.5.5 0 0 1-.967-.01l-1.5-6a.5.5 0 0 1 .364-.606z"></path>
+							<path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"></path>
+						</svg>
+					</button>
 				</div>
 			</div>
-						
 			<div id = "bible" class="presentation container" style="text-align: left;">
 				<p>Select a book and chapter to start reading.</p>
 			</div>
-		
+			<br><br>
 		</div>
 		<!-- Footer --> 
 		<footer>
 			<div class="container">
 				<div class="row">
-					<div class="social span4">
-						<a class="facebook" href="https://www.facebook.com/shalomworshipcentre.kkd"></a>
-						<a class="youtube" href="https://www.youtube.com/c/ShalomWorshipCentreKakinada"></a>
-					</div>
-					<div class="copyright span4">
-						<p>Copyright 2022 Shalom Worship Centre.</p>
+					<div class="social text-center">
+						<p><a class="facebook" href="https://www.facebook.com/shalomworshipcentre.kkd"></a>
+							Copyright 2022 Shalom Worship Centre.
+							<a class="youtube" href="https://www.youtube.com/c/ShalomWorshipCentreKakinada"></a>
+						</p>
 					</div>
 				</div>
 			</div>
@@ -273,7 +274,7 @@
 				playList;
 			function navig(i){
 				var b = parseInt($('#book').attr('value')),
-				    c = parseInt($('#chapter').text());
+				    c = parseInt($('#chapter').val());
 				
 				if (i == -1){
 					c = c-1;
@@ -310,11 +311,12 @@
 			
 			function getVerse(name, b, c) {
 			$("#books").hide();
-			$("#book").text(name);
+			$("#book").val(name);
 			$("#book").attr("value", b);
-			$("#chapter").text(c);
+			$("#chapter").val(c);
 							
 			$("#bible").html("<p>Loading chapter...</p>");
+			
 			    var url = "https://script.google.com/macros/s/AKfycbzQNNh36F7zrV78ITo8eD8EpPfqgXBz5ze6myX8Vpy0WBHCbKuwUF2dk9qKc04YWNuw/exec?callback=loadData&book=" + b + "&chapter=" + c ,
 			        request = jQuery.ajax({
 			        crossDomain: true,
@@ -346,6 +348,7 @@
 					}
 			    } catch (err) {
 			        console.log(err);
+					
 			    }
 			}
 			
@@ -358,7 +361,7 @@
 			         number = data.match(n);
 			     data = data.replace(number + '. ', '').replace(/౹/, '');
 			 }
-			 var url = "https://script.google.com/macros/s/AKfycbxqzRSjo-AjSDqEN7JwAmjSpNsUDQc6-nlkrFdFPTzBdh6y48Vd0swqjzpwvZlAu8nadg/exec?callback=readOut&data=" + data,
+			 var url = "https://script.google.com/macros/s/AKfycbxb5CZdsRYQXnqlg0HrUMSaoZ38JLO0fnJ-quXNc44OBJD8ANX6Ex8T3VCXBmsYAU7Xdw/exec?callback=readOut&data=" + data,
 			     request = jQuery.ajax({
 			         crossDomain: true,
 			         url: url,
@@ -466,6 +469,36 @@
 				$('#speak svg').html('<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"></path>');			 
 			 }
 			}
+			//autosuggest book names
+			const field = document.getElementById('book');
+			const ac = new Autocomplete(field, {
+				data: [],
+				maximumItems: 5,
+				threshold: 1,
+				onSelectItem: ({label, value}) => {
+					//console.log(label, value);
+					$("#books").hide();
+					$("#book").attr("value", value);
+				}
+			});
+			var myData = [];
+			for (i=1; i < telBook.length; i++){
+			var myArr = {};
+			myArr['label'] = telBook[i][3];
+			myArr['value'] = telBook[i][0];
+			myData.push(myArr);
+			}
+			ac.setData(myData);
+			
+			//chapters field
+			$('#chapter').keypress(function(event){
+			  var keycode = (event.keyCode ? event.keyCode : event.which);
+			  if(keycode == '13'){
+				var b = parseInt($('#book').attr('value')),
+				    c = parseInt($('#chapter').val());
+				getVerse(telBook[b][1], b, c);
+			  }
+			});
 		</script>
 	</body>
 </html>
