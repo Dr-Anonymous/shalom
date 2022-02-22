@@ -97,7 +97,7 @@
 			],
 			 option = '';
 			$(document).ready(function(){
-			let dropdowns = document.querySelectorAll('#books, .dropdown-toggle')
+			let dropdowns = document.querySelectorAll('.myClass')
 			dropdowns.forEach((dd)=>{
 			  dd.addEventListener('click', function (e) {
 			var el = this.nextElementSibling;
@@ -187,7 +187,7 @@
 				<div class="call-to-action-text col" style="overflow: visible;">
 					<div class="ca-text input-group">
 						<div class="dropdown input-group-append">
-							<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"></button>
+							<button class="btn btn-secondary myClass dropdown-toggle" type="button" data-bs-toggle="dropdown"></button>
 							<ul id="books" class="dropdown-menu">
 								<!-- chapters here -->
 							</ul>
