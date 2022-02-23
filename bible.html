@@ -470,35 +470,42 @@
 			 }
 			}
 			//autosuggest book names
-			const field = document.getElementById('book');
-			const ac = new Autocomplete(field, {
-				data: [],
-				maximumItems: 5,
-				threshold: 1,
-				onSelectItem: ({label, value}) => {
-					//console.log(label, value);
-					$("#books").hide();
-					$("#book").attr("value", value);
-				}
-			});
-			var myData = [];
-			for (i=1; i < telBook.length; i++){
-			var myArr = {};
-			myArr['label'] = telBook[i][3];
-			myArr['value'] = telBook[i][0];
-			myData.push(myArr);
-			}
-			ac.setData(myData);
-			
-			//chapters field
-			$('#chapter').keypress(function(event){
-			  var keycode = (event.keyCode ? event.keyCode : event.which);
-			  if(keycode == '13'){
-				var b = parseInt($('#book').attr('value')),
-				    c = parseInt($('#chapter').val());
-				getVerse(telBook[b][1], b, c);
-			  }
-			});
-		</script>
+            const field = document.getElementById("book");
+            const ac = new Autocomplete(field, {
+                data: [],
+                maximumItems: 5,
+                threshold: 1,
+                onSelectItem: ({ label, value }) => {
+                    //console.log(label, value);
+                    $("#books").hide();
+                    $("#book").attr("value", value);
+                    $("#chapter").focus();
+                },
+            });
+            var myData = [];
+            for (i = 1; i < telBook.length; i++) {
+                var myArr = {};
+                myArr["label"] = telBook[i][3];
+                myArr["value"] = telBook[i][0];
+                myData.push(myArr);
+            }
+            ac.setData(myData);
+
+            //chapters field
+            $("#chapter").keypress(function (event) {
+                var keycode = event.keyCode ? event.keyCode : event.which;
+                if (keycode == "13") {
+                    var b = parseInt($("#book").attr("value")),
+                        c = parseInt($("#chapter").val());
+                    if (isNaN(c)) return;
+                    if (c < telBook[b][2] + 1) {
+                        getVerse(telBook[b][1], b, c);
+                        this.blur();
+                    } else {
+                        alert("Only " + telBook[b][2] + " chapters in " + telBook[b][1]);
+                    }
+                }
+            });
+        </script>
 	</body>
 </html>
