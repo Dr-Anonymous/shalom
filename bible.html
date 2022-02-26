@@ -15,19 +15,20 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
-        <link rel="stylesheet" href="/assets/css/font-awesome.css" />
-        <link rel="stylesheet" href="/assets/css/style.css" />
+        <link rel="stylesheet" href="https://shalomworshipcentre.in/assets/css/font-awesome.css" />
+        <link rel="stylesheet" href="https://shalomworshipcentre.in/assets/css/style.css" />
         <!-- Favicon and touch icons -->
-        <link rel="shortcut icon" href="/assets/ico/favicon.ico" />
-        <link rel="manifest" href="/bibleManifest.json" />
+        <link rel="shortcut icon" href="https://shalomworshipcentre.in/assets/ico/favicon.ico" />
+        <link rel="manifest" href="https://shalomworshipcentre.in/bibleManifest.json" />
         <meta name="theme-color" content="#5d5d5d" />
         <!-- javascript -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-        <script src="/assets/js/autocomplete.js"></script>
+        <script src="https://shalomworshipcentre.in/assets/js/autocomplete.js"></script>
         <script>
             //dropdown populate
-            var telBook = [
+			var lang,
+            allBooks = [
                     [0, 0, 0, 0],
                     [1, "ఆదికాండము", 50, "Genesis"],
                     [2, "నిర్గమకాండము", 40, "Exodus"],
@@ -96,7 +97,7 @@
                     [65, "యూదా", 1, "Jude"],
                     [66, "ప్రకటన", 22, "Revelation"],
                 ],
-                option = "";
+            option = "";
             $(document).ready(function () {
                 let dropdowns = document.querySelectorAll(".myClass");
                 dropdowns.forEach((dd) => {
@@ -105,21 +106,12 @@
                         if (el) el.style.display = el.style.display === "block" ? "none" : "block";
                     });
                 });
-
-                for (var i = 1; i < telBook.length; i++) {
-                    if (i == 1) option += '<li>Old Testament</li><li><hr class="dropdown-divider"></li>';
-                    if (i == 40) option += '<li><hr class="dropdown-divider"></li><li>New Testament</li><li><hr class="dropdown-divider"></li>';
-
-                    option += '<li class="dropdown dropend"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" href="javascript:;">' + telBook[i][1] + '</a><ul class="dropdown-menu">';
-                    for (var n = 1; n < telBook[i][2] + 1; n++) {
-                        option += '<li><a class="dropdown-item" href="javascript:;" onclick="getVerse(\'' + telBook[i][1] + "', " + telBook[i][0] + ", " + n + ');">' + n + "</a></li>";
-                    }
-                    option += "</ul></li>";
-                }
-                $("#books").append(option);
+				//default language
+				lang = "te-IN";
+                populateDropDown();
             });
             //end of on document.ready.function
-
+			
             function darkMode(current) {
                 if ($(current).attr("value") == "light") {
                     $(current).attr("value", "dark");
@@ -133,13 +125,47 @@
             }
 
             function changeLanguage(current) {
+			var b = parseInt($("#book").attr("value")),
+                c = parseInt($("#chapter").val()) || 1;
                 if ($(current).attr("value") == "telugu") {
-                    //$(current).attr("value","english");
-                    alert("Current language is Telugu.\nEnglish is not yet available.");
-                } else {
-                    //nothing still
+                    $(current).attr("value","english");
+					$(current).text('తె');
+					lang = "en-US";
+					if (b)
+					getVerse(allBooks[b][3], b, c);
+					populateDropDown();
+                } else if ($(current).attr("value") == "english"){
+                    $(current).attr("value","telugu");
+					$(current).text('En');
+					lang = "te-IN";
+					if (b)
+					getVerse(allBooks[b][1], b, c);
+					populateDropDown();
                 }
             }
+			
+			function populateDropDown(){
+			$("#books").empty();
+			option = '';
+			for (var i = 1; i < allBooks.length; i++) {
+                    if (i == 1) option += '<li>Old Testament</li><li><hr class="dropdown-divider"></li>';
+                    if (i == 40) option += '<li><hr class="dropdown-divider"></li><li>New Testament</li><li><hr class="dropdown-divider"></li>';
+
+                    if (lang == "te-IN")
+					option += '<li class="dropdown dropend"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" href="javascript:;">' + allBooks[i][1] + '</a><ul class="dropdown-menu">';
+					else
+					option += '<li class="dropdown dropend"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" href="javascript:;">' + allBooks[i][3] + '</a><ul class="dropdown-menu">';
+                    
+					for (var n = 1; n < allBooks[i][2] + 1; n++) {
+					if (lang == "te-IN")
+					option += '<li><a class="dropdown-item" href="javascript:;" onclick="getVerse(\'' + allBooks[i][1] + "', " + allBooks[i][0] + ", " + n + ');">' + n + "</a></li>";
+                    else
+					option += '<li><a class="dropdown-item" href="javascript:;" onclick="getVerse(\'' + allBooks[i][3] + "', " + allBooks[i][0] + ", " + n + ');">' + n + "</a></li>";
+					}
+                    option += "</ul></li>";
+                }
+            $("#books").append(option);
+			}
         </script>
     </head>
     <body>
@@ -233,12 +259,7 @@
                 </div>
                 <div class="col">
                     <button type="button" class="btn btn-secondary" value="telugu" onclick="changeLanguage(this);">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-word" viewBox="0 0 16 16">
-                            <path
-                                d="M4.879 4.515a.5.5 0 0 1 .606.364l1.036 4.144.997-3.655a.5.5 0 0 1 .964 0l.997 3.655 1.036-4.144a.5.5 0 0 1 .97.242l-1.5 6a.5.5 0 0 1-.967.01L8 7.402l-1.018 3.73a.5.5 0 0 1-.967-.01l-1.5-6a.5.5 0 0 1 .364-.606z"
-                            ></path>
-                            <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"></path>
-                        </svg>
+                        En
                     </button>
                 </div>
             </div>
@@ -297,7 +318,7 @@
             </div>
         </div>
         <!-- Javascript -->
-        <script src="/assets/js/jquery.quicksand.js"></script>
+        <script src="https://shalomworshipcentre.in/assets/js/jquery.quicksand.js"></script>
         <script>
             var firstTime = true,
                 playing = false,
@@ -330,15 +351,19 @@
                     $("#next").addClass("d-none");
                 } else if (b > 1 && c == 0) {
                     b -= 1;
-                    c = telBook[b][2];
-                } else if (c > telBook[b][2]) {
+                    c = allBooks[b][2];
+                } else if (c > allBooks[b][2]) {
                     c = 1;
                     b += 1;
                 } /*else {	
 					$("#prev").removeClass("d-none");
 					$("#next").removeClass('d-none');
 				}*/
-                getVerse(telBook[b][1], b, c);
+				if (lang == "te-IN")
+				getVerse(allBooks[b][1], b, c);
+				else if (lang == "en-US")
+				getVerse(allBooks[b][3], b, c);
+				
             }
 
             function getVerse(name, b, c) {
@@ -349,7 +374,7 @@
 
                 $("#bible").html("<p>Loading chapter...</p>");
 
-                var url = "https://script.google.com/macros/s/AKfycbzQNNh36F7zrV78ITo8eD8EpPfqgXBz5ze6myX8Vpy0WBHCbKuwUF2dk9qKc04YWNuw/exec?callback=loadData&book=" + b + "&chapter=" + c,
+                var url = "https://script.google.com/macros/s/AKfycbymCb73-vvnk6pufQ31MaL-G8MsQ6DeCygKXRRuSFA9OfbNa_WbY8u44YzzJ2uH4UOO/exec?callback=loadData&lang=" +lang+ "&book=" + b + "&chapter=" + c,
                     request = jQuery.ajax({
                         crossDomain: true,
                         url: url,
@@ -393,7 +418,7 @@
                         number = data.match(n);
                     data = data.replace(number + ". ", "").replace(/౹/, "");
                 }
-                var url = "https://script.google.com/macros/s/AKfycbxb5CZdsRYQXnqlg0HrUMSaoZ38JLO0fnJ-quXNc44OBJD8ANX6Ex8T3VCXBmsYAU7Xdw/exec?callback=readOut&data=" + data,
+                var url = "https://script.google.com/macros/s/AKfycbz956_YjDp4D_zbVZhgUDcwAOYz9Upu0oUQcg_-4AOjQQIvK3I94fSMfY-rDg6bYclZFA/exec?callback=readOut&lang="+ lang +"&data=" + data,
                     request = jQuery.ajax({
                         crossDomain: true,
                         url: url,
@@ -526,10 +551,10 @@
                 },
             });
             var myData = [];
-            for (i = 1; i < telBook.length; i++) {
+            for (i = 1; i < allBooks.length; i++) {
                 var myArr = {};
-                myArr["label"] = telBook[i][3];
-                myArr["value"] = telBook[i][0];
+                myArr["label"] = allBooks[i][3];
+                myArr["value"] = allBooks[i][0];
                 myData.push(myArr);
             }
             ac.setData(myData);
@@ -541,11 +566,14 @@
                     var b = parseInt($("#book").attr("value")),
                         c = parseInt($("#chapter").val()) || 1;
                     if (isNaN(c)) return;
-                    if (c < telBook[b][2] + 1) {
-                        getVerse(telBook[b][1], b, c);
+                    if (c < allBooks[b][2] + 1) {
+						if (lang == "te-IN")
+						getVerse(allBooks[b][1], b, c);
+						else if (lang == "en-US")
+						getVerse(allBooks[b][3], b, c);
                         this.blur();
                     } else {
-                        alert("Only " + telBook[b][2] + " chapters in " + telBook[b][1]);
+                        alert("Only " + allBooks[b][2] + " chapters in " + allBooks[b][1]);
                     }
                 }
             });
