@@ -374,7 +374,7 @@
 
                 $("#bible").html("<p>Loading chapter...</p>");
 
-                var url = "https://script.google.com/macros/s/AKfycbymCb73-vvnk6pufQ31MaL-G8MsQ6DeCygKXRRuSFA9OfbNa_WbY8u44YzzJ2uH4UOO/exec?callback=loadData&lang=" +lang+ "&book=" + b + "&chapter=" + c,
+                var url = "https://script.google.com/macros/s/AKfycbwGiG2ja3FzEIQVOnqyZCsJzZl39fR2h3Pz9bepGSNMhfI0wHT1YOmsLAQmm_OmSf5K/exec?callback=loadData&lang=" +lang+ "&book=" + b + "&chapter=" + c,
                     request = jQuery.ajax({
                         crossDomain: true,
                         url: url,
@@ -418,7 +418,7 @@
                         number = data.match(n);
                     data = data.replace(number + ". ", "").replace(/౹/, "");
                 }
-                var url = "https://script.google.com/macros/s/AKfycbz956_YjDp4D_zbVZhgUDcwAOYz9Upu0oUQcg_-4AOjQQIvK3I94fSMfY-rDg6bYclZFA/exec?callback=readOut&lang="+ lang +"&data=" + data,
+                var url = "https://script.google.com/macros/s/AKfycbyPDIHvFeaQ0NHvbBuHvXWIOMtjJ9VZqq0sbm94p-hudjUIn2eBNcIYU0Nr9N4Ad157QQ/exec?callback=readOut&lang="+ lang +"&data=" + data,
                     request = jQuery.ajax({
                         crossDomain: true,
                         url: url,
