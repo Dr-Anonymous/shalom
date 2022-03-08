@@ -3,601 +3,658 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>Bible Online</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="keywords" content="ministry,prayer,christianity,church" />
-        <meta name="description" content="Free Telugu-English Online Bible" />
-        <meta name="author" content="Shalom Worship Centre" />
-        <!-- CSS -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
-        <link rel="stylesheet" href="https://shalomworshipcentre.in/assets/css/font-awesome.css" />
-        <link rel="stylesheet" href="https://shalomworshipcentre.in/assets/css/style.css" />
-        <!-- Favicon and touch icons -->
-        <link rel="shortcut icon" href="https://shalomworshipcentre.in/assets/ico/favicon.ico" />
-        <link rel="manifest" href="https://shalomworshipcentre.in/bibleManifest.json" />
-        <meta name="theme-color" content="#5d5d5d" />
-        <!-- javascript -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-        <script src="https://shalomworshipcentre.in/assets/js/autocomplete.js"></script>
-        <script>
-            //dropdown populate
+	<head>
+		<meta charset="utf-8" />
+		<title>Bible Online</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="keywords" content="ministry,prayer,christianity,church" />
+		<meta name="description" content="Free Telugu-English Online Bible" />
+		<meta name="author" content="Shalom Worship Centre" />
+		<!-- CSS -->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster" />
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+		<link rel="stylesheet" href="https://shalomworshipcentre.in/assets/css/font-awesome.css" />
+		<link rel="stylesheet" href="https://shalomworshipcentre.in/assets/css/style.css" />
+		<!-- Favicon and touch icons -->
+		<link rel="shortcut icon" href="https://shalomworshipcentre.in/assets/ico/favicon.ico" />
+		<link rel="manifest" href="https://shalomworshipcentre.in/bibleManifest.json" />
+		<meta name="theme-color" content="#5d5d5d" />
+		<!-- javascript -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+		<script src="https://shalomworshipcentre.in/assets/js/autocomplete.js"></script>
+		<script>
+			//dropdown populate
 			var lang,
-            allBooks = [
-                    [0, 0, 0, 0],
-                    [1, "ఆదికాండము", 50, "Genesis"],
-                    [2, "నిర్గమకాండము", 40, "Exodus"],
-                    [3, "లేవీయకాండము", 27, "Leviticus"],
-                    [4, "సంఖ్యాకాండము", 36, "Numbers"],
-                    [5, "ద్వితీయోపదేశకాండము", 34, "Deuteronomy"],
-                    [6, "యెహోషువ", 24, "Joshua"],
-                    [7, "న్యాయాధిపతులు", 21, "Judges"],
-                    [8, "రూతు", 4, "Ruth"],
-                    [9, "1 సమూయేలు", 31, "1 Samuel"],
-                    [10, "2 సమూయేలు", 24, "2 Samuel"],
-                    [11, "1 రాజులు", 22, "1 Kings"],
-                    [12, "2 రాజులు", 25, "2 Kings"],
-                    [13, "1 దినవృత్తాంతములు", 29, "1 Chronicles"],
-                    [14, "2 దినవృత్తాంతములు", 36, "2 Chronicles"],
-                    [15, "ఎజ్రా", 10, "Ezra"],
-                    [16, "నెహెమ్యా", 13, "Nehemiah"],
-                    [17, "ఎస్తేరు", 10, "Esther"],
-                    [18, "యోబు", 42, "Job"],
-                    [19, "కీర్తనలు", 150, "Psalm"],
-                    [20, "సామెతలు", 31, "Proverbs"],
-                    [21, "ప్రసంగి", 12, "Ecclesiastes"],
-                    [22, "పరమగీతము", 8, "Song of Solomon"],
-                    [23, "యెషయా", 66, "Isaiah"],
-                    [24, "యిర్మీయా", 52, "Jeremiah"],
-                    [25, "విలాపవాక్యములు", 5, "Lamentations"],
-                    [26, "యెహెజ్కేలు", 48, "Ezekiel"],
-                    [27, "దానియేలు", 12, "Daniel"],
-                    [28, "హోషేయ", 14, "Hosea"],
-                    [29, "యోవేలు", 3, "Joel"],
-                    [30, "ఆమోసు", 9, "Amos"],
-                    [31, "ఓబద్యా", 1, "Obadiah"],
-                    [32, "యోనా", 4, "Jonah"],
-                    [33, "మీకా", 7, "Micah"],
-                    [34, "నహూము", 3, "Nahum"],
-                    [35, "హబక్కూకు", 3, "Habakkuk"],
-                    [36, "జెఫన్యా", 3, "Zephaniah"],
-                    [37, "హగ్గయి", 2, "Haggai"],
-                    [38, "జెకర్యా", 14, "Zechariah"],
-                    [39, "మలాకీ", 4, "Malachi"],
-                    [40, "మత్తయి", 28, "Matthew"],
-                    [41, "మార్కు", 16, "Mark"],
-                    [42, "లూకా", 24, "Luke"],
-                    [43, "యోహాను", 21, "John"],
-                    [44, "అపొస్తలుల కార్యములు", 28, "Acts"],
-                    [45, "రోమా", 16, "Romans"],
-                    [46, "1 కొరింథీయులకు", 16, "1 Corinthians"],
-                    [47, "2 కొరింథీయులకు", 13, "2 Corinthians"],
-                    [48, "గలతీయులకు", 6, "Galatians"],
-                    [49, "ఎఫెసీయులకు", 6, "Ephesians"],
-                    [50, "ఫిలిప్పీయులకు", 4, "Philippians"],
-                    [51, "కొలొస్సయులకు", 4, "Colossians"],
-                    [52, "1 థెస్సలొనీకయులకు", 5, "1 Thessalonians"],
-                    [53, "2 థెస్సలొనీకయులకు", 3, "2 Thessalonians"],
-                    [54, "1 తిమోతికి", 6, "1 Timothy"],
-                    [55, "2 తిమోతికి", 4, "2 Timothy"],
-                    [56, "తీతుకు", 3, "Titus"],
-                    [57, "ఫిలేమోనుకు", 1, "Philemon"],
-                    [58, "హెబ్రీయులకు", 13, "Hebrews"],
-                    [59, "యాకోబు", 5, "James"],
-                    [60, "1 పేతురు", 5, "1 Peter"],
-                    [61, "2 పేతురు", 3, "2 Peter"],
-                    [62, "1 యోహాను", 5, "1 John"],
-                    [63, "2 యోహాను", 1, "2 John"],
-                    [64, "3 యోహాను", 1, "3 John"],
-                    [65, "యూదా", 1, "Jude"],
-                    [66, "ప్రకటన", 22, "Revelation"],
-                ],
-            option = "";
-            $(document).ready(function () {
-                let dropdowns = document.querySelectorAll(".myClass");
-                dropdowns.forEach((dd) => {
-                    dd.addEventListener("click", function (e) {
-                        var el = this.nextElementSibling;
-                        if (el) el.style.display = el.style.display === "block" ? "none" : "block";
-                    });
-                });
-				//default language
-				lang = "te-IN";
-                populateDropDown();
-            });
-            //end of on document.ready.function
+			allBooks = [
+			        [0, 0, 0, 0],
+			        [1, "ఆదికాండము", 50, "Genesis"],
+			        [2, "నిర్గమకాండము", 40, "Exodus"],
+			        [3, "లేవీయకాండము", 27, "Leviticus"],
+			        [4, "సంఖ్యాకాండము", 36, "Numbers"],
+			        [5, "ద్వితీయోపదేశకాండము", 34, "Deuteronomy"],
+			        [6, "యెహోషువ", 24, "Joshua"],
+			        [7, "న్యాయాధిపతులు", 21, "Judges"],
+			        [8, "రూతు", 4, "Ruth"],
+			        [9, "1 సమూయేలు", 31, "1 Samuel"],
+			        [10, "2 సమూయేలు", 24, "2 Samuel"],
+			        [11, "1 రాజులు", 22, "1 Kings"],
+			        [12, "2 రాజులు", 25, "2 Kings"],
+			        [13, "1 దినవృత్తాంతములు", 29, "1 Chronicles"],
+			        [14, "2 దినవృత్తాంతములు", 36, "2 Chronicles"],
+			        [15, "ఎజ్రా", 10, "Ezra"],
+			        [16, "నెహెమ్యా", 13, "Nehemiah"],
+			        [17, "ఎస్తేరు", 10, "Esther"],
+			        [18, "యోబు", 42, "Job"],
+			        [19, "కీర్తనలు", 150, "Psalm"],
+			        [20, "సామెతలు", 31, "Proverbs"],
+			        [21, "ప్రసంగి", 12, "Ecclesiastes"],
+			        [22, "పరమగీతము", 8, "Song of Solomon"],
+			        [23, "యెషయా", 66, "Isaiah"],
+			        [24, "యిర్మీయా", 52, "Jeremiah"],
+			        [25, "విలాపవాక్యములు", 5, "Lamentations"],
+			        [26, "యెహెజ్కేలు", 48, "Ezekiel"],
+			        [27, "దానియేలు", 12, "Daniel"],
+			        [28, "హోషేయ", 14, "Hosea"],
+			        [29, "యోవేలు", 3, "Joel"],
+			        [30, "ఆమోసు", 9, "Amos"],
+			        [31, "ఓబద్యా", 1, "Obadiah"],
+			        [32, "యోనా", 4, "Jonah"],
+			        [33, "మీకా", 7, "Micah"],
+			        [34, "నహూము", 3, "Nahum"],
+			        [35, "హబక్కూకు", 3, "Habakkuk"],
+			        [36, "జెఫన్యా", 3, "Zephaniah"],
+			        [37, "హగ్గయి", 2, "Haggai"],
+			        [38, "జెకర్యా", 14, "Zechariah"],
+			        [39, "మలాకీ", 4, "Malachi"],
+			        [40, "మత్తయి", 28, "Matthew"],
+			        [41, "మార్కు", 16, "Mark"],
+			        [42, "లూకా", 24, "Luke"],
+			        [43, "యోహాను", 21, "John"],
+			        [44, "అపొస్తలుల కార్యములు", 28, "Acts"],
+			        [45, "రోమా", 16, "Romans"],
+			        [46, "1 కొరింథీయులకు", 16, "1 Corinthians"],
+			        [47, "2 కొరింథీయులకు", 13, "2 Corinthians"],
+			        [48, "గలతీయులకు", 6, "Galatians"],
+			        [49, "ఎఫెసీయులకు", 6, "Ephesians"],
+			        [50, "ఫిలిప్పీయులకు", 4, "Philippians"],
+			        [51, "కొలొస్సయులకు", 4, "Colossians"],
+			        [52, "1 థెస్సలొనీకయులకు", 5, "1 Thessalonians"],
+			        [53, "2 థెస్సలొనీకయులకు", 3, "2 Thessalonians"],
+			        [54, "1 తిమోతికి", 6, "1 Timothy"],
+			        [55, "2 తిమోతికి", 4, "2 Timothy"],
+			        [56, "తీతుకు", 3, "Titus"],
+			        [57, "ఫిలేమోనుకు", 1, "Philemon"],
+			        [58, "హెబ్రీయులకు", 13, "Hebrews"],
+			        [59, "యాకోబు", 5, "James"],
+			        [60, "1 పేతురు", 5, "1 Peter"],
+			        [61, "2 పేతురు", 3, "2 Peter"],
+			        [62, "1 యోహాను", 5, "1 John"],
+			        [63, "2 యోహాను", 1, "2 John"],
+			        [64, "3 యోహాను", 1, "3 John"],
+			        [65, "యూదా", 1, "Jude"],
+			        [66, "ప్రకటన", 22, "Revelation"],
+			    ],
+			option = "";
+			$(document).ready(function () {
+			    let dropdowns = document.querySelectorAll(".myClass");
+			    dropdowns.forEach((dd) => {
+			        dd.addEventListener("click", function (e) {
+			            var el = this.nextElementSibling;
+			            if (el) el.style.display = el.style.display === "block" ? "none" : "block";
+			        });
+			    });
+			//default language
+			lang = "te-IN";
+			    populateDropDown();
+			});
+			//end of on document.ready.function
 			
-            function darkMode(current) {
-                if ($(current).attr("value") == "light") {
-                    $(current).attr("value", "dark");
-                    $(".services-full-width").addClass("bg-dark");
-                    $(".services-full-width").addClass("text-light");
-                } else {
-                    $(current).attr("value", "light");
-                    $(".services-full-width").removeClass("bg-dark");
-                    $(".services-full-width").removeClass("text-light");
-                }
-            }
-
-            function changeLanguage(current) {
+			function theme() {
+			    if ($('#theme').attr("value") == "light") {
+			        $('#theme').attr("value", "dark");
+			        $(".services-full-width").addClass("bg-dark");
+			        $(".services-full-width").addClass("text-light");
+					setCookie("theme", "dark", 365);
+			    } else {
+			        $('#theme').attr("value", "light");
+			        $(".services-full-width").removeClass("bg-dark");
+			        $(".services-full-width").removeClass("text-light");
+					document.cookie = "theme=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+			    }
+			}
+			
+			function changeLanguage() {
 			var b = parseInt($("#book").attr("value")),
-                c = parseInt($("#chapter").val()) || 1;
-                if ($(current).attr("value") == "telugu") {
-                    $(current).attr("value","english");
-					$(current).text('తె');
-					lang = "en-US";
-					if (b)
-					getVerse(allBooks[b][3], b, c);
-					populateDropDown();
-                } else if ($(current).attr("value") == "english"){
-                    $(current).attr("value","telugu");
-					$(current).text('En');
-					lang = "te-IN";
-					if (b)
-					getVerse(allBooks[b][1], b, c);
-					populateDropDown();
-                }
-            }
+			    c = parseInt($("#chapter").val()) || 1;
+			    if ($('#lang').attr("value") == "telugu") {
+			        $('#lang').attr("value","english");
+			$('#lang').text('తె');
+			lang = "en-US";
+			if (b)
+			getVerse(b, c);
+			populateDropDown();
+			setCookie("lang", "en-US", 365);
+			    } else if ($('#lang').attr("value") == "english"){
+			        $('#lang').attr("value","telugu");
+			$('#lang').text('En');
+			lang = "te-IN";
+			if (b)
+			getVerse(b, c);
+			populateDropDown();
+			document.cookie = "lang=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+			    }
+			}
 			
 			function populateDropDown(){
 			$("#books").empty();
 			option = '';
 			for (var i = 1; i < allBooks.length; i++) {
-                    if (i == 1) option += '<li>Old Testament</li><li><hr class="dropdown-divider"></li>';
-                    if (i == 40) option += '<li><hr class="dropdown-divider"></li><li>New Testament</li><li><hr class="dropdown-divider"></li>';
-
-                    if (lang == "te-IN")
-					option += '<li class="dropdown dropend"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" href="javascript:;">' + allBooks[i][1] + '</a><ul class="dropdown-menu">';
-					else
-					option += '<li class="dropdown dropend"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" href="javascript:;">' + allBooks[i][3] + '</a><ul class="dropdown-menu">';
-                    
-					for (var n = 1; n < allBooks[i][2] + 1; n++) {
-					if (lang == "te-IN")
-					option += '<li><a class="dropdown-item" href="javascript:;" onclick="getVerse(\'' + allBooks[i][1] + "', " + allBooks[i][0] + ", " + n + ');">' + n + "</a></li>";
-                    else
-					option += '<li><a class="dropdown-item" href="javascript:;" onclick="getVerse(\'' + allBooks[i][3] + "', " + allBooks[i][0] + ", " + n + ');">' + n + "</a></li>";
-					}
-                    option += "</ul></li>";
-                }
-            $("#books").append(option);
+			        if (i == 1) option += '<li>Old Testament</li><li><hr class="dropdown-divider"></li>';
+			        if (i == 40) option += '<li><hr class="dropdown-divider"></li><li>New Testament</li><li><hr class="dropdown-divider"></li>';
+			
+			        if (lang == "te-IN")
+			option += '<li class="dropdown dropend"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" href="javascript:;">' + allBooks[i][1] + '</a><ul class="dropdown-menu">';
+			else
+			option += '<li class="dropdown dropend"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" href="javascript:;">' + allBooks[i][3] + '</a><ul class="dropdown-menu">';
+			        
+			for (var n = 1; n < allBooks[i][2] + 1; n++) {
+			option += '<li><a class="dropdown-item" href="javascript:;" onclick="getVerse(' + allBooks[i][0] + ", " + n + ');">' + n + "</a></li>";
 			}
-        </script>
-    </head>
-    <body>
-        <!-- Header -->
-        <div class="container">
-            <div class="header row">
-                <div class="span12">
-                    <div class="navbar">
-                        <div class="navbar-inner">
-                            <h1><a class="brand" href="/">Shalom Worship Centre</a></h1>
-                            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
-                            <div class="nav-collapse collapse">
-                                <ul class="nav pull-right">
-                                    <li>
-                                        <a href="/">
-                                            <i class="icon-home"></i><br />
-                                            Home
-                                        </a>
-                                    </li>
-                                    <li class="current-page">
-                                        <a href="/Our Ministries.html">
-                                            <i class="icon-camera"></i><br />
-                                            Our Ministries
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/testimonies/">
-                                            <i class="icon-user"></i><br />
-                                            Testimonies
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/messages">
-                                            <i class="icon-tasks"></i><br />
-                                            Messages
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/contact.html">
-                                            <i class="icon-envelope-alt"></i><br />
-                                            Contact
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Page Title -->
-        <div class="page-title">
-            <div class="container">
-                <div class="row">
-                    <div class="span12">
-                        <i class="icon-book page-title-icon"></i>
-                        <h2>Bible</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Services Full Width Text -->
-        <!-- Call To Action -->
-        <div class="call-to-action container">
-            <div class="row">
-                <div class="call-to-action-text col" style="overflow: visible;">
-                    <div class="ca-text input-group">
-                        <div class="dropdown input-group-append">
-                            <button class="btn btn-outline-secondary myClass dropdown-toggle" type="button" data-bs-toggle="dropdown"></button>
-                            <ul id="books" class="dropdown-menu">
-                                <!-- chapters here -->
-                            </ul>
-                        </div>
-                        <input type="text" class="form-control" id="book" val="" placeholder="Enter Book" autocomplete="off" />
-                        <input type="text" class="form-control" id="chapter" placeholder="Chapter" autocomplete="off" /> 
+			        option += "</ul></li>";
+			    }
+			$("#books").append(option);
+			}
+		</script>
+	</head>
+	<body>
+		<!-- Header -->
+		<div class="container">
+			<div class="header row">
+				<div class="span12">
+					<div class="navbar">
+						<div class="navbar-inner">
+							<h1><a class="brand" href="/">Shalom Worship Centre</a></h1>
+							<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
+							<div class="nav-collapse collapse">
+								<ul class="nav pull-right">
+									<li>
+										<a href="/">
+										<i class="icon-home"></i><br />
+										Home
+										</a>
+									</li>
+									<li class="current-page">
+										<a href="/Our Ministries.html">
+										<i class="icon-camera"></i><br />
+										Our Ministries
+										</a>
+									</li>
+									<li>
+										<a href="/testimonies/">
+										<i class="icon-user"></i><br />
+										Testimonies
+										</a>
+									</li>
+									<li>
+										<a href="/messages">
+										<i class="icon-tasks"></i><br />
+										Messages
+										</a>
+									</li>
+									<li>
+										<a href="/contact.html">
+										<i class="icon-envelope-alt"></i><br />
+										Contact
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Page Title -->
+		<div class="page-title">
+			<div class="container">
+				<div class="row">
+					<div class="span12">
+						<i class="icon-book page-title-icon"></i>
+						<h2>Bible</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Services Full Width Text -->
+		<!-- Call To Action -->
+		<div class="call-to-action container">
+			<div class="row">
+				<div class="call-to-action-text col" style="overflow: visible;">
+					<div class="ca-text input-group">
+						<div class="dropdown input-group-append">
+							<button class="btn btn-outline-secondary myClass dropdown-toggle" type="button" data-bs-toggle="dropdown"></button>
+							<ul id="books" class="dropdown-menu">
+								<!-- chapters here -->
+							</ul>
+						</div>
+						<input type="text" class="form-control" id="book" val="" placeholder="Enter Book" autocomplete="off" />
+						<input type="text" class="form-control" id="chapter" placeholder="Chapter" autocomplete="off" /> 
 						<input type="text" class="form-control d-none" id="verse" placeholder="Verse" autocomplete="off" />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="services-full-width container">
-            <div id="bible" class="presentation container" style="text-align: left;">
-                <p>Select a book and chapter to start reading.</p>
-            </div>
-            <br />
-            <br />
-        </div>
-        <!-- Footer -->
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="social text-center">
-                        <p>
-                            <a class="facebook" href="https://www.facebook.com/shalomworshipcentre.kkd"></a>
-                            Copyright 2022 Shalom Worship Centre.
-                            <a class="youtube" href="https://www.youtube.com/c/ShalomWorshipCentreKakinada"></a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- controls -->
-        <div class="container fixed-bottom">
-            <div class="row">
-                <div class="col text-start">
-                    <button id="prev" type="button" class="btn btn-outline-secondary d-none" onclick="navig(-1);">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
-                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"></path>
-                        </svg>
-                    </button>
-                </div>
-				
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="services-full-width container">
+			<div id="bible" class="presentation container" style="text-align: left;">
+				<p>Select a book and chapter to start reading.</p>
+			</div>
+			<br />
+			<br />
+		</div>
+		<!-- Footer -->
+		<footer>
+			<div class="container">
+				<div class="row">
+					<div class="social text-center">
+						<p>
+							<a class="facebook" href="https://www.facebook.com/shalomworshipcentre.kkd"></a>
+							Copyright 2022 Shalom Worship Centre.
+							<a class="youtube" href="https://www.youtube.com/c/ShalomWorshipCentreKakinada"></a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<!-- controls -->
+		<div class="container fixed-bottom">
+			<div class="row">
+				<div class="col text-start">
+					<button id="prev" type="button" class="btn btn-outline-secondary d-none" onclick="navig(-1);">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+							<path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"></path>
+						</svg>
+					</button>
+				</div>
 				<div class="col">
-                    <button type="button" class="btn btn-outline-secondary" value="light" onclick="darkMode(this);">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-brightness-alt-high" viewBox="0 0 16 16">
-                            <path
-                                d="M8 3a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 3zm8 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zm-13.5.5a.5.5 0 0 0 0-1h-2a.5.5 0 0 0 0 1h2zm11.157-6.157a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm-9.9 2.121a.5.5 0 0 0 .707-.707L3.05 5.343a.5.5 0 1 0-.707.707l1.414 1.414zM8 7a4 4 0 0 0-4 4 .5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5 4 4 0 0 0-4-4zm0 1a3 3 0 0 1 2.959 2.5H5.04A3 3 0 0 1 8 8z"
-                            ></path>
-                        </svg>
-                    </button>
-                </div>
-                
-                <div class="col text-center">
-                    <button id="speak" type="button" class="btn btn-outline-secondary d-none" onclick="playThis(currentP);">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
-                            <path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"></path>
-                        </svg>
-                    </button>
-                    <audio id="audio">
-                        <source
-                            id="source"
-                            src="data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
-                            type="audio/mpeg"
-                        />
-                    </audio>
-                </div>
-				
+					<button type="button" id="theme" class="btn btn-outline-secondary" value="light" onclick="theme();">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-brightness-alt-high" viewBox="0 0 16 16">
+							<path
+								d="M8 3a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 3zm8 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zm-13.5.5a.5.5 0 0 0 0-1h-2a.5.5 0 0 0 0 1h2zm11.157-6.157a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm-9.9 2.121a.5.5 0 0 0 .707-.707L3.05 5.343a.5.5 0 1 0-.707.707l1.414 1.414zM8 7a4 4 0 0 0-4 4 .5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5 4 4 0 0 0-4-4zm0 1a3 3 0 0 1 2.959 2.5H5.04A3 3 0 0 1 8 8z"
+								></path>
+						</svg>
+					</button>
+				</div>
+				<div class="col text-center">
+					<button id="speak" type="button" class="btn btn-outline-secondary d-none" onclick="playThis(currentP);">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16">
+							<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+							<path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"></path>
+						</svg>
+					</button>
+					<audio id="audio">
+						<source
+							id="source"
+							src="data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
+							type="audio/mpeg"
+							/>
+					</audio>
+				</div>
 				<div class="col">
-                    <button type="button" class="btn btn-outline-secondary" value="telugu" onclick="changeLanguage(this);">
-                        En
-                    </button>
-                </div>
-				
-                <div class="col text-end">
-                    <button id="next" type="button" class="btn btn-outline-secondary d-none" onclick="navig(1);">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
-                            <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <!-- Javascript -->
-        <script src="https://shalomworshipcentre.in/assets/js/jquery.quicksand.js"></script>
-        <script>
-            var firstTime = true,
-                playing = false,
-                firstLine = true,
-                currentP,
-                playList;
-            function navig(i) {
-                var b = parseInt($("#book").attr("value")),
-                    c = parseInt($("#chapter").val());
+					<button type="button" id= "lang" class="btn btn-outline-secondary" value="telugu" onclick="changeLanguage();">
+					En
+					</button>
+				</div>
+				<div class="col text-end">
+					<button id="next" type="button" class="btn btn-outline-secondary d-none" onclick="navig(1);">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+							<path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
+						</svg>
+					</button>
+				</div>
+			</div>
+		</div>
+		<!-- Javascript -->
+		<script src="https://shalomworshipcentre.in/assets/js/jquery.quicksand.js"></script>
+		<script>
+var firstTime = true,
+	playing = false,
+	firstLine = true,
+	currentP,
+	playList;
 
-                if (i == -1) {
-                    c = c - 1;
-                } else if (i == 1) {
-                    c = c + 1;
-                } else {
-                    $("#prev").removeClass("d-none");
-                    $("#next").removeClass("d-none");
+function navig(i) {
+	var b = parseInt($("#book").attr("value")),
+		c = parseInt($("#chapter").val());
 
-                    if (b == 1 && c == 1) {
-                        $("#prev").addClass("d-none");
-                    } else if (b == 66 && c == 22) {
-                        $("#next").addClass("d-none");
-                    }
-                    return;
-                }
+	if (i == -1) {
+		c = c - 1;
+	} else if (i == 1) {
+		c = c + 1;
+	} else {
+		$("#prev").removeClass("d-none");
+		$("#next").removeClass("d-none");
 
-                if (b == 1 && c == 1) {
-                    $("#prev").addClass("d-none");
-                } else if (b == 66 && c == 22) {
-                    $("#next").addClass("d-none");
-                } else if (b > 1 && c == 0) {
-                    b -= 1;
-                    c = allBooks[b][2];
-                } else if (c > allBooks[b][2]) {
-                    c = 1;
-                    b += 1;
-                } /*else {	
-					$("#prev").removeClass("d-none");
-					$("#next").removeClass('d-none');
-				}*/
-				if (lang == "te-IN")
-				getVerse(allBooks[b][1], b, c);
-				else if (lang == "en-US")
-				getVerse(allBooks[b][3], b, c);
-				
-            }
+		if (b == 1 && c == 1) {
+			$("#prev").addClass("d-none");
+		} else if (b == 66 && c == 22) {
+			$("#next").addClass("d-none");
+		}
+		return;
+	}
 
-            function getVerse(name, b, c) {
-                $("#books").hide();
-                $("#book").val(name);
-                $("#book").attr("value", b);
-                $("#chapter").val(c);
+	if (b == 1 && c == 1) {
+		$("#prev").addClass("d-none");
+	} else if (b == 66 && c == 22) {
+		$("#next").addClass("d-none");
+	} else if (b > 1 && c == 0) {
+		b -= 1;
+		c = allBooks[b][2];
+	} else if (c > allBooks[b][2]) {
+		c = 1;
+		b += 1;
+	}
+	/*else {	
+			$("#prev").removeClass("d-none");
+			$("#next").removeClass('d-none');
+			}*/
+	getVerse(b, c);
+}
 
-                $("#bible").html("<p>Loading chapter...</p>");
+function getVerse(b, c) {
+	$("#books").hide();
+	if (lang == "te-IN")
+		$("#book").val(allBooks[b][1]);
+	else if (lang == "en-US")
+		$("#book").val(allBooks[b][3]);
 
-                var url = "https://script.google.com/macros/s/AKfycbwfv7EzQRubosD__g3Em87B5L0XVcvvnEwhDbK2qacaTXtcC9ks30Yn6EZTXUmBSxc_/exec?callback=loadData&lang=" +lang+ "&book=" + b + "&chapter=" + c,
-                    request = jQuery.ajax({
-                        crossDomain: true,
-                        url: url,
-                        method: "GET",
-                        dataType: "jsonp",
-                    });
+	$("#book").attr("value", b);
+	$("#chapter").val(c);
 
-                if (firstTime) {
-                    $("#audio")[0].play();
-                    firstTime = false;
-                    $("#speak").removeClass("d-none");
-                }
-                firstLine = true;
-            }
+	$("#bible").html("<p>Loading chapter...</p>");
 
-            function loadData(e) {
-                $("#bible").empty();
-                try {
-                    for (var i = 0; i < e.length; i++) {
-                        if (e[i][1].substring(0, 1) == "[") {
-                            $("#bible").append("<p>" + e[i][1] + "</p>");
-                        } else {
-                            $("#bible").append("<p>" + e[i][0] + ". " + e[i][1] + "</p>");
-                        }
-                    }
-					navig(0);
-					currentP = $('#bible p').first();
-                    //enableClick();
-                } catch (err) {
-                    console.log(err);
-                }
-            }
+	var url = "https://script.google.com/macros/s/AKfycbwfv7EzQRubosD__g3Em87B5L0XVcvvnEwhDbK2qacaTXtcC9ks30Yn6EZTXUmBSxc_/exec?callback=loadData&lang=" + lang + "&book=" + b + "&chapter=" + c,
+		request = jQuery.ajax({
+			crossDomain: true,
+			url: url,
+			method: "GET",
+			dataType: "jsonp",
+		});
 
-            //===========audio output
-            function toVoice(data) {
-                if (data.charAt(0) == "[") {
-                    data = data.slice(data.indexOf("]") + 2, -1).replace(/౹/, "");
-                } else {
-                    var n = /\d+/,
-                        number = data.match(n);
-                    data = data.replace(number + ". ", "").replace(/౹/, "");
-                }
-                var url = "https://script.google.com/macros/s/AKfycbyPfdMprSx3UJhWSxuHxgknaIU-fc-ZW7LWebScdX-eDS157PraP1z3cerxzD8_Zf7qmg/exec?callback=readOut&lang="+ lang +"&data=" + data,
-                    request = jQuery.ajax({
-                        crossDomain: true,
-                        url: url,
-                        method: "GET",
-                        dataType: "jsonp",
-                    });
-            }
+	if (firstTime) {
+		$("#audio")[0].play();
+		firstTime = false;
+		$("#speak").removeClass("d-none");
+	}
+	firstLine = true;
+	setCookie("b", b, 365);
+	setCookie("c", c, 365);
+}
 
-            function readOut(e) {
-                var binary = convertDataURIToBinary(e);
-                var blob = new Blob([binary], { type: "audio/mpeg" });
-                var blobUrl = URL.createObjectURL(blob);
-                if (firstLine) {
-                    play(blobUrl);
-                    firstLine = false;
-                } else {
-                    playList = blobUrl;
-                }
-            }
+function loadData(e) {
+	$("#bible").empty();
+	try {
+		for (var i = 0; i < e.length; i++) {
+			if (e[i][1].substring(0, 1) == "[") {
+				$("#bible").append("<p>" + e[i][1] + "</p>");
+			} else {
+				$("#bible").append("<p>" + e[i][0] + ". " + e[i][1] + "</p>");
+			}
+		}
+		navig(0);
+		currentP = $('#bible p').first();
+		//enableClick();
+	} catch (err) {
+		console.log(err);
+	}
+}
 
-            function play(blobUrl) {
-                $("#source").attr("src", blobUrl);
-                $("#audio")[0].pause();
-                $("#audio")[0].load(); //suspends and restores all audio element
+//===========audio output
+function toVoice(data) {
+	if (data.charAt(0) == "[") {
+		data = data.slice(data.indexOf("]") + 2, -1).replace(/౹/, "");
+	} else {
+		var n = /\d+/,
+			number = data.match(n);
+		data = data.replace(number + ". ", "").replace(/౹/, "");
+	}
+	var url = "https://script.google.com/macros/s/AKfycbyPfdMprSx3UJhWSxuHxgknaIU-fc-ZW7LWebScdX-eDS157PraP1z3cerxzD8_Zf7qmg/exec?callback=readOut&lang=" + lang + "&data=" + data,
+		request = jQuery.ajax({
+			crossDomain: true,
+			url: url,
+			method: "GET",
+			dataType: "jsonp",
+		});
+}
 
-                var playPromise = ($("#audio")[0].oncanplaythrough = $("#audio")[0].play());
-                if (playPromise !== undefined) {
-                    playPromise
-                        .then((_) => {
-                            // Automatic playback started!
-                            // Show playing UI.
-                        })
-                        .catch((error) => {
-                            // Auto-play was prevented
-                            // Show paused UI.
-                        });
-                }
-            }
-            function convertDataURIToBinary(dataURI) {
-                var raw = window.atob(dataURI);
-                var rawLength = raw.length;
-                var array = new Uint8Array(new ArrayBuffer(rawLength));
-                for (i = 0; i < rawLength; i++) {
-                    array[i] = raw.charCodeAt(i);
-                }
-                return array;
-            }
+function readOut(e) {
+	var binary = convertDataURIToBinary(e);
+	var blob = new Blob([binary], {
+		type: "audio/mpeg"
+	});
+	var blobUrl = URL.createObjectURL(blob);
+	if (firstLine) {
+		play(blobUrl);
+		firstLine = false;
+	} else {
+		playList = blobUrl;
+	}
+}
 
-            //====audio player control
-            $("#audio").on("ended", function () {
-                playing = false;
-                //enable button/link
-                //enableClick();
-                if (typeof currentP == "undefined") return;
-                //remove underline
-                currentP.css("text-decoration", "none");
-                //show play button
-                $("#speak svg").html(
-                    '<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"></path>'
-                );
-                //play next line
-                if (currentP.next("p").text() != "") {
-                    $("html, body").animate({ scrollTop: currentP.offset().top }, 1000);
-                    currentP = $(currentP.next("p"));
-					if (playList != $("#source").attr("src")){ //new verse audio has loaded
-					play(playList);
-					} else { //audio not yet loaded-- break the playlist
-					firstLine = true;
-					//playThis(currentP);
-					}
-					
-                }
-            });
+function play(blobUrl) {
+	$("#source").attr("src", blobUrl);
+	$("#audio")[0].pause();
+	$("#audio")[0].load(); //suspends and restores all audio element
 
-            $("#audio").on("playing", function () {
-                playing = true;
-                if (typeof currentP == "undefined") return;
-                //show pause button
-                $("#speak svg").html(
-                    '<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M5 6.25a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5zm3.5 0a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5z"/>'
-                );
-                currentP.css("text-decoration", "underline");
-                // disable button/link
-                // get next clip ready
-                if (currentP.next("p").text() != "") {
-                    toVoice(currentP.next("p").text());
-                }
-            });
+	var playPromise = ($("#audio")[0].oncanplaythrough = $("#audio")[0].play());
+	if (playPromise !== undefined) {
+		playPromise
+			.then((_) => {
+				// Automatic playback started!
+				// Show playing UI.
+			})
+			.catch((error) => {
+				// Auto-play was prevented
+				// Show paused UI.
+			});
+	}
+	$('#speak').show();
+}
 
-            function enableClick1() {
-                /*
+function convertDataURIToBinary(dataURI) {
+	var raw = window.atob(dataURI);
+	var rawLength = raw.length;
+	var array = new Uint8Array(new ArrayBuffer(rawLength));
+	for (i = 0; i < rawLength; i++) {
+		array[i] = raw.charCodeAt(i);
+	}
+	return array;
+}
+
+//====audio player control
+$("#audio").on("ended", function() {
+	playing = false;
+	//enable button/link
+	//enableClick();
+	if (typeof currentP == "undefined") return;
+	//remove underline
+	currentP.css("text-decoration", "none");
+	//show play button
+	$("#speak svg").html(
+		'<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"></path>'
+	);
+	//play next line
+	if (currentP.next("p").text() != "") {
+		$("html, body").animate({
+			scrollTop: currentP.offset().top
+		}, 1000);
+		currentP = $(currentP.next("p"));
+		if (playList != $("#source").attr("src")) { //new verse audio has loaded
+			play(playList);
+		} else { //audio not yet loaded-- break the playlist
+			firstLine = true;
+			//playThis(currentP);
+		}
+
+	} else {
+		navig(1); //load next chapter
+	}
+});
+
+$("#audio").on("playing", function() {
+	playing = true;
+	if (typeof currentP == "undefined") return;
+	//show pause button
+	$("#speak svg").html(
+		'<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M5 6.25a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5zm3.5 0a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5z"/>'
+	);
+	currentP.css("text-decoration", "underline");
+	// disable button/link
+
+	// get next clip ready
+	if (currentP.next("p").text() != "") {
+		toVoice(currentP.next("p").text());
+	}
+});
+
+function enableClick1() {
+	/*
 			$('#bible p').on('click', function(event) {
 			playThis(this);
 			});
 			*/
-            }
+}
 
-            function playThis(e) {
-                if (!playing) {
-                    currentP = $(e);
-                    //currentP.off('click');
-                    toVoice(currentP.text());
-                } else {
-                    if ($("#audio")[0].paused) {
-                        $("#audio")[0].play();
-                        //show pause button
-                        $("#speak svg").html(
-                            '<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M5 6.25a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5zm3.5 0a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5z"/>'
-                        );
-                        return;
-                    }
-                    $("#audio")[0].pause();
-                    //show play button
-                    $("#speak svg").html(
-                        '<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"></path>'
-                    );
-                }
-            }
-            //autosuggest book names
-            const field = document.getElementById("book");
-            const ac = new Autocomplete(field, {
-                data: [],
-                maximumItems: 5,
-                threshold: 1,
-                onSelectItem: ({ label, value }) => {
-                    //console.log(label, value);
-                    $("#books").hide();
-                    $("#book").attr("value", value);
-                    $("#chapter").focus();
-                },
-            });
-            var myData = [];
-            for (i = 1; i < allBooks.length; i++) {
-                var myArr = {};
-                myArr["label"] = allBooks[i][3];
-                myArr["value"] = allBooks[i][0];
-                myData.push(myArr);
-            }
-            ac.setData(myData);
+function playThis(e) {
+	if (!playing) {
+		currentP = $(e);
+		//currentP.off('click');
+		toVoice(currentP.text());
+		$('#speak').hide();
+	} else {
+		if ($("#audio")[0].paused) {
+			$("#audio")[0].play();
+			//show pause button
+			$("#speak svg").html(
+				'<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M5 6.25a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5zm3.5 0a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5z"/>'
+			);
+			return;
+		}
+		$("#audio")[0].pause();
+		//show play button
+		$("#speak svg").html(
+			'<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"></path>'
+		);
+	}
+}
+//autosuggest book names
+const field = document.getElementById("book");
+const ac = new Autocomplete(field, {
+	data: [],
+	maximumItems: 5,
+	threshold: 1,
+	onSelectItem: ({
+		label,
+		value
+	}) => {
+		//console.log(label, value);
+		$("#books").hide();
+		$("#book").attr("value", value);
+		$("#chapter").focus();
+	},
+});
+var myData = [];
+for (i = 1; i < allBooks.length; i++) {
+	var myArr = {};
+	myArr["label"] = allBooks[i][3];
+	myArr["value"] = allBooks[i][0];
+	myData.push(myArr);
+}
+ac.setData(myData);
 
-            //chapters field
-            $("#chapter").keypress(function (event) {
-                var keycode = event.keyCode ? event.keyCode : event.which;
-                if (keycode == "13") {
-                    var b = parseInt($("#book").attr("value")),
-                        c = parseInt($("#chapter").val()) || 1;
-                    if (isNaN(c)) return;
-                    if (c < allBooks[b][2] + 1) {
-						if (lang == "te-IN")
-						getVerse(allBooks[b][1], b, c);
-						else if (lang == "en-US")
-						getVerse(allBooks[b][3], b, c);
-                        this.blur();
-                    } else {
-						if (lang == "te-IN")
-						alert("Only " + allBooks[b][2] + " chapters in " + allBooks[b][1]);
-						else if (lang == "en-US")
-						alert("Only " + allBooks[b][2] + " chapters in " + allBooks[b][3]);
-                    }
-                }
-            });
-			
-			//verse field
-            $("#verse").keypress(function (event) {
-                var keycode = event.keyCode ? event.keyCode : event.which;
-                if (keycode == "13") {
-                    var v = parseInt($("#verse").val()) || 1;
-                    if (isNaN(v)) return;
-					this.blur();
-					
-					var vElement = $('#bible p:nth-child('+ v +')');
-					if (vElement.length == 0) return;
-					
-					$('#bible p').css("text-decoration", "none");
-					vElement.css("text-decoration", "underline");
-					$("html, body").animate({ scrollTop: vElement.offset().top }, 1000);
-                }
-            });
-        </script>
-    </body>
+//chapters field
+$("#chapter").keypress(function(event) {
+	var keycode = event.keyCode ? event.keyCode : event.which;
+	if (keycode == "13") {
+		var b = parseInt($("#book").attr("value")),
+			c = parseInt($("#chapter").val()) || 1;
+		if (isNaN(c)) return;
+		if (c < allBooks[b][2] + 1) {
+			getVerse(b, c);
+			this.blur();
+		} else {
+			if (lang == "te-IN")
+				alert("Only " + allBooks[b][2] + " chapters in " + allBooks[b][1]);
+			else if (lang == "en-US")
+				alert("Only " + allBooks[b][2] + " chapters in " + allBooks[b][3]);
+		}
+	}
+});
+
+//verse field
+$("#verse").keypress(function(event) {
+	var keycode = event.keyCode ? event.keyCode : event.which;
+	if (keycode == "13") {
+		var v = parseInt($("#verse").val()) || 1;
+		if (isNaN(v)) return;
+		this.blur();
+
+		var vElement = $('#bible p:nth-child(' + v + ')');
+		if (vElement.length == 0) return;
+
+		$('#bible p').css("text-decoration", "none");
+		vElement.css("text-decoration", "underline");
+		$("html, body").animate({
+			scrollTop: vElement.offset().top
+		}, 1000);
+	}
+});
+
+//-----------cookies
+checkCookie();
+
+function setCookie(cname, cvalue, exdays) {
+	const d = new Date();
+	d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+	let expires = "expires=" + d.toUTCString();
+	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+	let name = cname + "=";
+	let decodedCookie = decodeURIComponent(document.cookie);
+	let ca = decodedCookie.split(';');
+	for (let i = 0; i < ca.length; i++) {
+		let c = ca[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+			return c.substring(name.length, c.length);
+		}
+	}
+	return "";
+}
+
+function checkCookie() {
+	let theme = getCookie("theme");
+	if (theme != "" && theme != 'light') {
+		theme();
+	}
+
+	let lang = getCookie("lang");
+	if (lang != "" && lang != 'te-IN') {
+		changeLanguage();
+	}
+
+	let b = getCookie("b");
+	let c = getCookie("c");
+	if (b != "" && c != "") {
+		getVerse(parseInt(b), parseInt(c));
+	}
+}
+		</script>
+	</body>
 </html>
