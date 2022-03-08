@@ -385,10 +385,6 @@ function getVerse(b, c) {
 		});
 
 	$("#speak").removeClass("d-none");
-	if (firstTime) {
-		$("#audio")[0].play();
-		firstTime = false;
-		}
 	firstLine = true;
 	setCookie("b", b, 365);
 	setCookie("c", c, 365);
@@ -476,6 +472,10 @@ function convertDataURIToBinary(dataURI) {
 
 //====audio player control
 $("#audio").on("ended", function() {
+	if (firstTime) {
+		firstTime = false;
+		return;
+		}
 	playing = false;
 	//enable button/link
 	//enableClick();
@@ -505,6 +505,9 @@ $("#audio").on("ended", function() {
 });
 
 $("#audio").on("playing", function() {
+	if (firstTime) {
+		return;
+		}
 	playing = true;
 	if (typeof currentP == "undefined") return;
 	//show pause button
@@ -529,6 +532,9 @@ function enableClick1() {
 }
 
 function playThis(e) {
+	if (firstTime)
+	$("#audio")[0].play();
+	
 	if (!playing) {
 		currentP = $(e);
 		//currentP.off('click');
