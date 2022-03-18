@@ -2,7 +2,7 @@ const DEFAULTS = {
   threshold: 2,
   maximumItems: 5,
   highlightTyped: true,
-  highlightClass: 'text-primary',
+  highlightClass: 'text-primary fw-bolder',
   label: 'label',
   value: 'value',
   showValue: false,
