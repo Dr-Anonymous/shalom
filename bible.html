@@ -26,9 +26,11 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 		<script src="https://shalomworshipcentre.in/assets/js/autocomplete.js"></script>
+
 		<script>
 //dropdown populate
 var lang = "te-IN",
+offlinePressed = false,
 ver = "14xBeAaiu1QTfOqNK0YGabiNiFV4EUtC2QxWXApVERBg",
 	allBooks = [
 		[0, 0, 0, 0],
@@ -101,13 +103,10 @@ ver = "14xBeAaiu1QTfOqNK0YGabiNiFV4EUtC2QxWXApVERBg",
 	],
 	option = "";
 $(document).ready(function() {
-	let dropdowns = document.querySelectorAll(".myClass");
-	dropdowns.forEach((dd) => {
-		dd.addEventListener("click", function(e) {
-			var el = this.nextElementSibling;
-			if (el) el.style.display = el.style.display === "block" ? "none" : "block";
+		$('.myClass').on('click', function(e) {
+			var el = $('#books')[0];
+			el.style.display = el.style.display === "block" ? "none" : "block";
 		});
-	});
 	//default language
 	checkCookie();
 	populateDropDown();
@@ -128,24 +127,38 @@ function changeTheme() {
 }
 
 //set bible version and language
-function changeVersion(t, v) {
+async function changeVersion(t, v) {
+	$("a[ver='" + ver +"']").removeClass('list-group-item disabled');
 	ver = v;
+	$("a[ver='" + ver +"']").addClass('list-group-item disabled');
+	
 	if (t == 'తె') { //back to default- telugu bible
 		lang = "te-IN";
+		populateDropDown();
 		document.cookie = "version=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 	} else {  //going away from telugu bible
+		if (lang != "en-US"){
 		lang = "en-US";
+		populateDropDown();
+		}
 		setCookie("version", ver, 365);
 		setCookie("t", t, 365);
 	}
 	
 	$('#version').text(t);
-	populateDropDown();
+	
+	//is offline available?
+	if ((await window.indexedDB.databases()).map(db => db.name).includes(ver))
+	offlinePressed = true;
+	else
+	offlinePressed = false;
 
 	var b = parseInt($("#book").attr("value")),
 		c = parseInt($("#chapter").val()) || 1;
 	if (b)
-	getVerse(b, c);	
+	getVerse(b, c);
+	
+	return;
 }
 
 function populateDropDown() {
@@ -349,42 +362,49 @@ function populateDropDown() {
 					<ul id="versions" class="dropdown-menu">
 					<li class="d-flex">
 					<a class="dropdown-item" href="javascript:;" name="తె" ver="14xBeAaiu1QTfOqNK0YGabiNiFV4EUtC2QxWXApVERBg" onclick="changeVersion($(this).attr('name'), $(this).attr('ver'));">తెలుగు (BSI)</a>
-					<button type="button" class="btn" onclick="offline();">
+					<button type="button" class="btn" onclick="offline($(this).prev().attr('ver'));">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
 					</button>
 					</li>
 					
 					<li class="d-flex">
 					<a class="dropdown-item" href="javascript:;" name="KJV" ver="1cA9d3UnEmXexI4mViN6T5poky44hdeWuiRtnu82moOg" onclick="changeVersion($(this).attr('name'), $(this).attr('ver'));">American King James Version (1999)</a>
-					<button type="button" class="btn" onclick="offline();">
+					<button type="button" class="btn" onclick="offline($(this).prev().attr('ver'));">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
 					</button>
 					</li>
 					
 					<li class="d-flex">
 					<a class="dropdown-item" href="javascript:;" name="AMP" ver="13eJ7xnAiGiFyIpB74TPRKlUrtLQW8C-pTsPfRqYSf_U" onclick="changeVersion($(this).attr('name'), $(this).attr('ver'));">Amplified Bible (1965)</a>
-					<button type="button" class="btn" onclick="offline();">
+					<button type="button" class="btn" onclick="offline($(this).prev().attr('ver'));">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+					</button>
+					</li>
+					
+					<li class="d-flex">
+					<a class="dropdown-item" href="javascript:;" name="ERV" ver="1S8coi9q4WHJSdHv0cqqbKMqAf_wyXprj2DyEqb5sGnA" onclick="changeVersion($(this).attr('name'), $(this).attr('ver'));">Easy to Read Revised Version (2005)</a>
+					<button type="button" class="btn" onclick="offline($(this).prev().attr('ver'));">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
 					</button>
 					</li>
 					
 					<li class="d-flex">
 					<a class="dropdown-item" href="javascript:;" name="NIV" ver="1d3JuoPHkclEV6XmGNSvwLyL96nf_7HhnrC8OFjoGvxA" onclick="changeVersion($(this).attr('name'), $(this).attr('ver'));">New International Version (UK)</a>
-					<button type="button" class="btn" onclick="offline();">
+					<button type="button" class="btn" onclick="offline($(this).prev().attr('ver'));">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
 					</button>
 					</li>
 					
 					<li class="d-flex">
 					<a class="dropdown-item" href="javascript:;" name="NLT" ver="1FCrrdZTZTL5BWZbC9dU-l8Jy012_ZzQqdxrlkGBHz3M" onclick="changeVersion($(this).attr('name'), $(this).attr('ver'));">New Living Translation (1996)</a>
-					<button type="button" class="btn" onclick="offline();">
+					<button type="button" class="btn" onclick="offline($(this).prev().attr('ver'));">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
 					</button>
 					</li>
 					
 					<li class="d-flex">
 					<a class="dropdown-item" href="javascript:;" name="MSG" ver="1-SmiYJlxWw7atz5hYG4Dlad_iIEpTCa6N9MfuCaOQ0A" onclick="changeVersion($(this).attr('name'), $(this).attr('ver'));">The Message Bible (2002)</a>
-					<button type="button" class="btn" onclick="offline();">
+					<button type="button" class="btn" onclick="offline($(this).prev().attr('ver'));">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
 					</button>
 					</li>
@@ -401,6 +421,18 @@ function populateDropDown() {
 				</div>
 			</div>
 		</div>
+		<!--toast-->
+		<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+		  <div id="myToast" class="toast fade hide" role="alert">
+			<div class="toast-header">
+			  <strong class="me-auto">Notification</strong>
+			  <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body" id="toastBody">
+			 This is a toast message.
+			</div>
+		  </div>
+		</div>
 		<!-- Javascript -->
 		<script src="https://shalomworshipcentre.in/assets/js/jquery.quicksand.js"></script>
 		<script>
@@ -409,9 +441,61 @@ var firstTime = true,
 	firstLine = true,
 	currentP,
 	playList;
+	
+function toast(tex){
+$('#toastBody').text(tex);
+var toastBox = new bootstrap.Toast($('#myToast'))
+toastBox.show();
+}
 
-function offline(){
-alert('Offline functionality not yet available.');
+async function offline(version) {
+	if (!('indexedDB' in window)) {
+		toast('This browser doesn\'t support offline storage.');
+		return;
+	}
+	if ((await window.indexedDB.databases()).map(db => db.name).includes(version)){
+	toast('This version already available offline.');
+	return;
+	}
+	$("a[ver='" + ver +"']").removeClass('list-group-item disabled');
+	ver = version;
+	changeVersion($("a[ver='" + ver + "']").attr('name'), version).then(
+	function() {
+	toast('Download of ' + $("a[ver='" + ver + "']").text() + ' started.');
+	var url = "https://script.google.com/macros/s/AKfycbxi0FTDzmjZNj5_Ru1wC7VNCSVDy9G_ntrOFSd6ynm-Twh7TGm8JnHtD89jDGAIup0y/exec?callback=writeToDb&download=true&ver=" + ver;
+	$.ajax({
+		crossDomain: true,
+		url: url,
+		method: "GET",
+		dataType: "jsonp"
+	});
+});
+}
+function writeToDb(e) {
+	toast('Version downloaded from server');
+	var request = window.indexedDB.open(ver, 1);
+
+	// Create schema
+	request.onupgradeneeded = function(event) {
+		const db = request.result;
+		for (var i = 1; i < 67; i++) {
+			db.createObjectStore(i, {
+				autoIncrement: true
+			});
+		}
+	};
+
+	request.onsuccess = () => {
+		const db = request.result;
+		for (var i = 1; i < 67; i++) {
+			var transaction = db.transaction(i, "readwrite");
+			var book = transaction.objectStore(i);
+			// Add data
+			book.add(e[i]);
+		}
+		toast('Offline bible ready.');
+	};
+	offlinePressed = true;
 }
 
 function navig(i) {
@@ -454,29 +538,57 @@ function navig(i) {
 
 function getVerse(b, c) {
 	$("#books").hide();
-	
+
 	if (lang == "te-IN")
-	$("#book").val(allBooks[b][1]);
+		$("#book").val(allBooks[b][1]);
 	else if (lang == "en-US")
-	$("#book").val(allBooks[b][3]);
+		$("#book").val(allBooks[b][3]);
 
 	$("#book").attr("value", b);
 	$("#chapter").val(c);
 
 	$("#bible").html("<p>Loading chapter...</p>");
 
-	var url = "https://script.google.com/macros/s/AKfycbwQMXD9MMVfvk4GNdNwTMKNJKmti0vXVz8tMHhshy2tfZ6k4vugGBWq0JbAtpGHOura/exec?callback=loadData&ver=" + ver + "&book=" + b + "&chapter=" + c,
-		request = jQuery.ajax({
+	$("#speak").removeClass("d-none");
+	firstLine = true;
+	setCookie("b", b, 365);
+	setCookie("c", c, 365);
+	try {
+		if (offlinePressed) {
+			var data = [],
+				txt,
+				request = indexedDB.open(ver, 1);
+			request.onsuccess = () => {
+				const db = request.result;
+				var transaction = db.transaction(b, "readonly");
+				var book = transaction.objectStore(b);
+				const getRequest = book.getAll();
+				getRequest.onsuccess = () => {
+					txt = getRequest.result[0];
+					if (c == allBooks[b][2])
+					txt = txt.slice(txt.findIndex(x => x[2] === c));
+					else
+					txt = txt.slice(txt.findIndex(x => x[2] === c), txt.findIndex(x => x[2] === c + 1));
+					for (i in txt) {
+						data.push([txt[i][3], txt[i][4]]);
+					}
+					loadData(data);
+				};
+			}
+			return;
+		}
+		var url = "https://script.google.com/macros/s/AKfycbwQMXD9MMVfvk4GNdNwTMKNJKmti0vXVz8tMHhshy2tfZ6k4vugGBWq0JbAtpGHOura/exec?callback=loadData&ver=" + ver + "&book=" + b + "&chapter=" + c;
+		$.ajax({
 			crossDomain: true,
 			url: url,
 			method: "GET",
 			dataType: "jsonp",
 		});
-
-	$("#speak").removeClass("d-none");
-	firstLine = true;
-	setCookie("b", b, 365);
-	setCookie("c", c, 365);
+	} catch (error) {
+		toast(error);
+		offlinePressed = false;
+		indexedDB.deleteDatabase(ver);
+	}
 }
 
 function loadData(e) {
@@ -493,7 +605,7 @@ function loadData(e) {
 		currentP = $('#bible p').first();
 		//enableClick();
 	} catch (err) {
-		console.log(err);
+		toast(err);
 	}
 }
 
@@ -507,7 +619,7 @@ function toVoice(data) {
 		data = data.replace(number + ". ", "").replace(/౹/, "");
 	}
 	var url = "https://script.google.com/macros/s/AKfycbyPfdMprSx3UJhWSxuHxgknaIU-fc-ZW7LWebScdX-eDS157PraP1z3cerxzD8_Zf7qmg/exec?callback=readOut&lang=" + lang + "&data=" + data,
-		request = jQuery.ajax({
+		request = $.ajax({
 			crossDomain: true,
 			url: url,
 			method: "GET",
@@ -564,7 +676,7 @@ $("#audio").on("ended", function() {
 	if (firstTime) {
 		firstTime = false;
 		return;
-		}
+	}
 	playing = false;
 	//enable button/link
 	//enableClick();
@@ -596,7 +708,7 @@ $("#audio").on("ended", function() {
 $("#audio").on("playing", function() {
 	if (firstTime) {
 		return;
-		}
+	}
 	playing = true;
 	if (typeof currentP == "undefined") return;
 	//show pause button
@@ -622,8 +734,8 @@ function enableClick1() {
 
 function playThis(e) {
 	if (firstTime)
-	$("#audio")[0].play();
-	
+		$("#audio")[0].play();
+
 	if (!playing) {
 		currentP = $(e);
 		//currentP.off('click');
@@ -648,9 +760,6 @@ function playThis(e) {
 //autosuggest book names
 const field = document.getElementById("book");
 const ac = new Autocomplete(field, {
-	data: [],
-	maximumItems: 5,
-	threshold: 1,
 	onSelectItem: ({
 		label,
 		value
@@ -682,9 +791,9 @@ $("#chapter").keypress(function(event) {
 			this.blur();
 		} else {
 			if (lang == "te-IN")
-				alert("Only " + allBooks[b][2] + " chapters in " + allBooks[b][1]);
+				toast("Only " + allBooks[b][2] + " chapters in " + allBooks[b][1]);
 			else if (lang == "en-US")
-				alert("Only " + allBooks[b][2] + " chapters in " + allBooks[b][3]);
+				toast("Only " + allBooks[b][2] + " chapters in " + allBooks[b][3]);
 		}
 	}
 });
@@ -732,7 +841,7 @@ function getCookie(cname) {
 	return "";
 }
 
-function checkCookie() {
+async function checkCookie() {
 	let theme = getCookie("theme");
 	if (theme != "" && theme != 'light') {
 		changeTheme();
@@ -740,14 +849,17 @@ function checkCookie() {
 
 	let version = getCookie("version");
 	if (version != "" && version != ver) {
-		changeVersion(getCookie("t"), version);
+		changeVersion(getCookie("t"), version).then(
+			function() {
+				let b = getCookie("b");
+				let c = getCookie("c");
+				if (b != "" && c != "") {
+					getVerse(parseInt(b), parseInt(c));
+				}
+			}
+		);
 	}
 
-	let b = getCookie("b");
-	let c = getCookie("c");
-	if (b != "" && c != "") {
-		getVerse(parseInt(b), parseInt(c));
-	}
 }
 		</script>
 	</body>
