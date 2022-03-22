@@ -1,6 +1,7 @@
 ---
 ---
 
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -25,7 +26,6 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 		<script src="https://shalomworshipcentre.in/assets/js/autocomplete.js"></script>
-
 		<script>
 //dropdown populate
 var lang = "te-IN",
@@ -99,14 +99,13 @@ ver = "14xBeAaiu1QTfOqNK0YGabiNiFV4EUtC2QxWXApVERBg",
 		[64, "3 యోహాను", 1, "3 John"],
 		[65, "యూదా", 1, "Jude"],
 		[66, "ప్రకటన", 22, "Revelation"],
-	],
-	option = "";
+	];
 $(document).ready(function() {
 		$('.myClass').on('click', function(e) {
 			var el = $('#books')[0];
 			el.style.display = el.style.display === "block" ? "none" : "block";
 		});
-	//default language
+	//load saved presets
 	checkCookie();
 	populateDropDown();
 });
@@ -135,7 +134,7 @@ async function changeVersion(t, v) {
 	if (t == 'తె') { //back to default- telugu bible
 		lang = "te-IN";
 		populateDropDown();
-	} else if (lang != "en-US"){//going away from telugu bible //dont repeat these steps if already some english bible
+	} else if (lang != "en-US"){//going away from telugu bible //but dont repeat these steps if already some english bible
 		lang = "en-US";
 		populateDropDown();
 	}
@@ -151,6 +150,7 @@ async function changeVersion(t, v) {
 	else
 	offlinePressed = false;
 	//if the version is already loaded-- then no need to load verses
+
 	if (oldVer == ver)
 	return;
 	var b = parseInt($("#book").attr("value")),
@@ -163,7 +163,7 @@ async function changeVersion(t, v) {
 
 function populateDropDown() {
 	$("#books").empty();
-	option = '';
+	var option = '';
 	for (var i = 1; i < allBooks.length; i++) {
 		if (i == 1) option += '<li>Old Testament</li><li><hr class="dropdown-divider"></li>';
 		if (i == 40) option += '<li><hr class="dropdown-divider"></li><li>New Testament</li><li><hr class="dropdown-divider"></li>';
@@ -458,11 +458,12 @@ async function offline(version) {
 	}
 	if ((await window.indexedDB.databases()).map(db => db.name).includes(version)){
 	toast('This version already available offline.');
+	
 	return;
 	}
 	$("a[ver='" + ver +"']").removeClass('list-group-item disabled');
-	ver = version;
-	changeVersion($("a[ver='" + ver + "']").attr('name'), version).then(
+	
+	changeVersion($("a[ver='" + version + "']").attr('name'), version).then(
 	function() {
 	toast('Download of ' + $("a[ver='" + ver + "']").text() + ' started.');
 	var url = "https://script.google.com/macros/s/AKfycbxi0FTDzmjZNj5_Ru1wC7VNCSVDy9G_ntrOFSd6ynm-Twh7TGm8JnHtD89jDGAIup0y/exec?callback=writeToDb&download=true&ver=" + ver;
