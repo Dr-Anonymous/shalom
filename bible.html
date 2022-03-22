@@ -105,7 +105,7 @@ $(document).ready(function() {
 			var el = $('#books')[0];
 			el.style.display = el.style.display === "block" ? "none" : "block";
 		});
-	//load saved presets
+	//default language
 	checkCookie();
 	populateDropDown();
 });
@@ -126,15 +126,15 @@ function changeTheme() {
 
 //set bible version and language
 async function changeVersion(t, v) {
-	$("a[ver='" + ver +"']").removeClass('list-group-item disabled');
+	$("#versions li a[ver='" + ver +"']").removeClass('list-group-item disabled');
+	$("#versions li a[ver='" + v +"']").addClass('list-group-item disabled');
 	var oldVer = ver;
 	ver = v;
-	$("a[ver='" + ver +"']").addClass('list-group-item disabled');
 	
 	if (t == 'తె') { //back to default- telugu bible
 		lang = "te-IN";
 		populateDropDown();
-	} else if (lang != "en-US"){//going away from telugu bible //but dont repeat these steps if already some english bible
+	} else if (lang != "en-US"){//going away from telugu bible //dont repeat these steps if already some english bible
 		lang = "en-US";
 		populateDropDown();
 	}
@@ -456,16 +456,15 @@ async function offline(version) {
 		toast('This browser doesn\'t support offline storage.');
 		return;
 	}
-	if ((await window.indexedDB.databases()).map(db => db.name).includes(version)){
+	
+	/*if ((await window.indexedDB.databases()).map(db => db.name).includes(version)){
 	toast('This version already available offline.');
-	
 	return;
-	}
-	$("a[ver='" + ver +"']").removeClass('list-group-item disabled');
+	}*/
 	
-	changeVersion($("a[ver='" + version + "']").attr('name'), version).then(
+	changeVersion($("#versions li a[ver='" + version + "']").attr('name'), version).then(
 	function() {
-	toast('Download of ' + $("a[ver='" + ver + "']").text() + ' started.');
+	toast('Download of ' + $("#versions li a[ver='" + ver + "']").text() + ' started.');
 	var url = "https://script.google.com/macros/s/AKfycbxi0FTDzmjZNj5_Ru1wC7VNCSVDy9G_ntrOFSd6ynm-Twh7TGm8JnHtD89jDGAIup0y/exec?callback=writeToDb&download=true&ver=" + ver;
 	$.ajax({
 		crossDomain: true,
@@ -568,8 +567,10 @@ function getVerse(b, c) {
 	setCookie("c", c, 365);
 	try {
 		if (offlinePressed) {
-			var data = [],
-				txt,
+		
+			var dbData,
+				dbChapter,
+				txt = [],
 				request = indexedDB.open(ver, 1);
 			request.onsuccess = () => {
 				const db = request.result;
@@ -577,15 +578,15 @@ function getVerse(b, c) {
 				var book = transaction.objectStore(b);
 				const getRequest = book.getAll();
 				getRequest.onsuccess = () => {
-					txt = getRequest.result[0];
+					dbData = getRequest.result[0];
 					if (c == allBooks[b][2])
-					txt = txt.slice(txt.findIndex(x => x[2] === c));
+					dbChapter = dbData.slice(dbData.findIndex(x => x[2] === c));
 					else
-					txt = txt.slice(txt.findIndex(x => x[2] === c), txt.findIndex(x => x[2] === c + 1));
-					for (i in txt) {
-						data.push([txt[i][3], txt[i][4]]);
+					dbChapter = dbData.slice(dbData.findIndex(x => x[2] === c), dbData.findIndex(x => x[2] === c + 1));
+					for (i in dbChapter) {
+						txt.push([dbChapter[i][3], dbChapter[i][4]]);
 					}
-					loadData(data);
+					loadData(txt);
 				};
 			}
 			return;
@@ -631,12 +632,12 @@ function toVoice(data) {
 			number = data.match(n);
 		data = data.replace(number + ". ", "").replace(/౹/, "");
 	}
-	var url = "https://script.google.com/macros/s/AKfycbyPfdMprSx3UJhWSxuHxgknaIU-fc-ZW7LWebScdX-eDS157PraP1z3cerxzD8_Zf7qmg/exec?callback=readOut&lang=" + lang + "&data=" + data,
-		request = $.ajax({
-			crossDomain: true,
-			url: url,
-			method: "GET",
-			dataType: "jsonp",
+	var url = "https://script.google.com/macros/s/AKfycbyPfdMprSx3UJhWSxuHxgknaIU-fc-ZW7LWebScdX-eDS157PraP1z3cerxzD8_Zf7qmg/exec?callback=readOut&lang=" + lang + "&data=" + data;
+		$.ajax({
+		crossDomain: true,
+		url: url,
+		method: "GET",
+		dataType: "jsonp",
 		});
 }
 
@@ -865,6 +866,11 @@ async function checkCookie() {
 				}
 			}
 		);
+	}
+	
+	for (var i = 0; i < $("#versions li a").length; i++){
+	if ((await window.indexedDB.databases()).map(db => db.name).includes($($("#versions li a")[i]).attr('ver')))
+	$($("#versions li a")[i]).next().remove();
 	}
 
 }
