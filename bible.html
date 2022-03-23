@@ -29,8 +29,8 @@
 		<script>
 //dropdown populate
 var lang = "te-IN",
-offlinePressed = false,
 ver = "14xBeAaiu1QTfOqNK0YGabiNiFV4EUtC2QxWXApVERBg",
+downloadingVer = false,
 	allBooks = [
 		[0, 0, 0, 0],
 		[1, "ఆదికాండము", 50, "Genesis"],
@@ -125,7 +125,7 @@ function changeTheme() {
 }
 
 //set bible version and language
-async function changeVersion(t, v) {
+function changeVersion(t, v) {
 	$("#versions li a[ver='" + ver +"']").removeClass('list-group-item disabled');
 	$("#versions li a[ver='" + v +"']").addClass('list-group-item disabled');
 	var oldVer = ver;
@@ -144,11 +144,6 @@ async function changeVersion(t, v) {
 	
 	$('#version').text(t);
 	
-	//is offline available?
-	if ((await window.indexedDB.databases()).map(db => db.name).includes(ver))
-	offlinePressed = true;
-	else
-	offlinePressed = false;
 	//if the version is already loaded-- then no need to load verses
 
 	if (oldVer == ver)
@@ -355,7 +350,7 @@ function populateDropDown() {
 				</div>
 				<div class="col">
 					<div class="btn-group dropup">
-					<button type="button" id= "version" ver="14xBeAaiu1QTfOqNK0YGabiNiFV4EUtC2QxWXApVERBg" class="btn btn-outline-secondary" data-bs-toggle="dropdown">
+					<button type="button" id= "version" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
 					తె
 					</button>
 					
@@ -445,39 +440,42 @@ var firstTime = true,
 	currentP,
 	playList;
 	
-function toast(tex){
+async function toast(tex){
 $('#toastBody').text(tex);
 var toastBox = new bootstrap.Toast($('#myToast'))
 toastBox.show();
+return;
 }
 
-async function offline(version) {
+function offline(version) {
 	if (!('indexedDB' in window)) {
 		toast('This browser doesn\'t support offline storage.');
 		return;
 	}
-	
+	if (downloadingVer != false){
+	toast('Kindly wait for the previous download to complete.');
+	return;
+	}
+	$("#versions li a[ver='" + version +"']").next().remove();
 	/*if ((await window.indexedDB.databases()).map(db => db.name).includes(version)){
 	toast('This version already available offline.');
 	return;
 	}*/
+	downloadingVer = version;
 	
-	changeVersion($("#versions li a[ver='" + version + "']").attr('name'), version).then(
-	function() {
-	toast('Download of ' + $("#versions li a[ver='" + ver + "']").text() + ' started.');
-	var url = "https://script.google.com/macros/s/AKfycbxi0FTDzmjZNj5_Ru1wC7VNCSVDy9G_ntrOFSd6ynm-Twh7TGm8JnHtD89jDGAIup0y/exec?callback=writeToDb&download=true&ver=" + ver;
+	toast('Download of ' + $("#versions li a[ver='" + downloadingVer + "']").text() + ' started.');
+	var url = "https://script.google.com/macros/s/AKfycbxi0FTDzmjZNj5_Ru1wC7VNCSVDy9G_ntrOFSd6ynm-Twh7TGm8JnHtD89jDGAIup0y/exec?callback=writeToDb&download=true&ver=" + downloadingVer;
 	$.ajax({
 		crossDomain: true,
 		url: url,
 		method: "GET",
 		dataType: "jsonp"
 	});
-});
-}
-function writeToDb(e) {
-	toast('Version downloaded from server');
-	var request = window.indexedDB.open(ver, 1);
 
+}
+
+function writeToDb(e) {
+	var request = window.indexedDB.open(downloadingVer, 1);
 	// Create schema
 	request.onupgradeneeded = function(event) {
 		const db = request.result;
@@ -496,11 +494,15 @@ function writeToDb(e) {
 			// Add data
 			book.add(e[i]);
 		}
-		toast('Offline bible ready.');
+		toast($("#versions li a[ver='" + downloadingVer + "']").text() + ' available offline.').then(
+			function() {
+			$("#versions li a[ver='" + downloadingVer + "']").attr('offline','true');
+			downloadingVer = false;
+			});
 	};
-	offlinePressed = true;
 }
 
+		
 function navig(i) {
 	var b = parseInt($("#book").attr("value")),
 		c = parseInt($("#chapter").val());
@@ -566,7 +568,7 @@ function getVerse(b, c) {
 	setCookie("b", b, 365);
 	setCookie("c", c, 365);
 	try {
-		if (offlinePressed) {
+		if ($("#versions li a[ver='" + ver + "']").attr('offline') == 'true') {
 		
 			var dbData,
 				dbChapter,
@@ -600,7 +602,6 @@ function getVerse(b, c) {
 		});
 	} catch (error) {
 		toast(error);
-		offlinePressed = false;
 		indexedDB.deleteDatabase(ver);
 	}
 }
@@ -858,19 +859,20 @@ async function checkCookie() {
 	let version = getCookie("version");
 	if (version != "") {
 		changeVersion(getCookie("t"), version).then(
-			function() {
+			function(){
 				let b = getCookie("b");
 				let c = getCookie("c");
 				if (b != "" && c != "") {
 					getVerse(parseInt(b), parseInt(c));
 				}
-			}
-		);
+		});
 	}
 	
 	for (var i = 0; i < $("#versions li a").length; i++){
-	if ((await window.indexedDB.databases()).map(db => db.name).includes($($("#versions li a")[i]).attr('ver')))
+	if ((await window.indexedDB.databases()).map(db => db.name).includes($($("#versions li a")[i]).attr('ver'))){
 	$($("#versions li a")[i]).next().remove();
+	$($("#versions li a")[i]).attr('offline','true');
+	}
 	}
 
 }
