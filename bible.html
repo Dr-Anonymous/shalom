@@ -456,11 +456,14 @@ function offline(version) {
 	toast('Kindly wait for the previous download to complete.');
 	return;
 	}
-	$("#versions li a[ver='" + version +"']").next().remove();
+		
 	/*if ((await window.indexedDB.databases()).map(db => db.name).includes(version)){
 	toast('This version already available offline.');
 	return;
 	}*/
+
+	$("#versions li a[ver='" + version +"']").next().remove();
+	
 	downloadingVer = version;
 	
 	toast('Download of ' + $("#versions li a[ver='" + downloadingVer + "']").text() + ' started.');
@@ -856,6 +859,13 @@ async function checkCookie() {
 		changeTheme();
 	}
 
+	for (var i = 0; i < $("#versions li a").length; i++){
+	if ((await window.indexedDB.databases()).map(db => db.name).includes($($("#versions li a")[i]).attr('ver'))){
+	$($("#versions li a")[i]).next().remove();
+	$($("#versions li a")[i]).attr('offline','true');
+	}
+	}
+	
 	let version = getCookie("version");
 	if (version != "") {
 		changeVersion(getCookie("t"), version).then(
@@ -866,13 +876,6 @@ async function checkCookie() {
 					getVerse(parseInt(b), parseInt(c));
 				}
 		});
-	}
-	
-	for (var i = 0; i < $("#versions li a").length; i++){
-	if ((await window.indexedDB.databases()).map(db => db.name).includes($($("#versions li a")[i]).attr('ver'))){
-	$($("#versions li a")[i]).next().remove();
-	$($("#versions li a")[i]).attr('offline','true');
-	}
 	}
 
 }
