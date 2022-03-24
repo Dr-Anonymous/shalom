@@ -125,7 +125,7 @@ function changeTheme() {
 }
 
 //set bible version and language
-function changeVersion(t, v) {
+async function changeVersion(t, v) {
 	$("#versions li a[ver='" + ver +"']").removeClass('list-group-item disabled');
 	$("#versions li a[ver='" + v +"']").addClass('list-group-item disabled');
 	var oldVer = ver;
