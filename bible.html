@@ -125,13 +125,13 @@ function changeTheme() {
 }
 
 //set bible version and language
-async function changeVersion(t, v) {
+async function changeVersion(v) {
 	$("#versions li a[ver='" + ver +"']").removeClass('list-group-item disabled');
 	$("#versions li a[ver='" + v +"']").addClass('list-group-item disabled');
 	//var oldVer = ver;
 	ver = v;
-	
-	if (t == 'తె') { //back to default- telugu bible
+
+	if (ver == '14xBeAaiu1QTfOqNK0YGabiNiFV4EUtC2QxWXApVERBg') { //back to default- telugu bible
 		lang = "te-IN";
 	} else {//going away from telugu bible
 		lang = "en-US";
@@ -139,10 +139,9 @@ async function changeVersion(t, v) {
 	
 	populateDropDown();
 	setCookie("version", ver, 365);
-	setCookie("t", t, 365);
 	
-	$('#version').text(t);
-	toast(t+lang);
+	$('#version').text($("#versions li a[ver='" + ver +"']").attr('name'));
+	
 	//if the version is already loaded-- then no need to load verses
 	//if (oldVer == ver)
 	//return;
@@ -354,63 +353,63 @@ function populateDropDown() {
 					
 					<ul id="versions" class="dropdown-menu">
 					<li class="d-flex">
-					<a class="dropdown-item" href="javascript:;" name="తె" ver="14xBeAaiu1QTfOqNK0YGabiNiFV4EUtC2QxWXApVERBg" onclick="changeVersion($(this).attr('name'), $(this).attr('ver'));">తెలుగు (BSI)</a>
+					<a class="dropdown-item" href="javascript:;" name="తె" ver="14xBeAaiu1QTfOqNK0YGabiNiFV4EUtC2QxWXApVERBg" onclick="changeVersion($(this).attr('ver'));">తెలుగు (BSI)</a>
 					<button type="button" class="btn" onclick="offline($(this).prev().attr('ver'));">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
 					</button>
 					</li>
 					
 					<li class="d-flex">
-					<a class="dropdown-item" href="javascript:;" name="KJV" ver="1cA9d3UnEmXexI4mViN6T5poky44hdeWuiRtnu82moOg" onclick="changeVersion($(this).attr('name'), $(this).attr('ver'));">American King James Version (1999)</a>
+					<a class="dropdown-item" href="javascript:;" name="KJV" ver="1cA9d3UnEmXexI4mViN6T5poky44hdeWuiRtnu82moOg" onclick="changeVersion($(this).attr('ver'));">American King James Version (1999)</a>
 					<button type="button" class="btn" onclick="offline($(this).prev().attr('ver'));">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
 					</button>
 					</li>
 					
 					<li class="d-flex">
-					<a class="dropdown-item" href="javascript:;" name="AMP" ver="13eJ7xnAiGiFyIpB74TPRKlUrtLQW8C-pTsPfRqYSf_U" onclick="changeVersion($(this).attr('name'), $(this).attr('ver'));">Amplified Bible (1965)</a>
+					<a class="dropdown-item" href="javascript:;" name="AMP" ver="13eJ7xnAiGiFyIpB74TPRKlUrtLQW8C-pTsPfRqYSf_U" onclick="changeVersion($(this).attr('ver'));">Amplified Bible (1965)</a>
 					<button type="button" class="btn" onclick="offline($(this).prev().attr('ver'));">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
 					</button>
 					</li>
 					
 					<li class="d-flex">
-					<a class="dropdown-item" href="javascript:;" name="ERV" ver="1S8coi9q4WHJSdHv0cqqbKMqAf_wyXprj2DyEqb5sGnA" onclick="changeVersion($(this).attr('name'), $(this).attr('ver'));">Easy to Read Revised Version (2005)</a>
+					<a class="dropdown-item" href="javascript:;" name="ERV" ver="1S8coi9q4WHJSdHv0cqqbKMqAf_wyXprj2DyEqb5sGnA" onclick="changeVersion($(this).attr('ver'));">Easy to Read Revised Version (2005)</a>
 					<button type="button" class="btn" onclick="offline($(this).prev().attr('ver'));">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
 					</button>
 					</li>
 					
 					<li class="d-flex">
-					<a class="dropdown-item" href="javascript:;" name="ESV" ver="1ZD9NjCnAkSY4V45U8WTgu64o3Zpp1GlpfGqVqF2detI" onclick="changeVersion($(this).attr('name'), $(this).attr('ver'));">English Standard Version (2001)</a>
+					<a class="dropdown-item" href="javascript:;" name="ESV" ver="1ZD9NjCnAkSY4V45U8WTgu64o3Zpp1GlpfGqVqF2detI" onclick="changeVersion($(this).attr('ver'));">English Standard Version (2001)</a>
 					<button type="button" class="btn" onclick="offline($(this).prev().attr('ver'));">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
 					</button>
 					</li>
 					
 					<li class="d-flex">
-					<a class="dropdown-item" href="javascript:;" name="NET" ver="1Ct-bQZrc8SVue-UEUMwDRP2Sh30pHKXrNBD2_K_KsZc" onclick="changeVersion($(this).attr('name'), $(this).attr('ver'));">New English Translation (2005)</a>
+					<a class="dropdown-item" href="javascript:;" name="NET" ver="1Ct-bQZrc8SVue-UEUMwDRP2Sh30pHKXrNBD2_K_KsZc" onclick="changeVersion($(this).attr('ver'));">New English Translation (2005)</a>
 					<button type="button" class="btn" onclick="offline($(this).prev().attr('ver'));">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
 					</button>
 					</li>
 					
 					<li class="d-flex">
-					<a class="dropdown-item" href="javascript:;" name="NIV" ver="1d3JuoPHkclEV6XmGNSvwLyL96nf_7HhnrC8OFjoGvxA" onclick="changeVersion($(this).attr('name'), $(this).attr('ver'));">New International Version (UK)</a>
+					<a class="dropdown-item" href="javascript:;" name="NIV" ver="1d3JuoPHkclEV6XmGNSvwLyL96nf_7HhnrC8OFjoGvxA" onclick="changeVersion($(this).attr('ver'));">New International Version (UK)</a>
 					<button type="button" class="btn" onclick="offline($(this).prev().attr('ver'));">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
 					</button>
 					</li>
 					
 					<li class="d-flex">
-					<a class="dropdown-item" href="javascript:;" name="NLT" ver="1FCrrdZTZTL5BWZbC9dU-l8Jy012_ZzQqdxrlkGBHz3M" onclick="changeVersion($(this).attr('name'), $(this).attr('ver'));">New Living Translation (1996)</a>
+					<a class="dropdown-item" href="javascript:;" name="NLT" ver="1FCrrdZTZTL5BWZbC9dU-l8Jy012_ZzQqdxrlkGBHz3M" onclick="changeVersion($(this).attr('ver'));">New Living Translation (1996)</a>
 					<button type="button" class="btn" onclick="offline($(this).prev().attr('ver'));">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
 					</button>
 					</li>
 					
 					<li class="d-flex">
-					<a class="dropdown-item" href="javascript:;" name="MSG" ver="1-SmiYJlxWw7atz5hYG4Dlad_iIEpTCa6N9MfuCaOQ0A" onclick="changeVersion($(this).attr('name'), $(this).attr('ver'));">The Message Bible (2002)</a>
+					<a class="dropdown-item" href="javascript:;" name="MSG" ver="1-SmiYJlxWw7atz5hYG4Dlad_iIEpTCa6N9MfuCaOQ0A" onclick="changeVersion($(this).attr('ver'));">The Message Bible (2002)</a>
 					<button type="button" class="btn" onclick="offline($(this).prev().attr('ver'));">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
 					</button>
@@ -882,7 +881,7 @@ async function checkCookie() {
 	
 	let version = getCookie("version");
 	if (version != "") {
-		changeVersion(getCookie("t"), version).then(function(){
+		changeVersion(version).then(function(){
 				let b = getCookie("b");
 				let c = getCookie("c") || 1;
 				if (b != "") {
