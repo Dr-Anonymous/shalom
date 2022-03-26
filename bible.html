@@ -142,7 +142,7 @@ async function changeVersion(t, v) {
 	setCookie("t", t, 365);
 	
 	$('#version').text(t);
-	toast(t, lang);
+	toast(t+lang);
 	//if the version is already loaded-- then no need to load verses
 	//if (oldVer == ver)
 	//return;
