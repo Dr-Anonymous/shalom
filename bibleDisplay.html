@@ -269,10 +269,10 @@
 				</div>
 			</div>
 		</footer>
-		<!-- display -->
+		<!-- display verse -->
 		<div class="container fixed-top">
 			<div class="row">
-				<textarea class="form-control-lg bg-dark text-light fs-3" id="display" rows="4" disabled readonly></textarea>
+				<textarea class="form-control-lg bg-dark text-light fs-2" id="display" rows="4" disabled readonly></textarea>
 			</div>
 		</div>
 		<!-- controls -->
@@ -308,18 +308,14 @@
 					</div>
 				</div>
 				<div class="col text-center">
-					<button id="speak" type="button" class="btn btn-outline-secondary d-none" onclick="playThis(currentP);">
+					<button id="speak" type="button" class="btn btn-outline-secondary d-none" onclick="playThis();">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16">
 							<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
 							<path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"></path>
 						</svg>
 					</button>
 					<audio id="audio">
-						<source
-							id="source"
-							src="data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
-							type="audio/mpeg"
-							/>
+						<source	id="source"	src="data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV" type="audio/mpeg"/>
 					</audio>
 				</div>
 				<div class="col">
@@ -441,10 +437,9 @@
 		<script>
 			var firstTime = true,
 			    playing = false,
-			    firstLine = true,
 			    currentP,
-			    playList,
-				histo = [];
+				histo = [],
+				fromHistory = false;
 			
 			async function toast(tex){
 			$('#toastBody').text(tex);
@@ -572,16 +567,20 @@
 			
 			$("#bible").html("<p>Loading chapter...</p>");
 			
-			$("#speak").removeClass("d-none");
-			firstLine = true;
-			
+			if (firstTime) {
+                    $("#audio")[0].play();
+                    firstTime = false;
+                    $("#speak").removeClass("d-none");
+					$("#history").removeClass("d-none");
+                }
+			if (!fromHistory){
+			histo.push([b,c]);
+			} else {
+			fromHistory = false;
+			}
 			try {
 			if ($("#versions li a[ver='" + ver + "']").attr('offline') == 'true') {
-			
-			var dbData,
-			dbChapter,
-			txt = [],
-			request = indexedDB.open(ver, 1);
+			var dbData,	dbChapter, txt = [], request = indexedDB.open(ver, 1);
 			request.onsuccess = () => {
 			const db = request.result;
 			var transaction = db.transaction(b, "readonly");
@@ -624,24 +623,21 @@
 			                $("#bible").append("<p>" + e[i][0] + ". " + e[i][1] + "</p>");
 			            }
 			        }
-			navig(0);
-			currentP = $('#bible p').first();
-			        enableClick();
-			
+				navig(0);
+			    enableClick();
 			    } catch (err) {
 			        toast(err);
 			    }
 			}
 			//=====history
 			function history(){
-			//console.log(histo);
 			$("#historyOptions").empty();
 			option = '';
 			for (var i = 0; i < histo.length; i++) {
 			        if (lang == "te-IN")
-			option += '<li><a class="dropdown-item" href="javascript:;" onclick="getVerse(' + histo[i][0] + ", " + histo[i][1] + ');">' + allBooks[histo[i][0]][1] + " " + histo[i][1]+ '</a></li>';
+			option += '<li><a class="dropdown-item" href="javascript:;" onclick="fromHistory=true;getVerse(' + histo[i][0] + ", " + histo[i][1] + ');">' + allBooks[histo[i][0]][1] + " " + histo[i][1]+ '</a></li>';
 			else
-			option += '<li><a class="dropdown-item" href="javascript:;" onclick="getVerse(' + histo[i][0] + ", " + histo[i][1] + ');">' + allBooks[histo[i][0]][3] + " " + histo[i][1]+ '</a></li>';
+			option += '<li><a class="dropdown-item" href="javascript:;" onclick="fromHistory=true;getVerse(' + histo[i][0] + ", " + histo[i][1] + ');">' + allBooks[histo[i][0]][3] + " " + histo[i][1]+ '</a></li>';
 			    }
 			$("#historyOptions").append(option);
 			}
@@ -668,32 +664,25 @@
 			    var binary = convertDataURIToBinary(e);
 			    var blob = new Blob([binary], { type: "audio/mpeg" });
 			    var blobUrl = URL.createObjectURL(blob);
-			    if (firstLine) {
-			        play(blobUrl);
-			        firstLine = false;
-			    } else {
-			        playList = blobUrl;
-			    }
-			}
-			
-			function play(blobUrl) {
 			    $("#source").attr("src", blobUrl);
 			    $("#audio")[0].pause();
 			    $("#audio")[0].load(); //suspends and restores all audio element
-			
-			    var playPromise = ($("#audio")[0].oncanplaythrough = $("#audio")[0].play());
-			    if (playPromise !== undefined) {
-			        playPromise
-			            .then((_) => {
-			                // Automatic playback started!
-			                // Show playing UI.
-			            })
-			            .catch((error) => {
-			                // Auto-play was prevented
-			                // Show paused UI.
-			            });
-			    }
+				$("#audio")[0].oncanplaythrough = function () {
+					var playPromise = $("#audio")[0].play();
+					if (playPromise !== undefined) {
+						playPromise
+							.then(() => {
+								// Automatic playback started!
+								// Show playing UI.
+							})
+							.catch((error) => {
+								// Auto-play was prevented
+								// Show paused UI.
+							});
+					}
+				}
 			}
+
 			function convertDataURIToBinary(dataURI) {
 			    var raw = window.atob(dataURI);
 			    var rawLength = raw.length;
@@ -709,47 +698,23 @@
 			    playing = false;
 			    //enable button/link
 			    //enableClick();
-			    if (typeof currentP == "undefined") return;
-			    //remove underline
-			    currentP.css("text-decoration", "none");
-			    //show play button
+			   //show play button
 			    $("#speak svg").html(
 			        '<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"></path>'
 			    );
-			    //play next line
-			    if (currentP.next("p").text() != "") {
-			        $("html, body").animate({ scrollTop: currentP.offset().top }, 1000);
-			        currentP = $(currentP.next("p"));
-			if (playList != $("#source").attr("src")){ //new verse audio has loaded
-			play(playList);
-			} else { //audio not yet loaded-- break the playlist
-			firstLine = true;
-			//playThis(currentP);
-			}
-			
-			    }
 			});
 			
 			$("#audio").on("playing", function () {
 			    playing = true;
-			    if (typeof currentP == "undefined") return;
 			    //show pause button
 			    $("#speak svg").html(
 			        '<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M5 6.25a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5zm3.5 0a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5z"/>'
 			    );
-			    currentP.css("text-decoration", "underline");
-			    // disable button/link
-			    // get next clip ready
-			    if (currentP.next("p").text() != "") {
-			        toVoice(currentP.next("p").text());
-			    }
 			});
-			
-			
 			
 			function enableClick() {
 			$('#bible p').on('click', function(event) {
-			currentP = this;
+			currentP = $(this);
 			var b = parseInt($("#book").attr("value")),
 			    c = $("#chapter").val();
 			if (lang == "te-IN")
@@ -757,13 +722,12 @@
 			else if (lang == "en-US")
 			b = allBooks[b][3];
 			
-			$('#display').val(b + " " + c + ':\n' +$(this).text());
+			$('#display').val(b + " " + c + ':\n' + currentP.text());
 			});
 			}
 			
-			function playThis(e) {
+			function playThis() {
 			    if (!playing) {
-			        currentP = $(e);
 			        //currentP.off('click');
 			        toVoice(currentP.text());
 			    } else {
@@ -789,7 +753,6 @@
 			    maximumItems: 5,
 			    threshold: 1,
 			    onSelectItem: ({ label, value }) => {
-			        //console.log(label, value);
 			        $("#books").hide();
 			        $("#book").attr("value", value);
 			        $("#chapter").focus();
@@ -816,9 +779,9 @@
 			            this.blur();
 			        } else {
 			if (lang == "te-IN")
-			alert("Only " + allBooks[b][2] + " chapters in " + allBooks[b][1]);
+			toast("Only " + allBooks[b][2] + " chapters in " + allBooks[b][1]);
 			else if (lang == "en-US")
-			alert("Only " + allBooks[b][2] + " chapters in " + allBooks[b][3]);
+			toast("Only " + allBooks[b][2] + " chapters in " + allBooks[b][3]);
 			        }
 			    }
 			});
