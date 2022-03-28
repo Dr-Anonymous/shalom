@@ -1,0 +1,72 @@
+---
+---
+
+<head><meta charset="utf-8"> <title>Shalom Worship Centre</title> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta name="keywords" content="ministry,prayer,christianity,church"> <meta name="description" content="Online Ministry"> <meta name="author" content="Shalom Worship Centre"> 
+		<!-- CSS -->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster" />
+		<link href="https://shalomworshipcentre.in/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+		<link rel="stylesheet" href="https://shalomworshipcentre.in/assets/css/font-awesome.css" />
+		<link rel="stylesheet" href="https://shalomworshipcentre.in/assets/css/style.css" />
+		<!-- Favicon and touch icons -->
+		<link rel="shortcut icon" href="https://shalomworshipcentre.in/assets/ico/favicon.ico" />
+		<!-- javascript -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		
+</head>
+<body> <!-- Header --> <div class="container"> <div class="header row"> <div class="span12"> <div class="navbar"> <div class="navbar-inner"> <h1> <a class="brand" href="/">Shalom Worship Centre</a> </h1> <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a> <div class="nav-collapse collapse"> <ul class="nav pull-right"> <li> <a href="/"><i class="icon-home"></i><br />Home</a> </li> <li class="current-page"> <a href="/Our Ministries.html"><i class="icon-camera"></i><br />Our Ministries</a> </li> <li> <a href="/testimonies/"><i class="icon-user"></i><br />Testimonies</a> </li> <li> <a href="/messages"><i class="icon-tasks"></i><br/>Messages</a> </li><li> <a href="/contact.html"><i class="icon-envelope-alt"></i><br />Contact</a> </li> </ul> </div> </div> </div> </div> </div> </div>
+<!-- Page Title --> <div class="page-title"> <div class="container"> <div class="row"> <div class="span12"> <i class="icon-camera page-title-icon"></i> <h2>Online Ministry</h2> </div> </div> </div> </div>
+<!-- Services Full Width Text -->
+<div class="services-half-width container"><div class="row"><div class="services-half-width-text span12">
+      <div>Online schedule:<br>
+       <li>Sunday worship at <b>10:30 AM</b> on YouTube.</li>
+	   <li>Sunday kids program at <b>5pm</b> on Google Meet.</li> 
+       <li>Friday bible study at <b>7:30 PM</b>.</li>
+	   <li>Saturday youth program at <b>6:00 PM</b> on Google Meet.</li>
+	   </div><br><br>
+     
+      <div><a id="main" target="_blank" style="text-decoration: underline;color: #152eeb;">Loading meeting link. Please wait ...</a></div><br>
+      <!--<br><br><div>More at <a href="/messages">Audio message library</a> and <a href="https://www.youtube.com/channel/UCxsHq2M611rQtPlZ6OA3HdA/videos">YouTube channel</a></div>-->
+</div></div></div>
+<!-- Footer --> <footer> <div class="container"> <div class="row"> <div class="social span4"> <a class="facebook" href="https://www.facebook.com/shalomworshipcentre.kkd"></a> <a class="youtube" href="https://www.youtube.com/PrasadCherukuri"></a></div><div class="copyright span4"><p>Copyright 2021 Shalom Worship Centre.</p></div> <!--Google Ads --> <div class="copyright span4 app"></div></div></div></footer>
+<!-- Javascript --> <script src="https://shalomworshipcentre.in/assets/bootstrap/js/bootstrap.min.js"></script>
+<script>
+function getLink (){
+$.ajax({ 
+      crossDomain: true,
+      url: "https://script.google.com/macros/s/AKfycbxPMORBOfxkCP-6XpVw5MWyKg-kQdzVzuPygA5YntCjjLXiuBo2NS634qBz8fPX_GJg/exec?callback=loadLink",
+      method: "GET",
+      dataType: "jsonp"
+    });
+}
+
+function loadLink(e) {
+	$('#main').attr("href", e).text("Click here to open the app");
+}
+
+function urlParam(){
+var url = new URL(window.location.href);
+var param = url.searchParams.toString().slice(0, -1);
+return param;
+}
+
+switch (urlParam()){
+	case 'youth':
+ 	loadLink("https://meet.google.com/wxw-ndze-ajp");   
+    break;
+	case 'kids':
+	loadLink("https://meet.google.com/hoz-mtck-mki");
+	break;
+	case 'meet':
+	loadLink("https://meet.google.com/tkg-pmux-uvv");
+	break;
+	case '':
+	getLink ();
+	break;
+	default:
+	loadLink(urlParam());
+}
+</script>
+
+</body>
