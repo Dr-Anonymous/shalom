@@ -243,17 +243,19 @@
 						</div>
 						<input type="text" class="form-control" id="book" val="" placeholder="Enter Book" autocomplete="off" />
 						<input type="text" class="form-control" id="chapter" placeholder="Chapter" autocomplete="off" /> 
-						<input type="text" class="form-control d-none" id="verse" placeholder="Verse" autocomplete="off" />
+						<input type="text" class="form-control" id="verse" placeholder="Verse" autocomplete="off" />
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="services-full-width container">
-			<div id="bible" class="presentation container" style="text-align: left;">
+		<div class="container services-full-width">
+		<div class="row">
+			<div id="bible" class="col presentation container" style="text-align: left;">
 				<p>Select a book and chapter to start reading.</p>
 			</div>
-			<br />
-			<br />
+			<div id="bible2" class="col presentation container" style="text-align: left;">
+			</div>
+		</div>
 		</div>
 		<!-- Footer -->
 		<footer>
@@ -435,11 +437,12 @@
 		<!-- Javascript -->
 		<script src="https://shalomworshipcentre.in/assets/js/jquery.quicksand.js"></script>
 		<script>
-			var firstTime = true,
+			var firstBible, currentP, B, C,
+				firstTime = true,
 			    playing = false,
-			    currentP,
 				histo = [],
-				fromHistory = false;
+				fromHistory = false
+				secondBible = false;
 			
 			async function toast(tex){
 			$('#toastBody').text(tex);
@@ -547,36 +550,43 @@
 			
 			function getVerse(b, c) {
 			$("#books").hide();
-			
-			if (lang == "te-IN")
-			$("#book").val(allBooks[b][1]);
-			else if (lang == "en-US")
-			$("#book").val(allBooks[b][3]);
-			
-			$("#book").attr("value", b);
-			
-			if (c > allBooks[b][2]) {
-			if (lang == "te-IN")
-			toast(allBooks[b][1] + " లో " + allBooks[b][2] + " అధ్యాయాలు మాత్రమే ఉన్నవి." );
-			else if (lang == "en-US")
-			toast("Only " + allBooks[b][2] + " chapters in " + allBooks[b][3]);
-			return;
+			if (!secondBible){
+				B = b;
+				C = c;
+				if (lang == "te-IN")
+				$("#book").val(allBooks[b][1]);
+				else if (lang == "en-US")
+				$("#book").val(allBooks[b][3]);
+				
+				$("#book").attr("value", b);
+				
+				if (c > allBooks[b][2]) {
+				if (lang == "te-IN")
+				toast(allBooks[b][1] + " లో " + allBooks[b][2] + " అధ్యాయాలు మాత్రమే ఉన్నవి." );
+				else if (lang == "en-US")
+				toast("Only " + allBooks[b][2] + " chapters in " + allBooks[b][3]);
+				return;
+				}
+				
+				$("#chapter").val(c);
+				
+				$("#bible").html("<p>Loading chapter...</p>");
+				
+				if (firstTime) {
+						$("#audio")[0].play();
+						firstTime = false;
+						$("#speak").removeClass("d-none");
+						$("#history").removeClass("d-none");
+					}
+				if (!fromHistory){
+				histo.push([b,c]);
+				} else {
+				fromHistory = false;
+				}
 			}
-			
-			$("#chapter").val(c);
-			
-			$("#bible").html("<p>Loading chapter...</p>");
-			
-			if (firstTime) {
-                    $("#audio")[0].play();
-                    firstTime = false;
-                    $("#speak").removeClass("d-none");
-					$("#history").removeClass("d-none");
-                }
-			if (!fromHistory){
-			histo.push([b,c]);
-			} else {
-			fromHistory = false;
+			if (secondBible){
+			firstBible = ver;
+			ver = secondBible;
 			}
 			try {
 			if ($("#versions li a[ver='" + ver + "']").attr('offline') == 'true') {
@@ -614,17 +624,33 @@
 			}
 			
 			function loadData(e) {
-			    $("#bible").empty();
+			    if (!secondBible)
+				$("#bible").empty();
+				else
+				$("#bible2").empty();
 			    try {
 			        for (var i = 0; i < e.length; i++) {
 			            if (e[i][1].substring(0, 1) == "[") {
+							if (!secondBible)
 			                $("#bible").append("<p>" + e[i][1] + "</p>");
+							else
+							$("#bible2").append("<p>" + e[i][1] + "</p>");
 			            } else {
+							if (!secondBible)
 			                $("#bible").append("<p>" + e[i][0] + ". " + e[i][1] + "</p>");
+							else
+							$("#bible2").append("<p>" + e[i][0] + ". " + e[i][1] + "</p>");
 			            }
 			        }
-				navig(0);
-			    enableClick();
+					navig(0);
+					enableClick();
+					if(!secondBible){
+						secondBible = "1d3JuoPHkclEV6XmGNSvwLyL96nf_7HhnrC8OFjoGvxA";
+						getVerse(B, C);
+					} else {
+						secondBible = false;
+						ver = firstBible;
+					}
 			    } catch (err) {
 			        toast(err);
 			    }
@@ -722,7 +748,7 @@
 			else if (lang == "en-US")
 			b = allBooks[b][3];
 			
-			$('#display').val(b + " " + c + ':\n' + currentP.text());
+			$('#display').val(b + " " + c + ':\n' + currentP.text()+'\n');
 			});
 			}
 			
@@ -774,15 +800,8 @@
 			        var b = parseInt($("#book").attr("value")),
 			            c = parseInt($("#chapter").val()) || 1;
 			        if (isNaN(c)) return;
-			        if (c < allBooks[b][2] + 1) {
-			getVerse(b, c);
-			            this.blur();
-			        } else {
-			if (lang == "te-IN")
-			toast("Only " + allBooks[b][2] + " chapters in " + allBooks[b][1]);
-			else if (lang == "en-US")
-			toast("Only " + allBooks[b][2] + " chapters in " + allBooks[b][3]);
-			        }
+					getVerse(b, c);
+					this.blur();   
 			    }
 			});
 			
@@ -799,7 +818,7 @@
 			
 			$('#bible p').css("text-decoration", "none");
 			vElement.css("text-decoration", "underline");
-			$("html, body").animate({ scrollTop: vElement.offset().top }, 1000);
+			$("html, body").animate({ scrollTop: vElement.offset().top - 300 }, 500);
 			    }
 			});
 		</script>
