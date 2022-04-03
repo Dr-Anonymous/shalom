@@ -83,7 +83,6 @@
 	<script>
 		var id,
 			firstTime = true;
-			
 			$(document).ready(function(){
 			  getSlides('all');
 			});
@@ -99,8 +98,6 @@
 				});
 			}
 			  function loadData(e) {
-				if (id == 'all'){
-					$("#show").addClass('d-none');
 					if (firstTime){
 					firstTime = false;
 					//autosuggest book names
@@ -121,9 +118,8 @@
 						myData.push(myArr);
 					}
 					ac.setData(myData);
-					}
 					return;
-				}
+					}
 				$("#list").empty();
 				$("#resultHere").empty();
 				$(".dot-container").empty();
@@ -292,17 +288,6 @@
 		 openFullscreen($('#show')[0]);
 		 e.preventDefault();
 		 }
-		 else if (e.keyCode == '8' && e.keyCode == '91') {
-		 // backspace + cmd/win key
-		 getSlides('all');
-		 e.preventDefault();
-		}
-		else if (e.keyCode == '8' && e.ctrlKey) {
-		 // backspace + ctrl key
-		 getSlides('all');
-		 e.preventDefault();
-		 }
-		 
 		}
 		
 		/* View in fullscreen */
