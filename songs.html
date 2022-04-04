@@ -21,12 +21,14 @@
 		.slideshow-container {
 		position: relative;
 		}
+		
 		/* Slides */
 		.mySlides {
 		display: none;
 		padding: 10px 80px 80px 80px;
 		}
-		/* Next & previous buttons */
+		
+/*
 		.prev, .next {
 		cursor: pointer;
 		position: absolute;
@@ -40,17 +42,18 @@
 		border-radius: 0 3px 3px 0;
 		user-select: none;
 		}
-		/* Position the "next button" to the right */
+
 		.next {
 		position: absolute;
 		right: 0;
 		border-radius: 3px 0 0 3px;
 		}
-		/* On hover, add a black background color with a little bit see-through */
+
 		.prev:hover, .next:hover {
 		background-color: rgba(0,0,0,0.8);
 		color: white;
 		}
+*/
 		/* The dot/bullet/indicator container */
 		.dot-container {
 		text-align: center;
@@ -88,7 +91,7 @@
 			 
 			function getSlides(e){
 			id = e,
-			url = "https://script.google.com/macros/s/AKfycbxYaSO1MNdvicq4I8WvRjaDsNnePlm8rXQ_-ewK9yy-Je6Z-sGKlfCmmYVhJahAImS6Qg/exec?callback=loadData&request="+ id;
+			url = "https://script.google.com/macros/s/AKfycbwcswVidsyIJLI6Fk4B-gDPNT_VJQiNr5Eam92AhBdieVk4jWpMAr5Yv35pzenCq05vcA/exec?callback=loadData&request="+ id;
 			$.ajax({
 				crossDomain: true,
 				url: url,
@@ -100,19 +103,20 @@
 					if (firstTime){
 					firstTime = false;
 					//autosuggest book names
-					const field = document.getElementById("songName");
+					const field = $("#songName")[0];
 					const ac = new Autocomplete(field, {
 						onSelectItem: ({
 							label,
 							value
 						}) => {
 							getSlides(value);
+							openFullscreen($('#show')[0]);
 						},
 					});
 					var myData = [];
 					for (i = 0; i < e.length; i++) {
 						var myArr = {};
-						myArr["label"] = e[i][1];
+						myArr["label"] = e[i][0];
 						myArr["value"] = (i+1);
 						myData.push(myArr);
 					}
@@ -123,7 +127,7 @@
 				$(".dot-container").empty();
 				$("#show").removeClass('d-none');
 				//e[0] //is id
-				$('h2').text(e[1]); //[1] item is heading
+				//$('h2').text(e[1]); //[1] item is heading
 			  try {var j = 1;
 			       for (var i = 2; i < e.length; i++) {
 				   if (e[i]== "" || e[i]== "\n" || e[i]== "\t"){
@@ -193,7 +197,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col">
-					<input type="text" class="form-control" id="songName" placeholder="Song name..." autocomplete="off" />
+					<input type="text" class="form-control" id="songName" placeholder="Type song name" autocomplete="off" />
 				</div>
 			</div>
 		</div>
@@ -203,11 +207,9 @@
 		<div class="row">
 			<div id="show" class="services-half-width-text slideshow-container bg-dark text-light d-none">
 				<div id="resultHere" class="col" ></div>
-				<div class="fixed-bottom">
-					<a class="prev" onclick="plusSlides(-1)">❮</a>
-					<a class="next" onclick="plusSlides(1)">❯</a>
-					<div class="dot-container"></div>
-				</div>
+				<a class="prev d-none" onclick="plusSlides(-1)">❮</a>
+				<a class="next d-none" onclick="plusSlides(1)">❯</a>
+				<div class="dot-container fixed-bottom"></div>
 			</div>
 		</div>
 	</div>
@@ -215,9 +217,14 @@
 	<footer>
 		<div class="container">
 			<div class="row">
-				<div class="social col"> <a class="facebook" href="https://www.facebook.com/shalomworshipcentre.kkd"></a> <a class="youtube" href="https://www.youtube.com/PrasadCherukuri"></a></div>
+				<div class="social col">
+				<a class="facebook" href="https://www.facebook.com/shalomworshipcentre.kkd"></a>
+				</div>
 				<div class="copyright col">
-					<p>Copyright 2022 Shalom Worship Centre.</p>
+					<p>&#169;Shalom Worship Centre.</p>
+				</div>
+				<div class="social col">
+				<a class="youtube float-start" href="https://www.youtube.com/PrasadCherukuri"></a>
 				</div>
 			</div>
 		</div>
