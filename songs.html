@@ -24,8 +24,7 @@
 		/* Slides */
 		.mySlides {
 		display: none;
-		padding: 80px;
-		//text-align: center;
+		padding: 10px 80px 80px 80px;
 		}
 		/* Next & previous buttons */
 		.prev, .next {
@@ -130,7 +129,7 @@
 				   if (e[i]== "" || e[i]== "\n" || e[i]== "\t"){
 				   continue;
 				   }
-					$("#resultHere").append("<div class=\"mySlides\"><p class=\"fs-1 lh-lg\">"+ e[i].toString().replace(/\u000b|\n/g, '<br>').trim()+"</p></div>"); //.replace(/\t/g, '&nbsp;&nbsp;')
+					$("#resultHere").append("<div class=\"mySlides\"><p class=\"fs-1 lh-base\">"+ e[i].toString().replace(/\u000b|\n/g, '<br>').trim()+"</p></div>"); //.replace(/\t/g, '&nbsp;&nbsp;')
 					$(".dot-container").append("<span class=\"dot\" onclick=\"currentSlide("+ j +")\"></span>");
 					j++;
 				 }
