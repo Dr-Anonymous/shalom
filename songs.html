@@ -19,6 +19,7 @@
 		button span {
 		pointer-events: none;
 		}
+		
 		* {box-sizing: border-box}
 		/* Slideshow container */
 		.slideshow-container {
@@ -29,37 +30,15 @@
 		display: none;
 		padding: 10px 80px 80px 80px;
 		}
-		/*
-		.prev, .next {
-		cursor: pointer;
-		position: absolute;
-		top: 50%;
-		width: auto;
-		margin-top: -30px;
-		padding: 16px;
-		color: #888;
-		font-weight: bold;
-		font-size: 20px;
-		border-radius: 0 3px 3px 0;
-		user-select: none;
-		}
-		.next {
-		position: absolute;
-		right: 0;
-		border-radius: 3px 0 0 3px;
-		}
-		.prev:hover, .next:hover {
-		background-color: rgba(0,0,0,0.8);
-		color: white;
-		}
-		*/
+		
 		/* The dot/bullet/indicator container */
 		.dot-container {
 		text-align: center;
 		padding: 20px;
 		background: #f1f1f100;
 		}
-		/* The dots/bullets/indicators */
+		
+		/* The bullets */
 		.dot {
 		cursor: pointer;
 		height: 15px;
@@ -70,6 +49,7 @@
 		display: inline-block;
 		transition: background-color 0.6s ease;
 		}
+		
 		/* Add a background color to the active dot/circle */
 		.active, .dot:hover {
 		background-color: #717171;
@@ -206,12 +186,34 @@
 		<div class="row">
 			<div id="show" class="services-half-width-text slideshow-container bg-dark text-light d-none">
 				<div id="resultHere" class="col" ></div>
-				<a class="prev d-none" onclick="plusSlides(-1)">❮</a>
-				<a class="next d-none" onclick="plusSlides(1)">❯</a>
-				<div class="dot-container fixed-bottom"></div>
+				<div class="container fixed-bottom">
+					<div class="row">
+						<div class="text-start col">
+						<button type="button" class="btn btn-outline-secondary" onclick="plusSlides(-1);">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+								<path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"></path>
+							</svg>
+						</button>
+						</div>
+						<div class="dot-container col"></div>
+						<div class="text-end col">
+						<button type="button" class="btn btn-outline-secondary" onclick="plusSlides(1);">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+								<path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
+							</svg>
+						</button>
+						</div>
+					</div>
+				</div>
+				<button id="fullScreen" type="button" class="btn btn-outline-secondary position-absolute top-0 end-0" onclick="closeFullscreen();">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen-exit" viewBox="0 0 16 16">
+					  <path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/>
+					</svg>
+				</button>
 			</div>
 		</div>
 	</div>
+	
 	<!-- Footer --> 
 	<footer>
 		<div class="container">
@@ -261,31 +263,21 @@
 		document.onkeydown = checkKey;
 		
 		function checkKey(e) {
-		
-		 e = e || window.event;
-		
-		 if (e.keyCode == '37') {
-		    // left arrow
-		 plusSlides(-1);
-		 }
-		 else if (e.keyCode == '39') {
-		    // right arrow
-		 plusSlides(1);
-		 }
-		 else if (e.keyCode == '27') {
-		 // esc key
-		 closeFullscreen;
-		 }
-		 else if (e.keyCode == '70' && e.ctrlKey) {
-		 // f + ctrl key
-		 openFullscreen($('#show')[0]);
-		 e.preventDefault();
-		 }
-		 else if (e.keyCode == '70' && e.keyCode == '91') {
-		 // f + cmd/win key
-		 openFullscreen($('#show')[0]);
-		 e.preventDefault();
-		 }
+			e = e || window.event;
+			
+			if (e.keyCode == '37') {
+			// left arrow
+			plusSlides(-1);
+			}
+			else if (e.keyCode == '39') {
+			// right arrow
+			plusSlides(1);
+			}
+			else if (e.keyCode == '70' && e.ctrlKey) {
+			// f + ctrl key
+			openFullscreen($('#show')[0]);
+			e.preventDefault();
+			}
 		}
 		
 		/* View in fullscreen */
@@ -297,7 +289,9 @@
 		} else if (elem.msRequestFullscreen) { /* IE11 */
 		  elem.msRequestFullscreen();
 		}
+		$('#fullScreen').show();
 		}
+		
 		/* Close fullscreen */
 		function closeFullscreen() {
 		if (document.exitFullscreen) {
@@ -307,6 +301,7 @@
 		} else if (document.msExitFullscreen) { /* IE11 */
 		  document.msExitFullscreen();
 		}
+		$('#fullScreen').hide();
 		}
 	</script>
 </body>
