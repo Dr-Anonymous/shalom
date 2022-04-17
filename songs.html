@@ -64,8 +64,7 @@
 			slideIndex = 1,
 			downloadingVer = false,
 			offline = false,
-			url = "https://script.google.com/macros/s/AKfycbw_mOWqvvDb_IHZS_pZ9Ob4bAjQJtmV5aRyj1AWFexmmfIg6Syd7p8P6GoHMvxgklFU/exec?",
-			docTitle = 'Shalom Songsbook';
+			url = "https://script.google.com/macros/s/AKfycbw_mOWqvvDb_IHZS_pZ9Ob4bAjQJtmV5aRyj1AWFexmmfIg6Syd7p8P6GoHMvxgklFU/exec?";
 		
 			function urlParam(){
 			var url = new URL(window.location.href);
@@ -78,9 +77,14 @@
 			if (para == 'parent'){
 			parent = true;
 			child = window.open(window.location.pathname + "?child");
+			$('#clearChild').removeClass('d-none');
+			$('#fullScreen').addClass('d-none');
 			} else if (para == 'child'){
 			child = true;
 			parent = window.opener;
+			document.title = "Songsbook";
+			$('#fullScreen').addClass('d-none');
+			$('#controls').addClass('d-none');
 			}
 			
 			if ((await window.indexedDB.databases()).map(db => db.name).includes('songsbook')){
@@ -148,8 +152,7 @@
 				$("#resultHere").empty();
 				$(".dot-container").empty();
 				$("#show").removeClass('d-none');
-				//document.title = docTitle = e[0]; //is heading
-				
+				//document.title = docTitle = e[0]; //is heading				
 			  try {var j = 1;
 			       for (var i = 1; i < e.length; i++) {
 				   e[i] == e[i].trim();
@@ -234,7 +237,7 @@
 		<div class="row">
 			<div id="show" class="services-half-width-text slideshow-container bg-dark text-light d-none">
 				<div id="resultHere" class="col" ></div>
-				<div class="container fixed-bottom">
+				<div class="container fixed-bottom" id="controls">
 					<div class="row">
 						<div class="text-start col">
 							<button type="button" class="btn btn-outline-secondary" onclick="plusSlides(-1);">
@@ -253,9 +256,15 @@
 						</div>
 					</div>
 				</div>
-				<button id="fullScreen" type="button" class="btn btn-outline-secondary position-absolute top-0 end-0 d-none" onclick="toggleFullScreen();">
+				<button id="fullScreen" type="button" class="btn btn-outline-secondary position-absolute top-0 end-0" onclick="toggleFullScreen();">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen-exit" viewBox="0 0 16 16">
 						<path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/>
+					</svg>
+				</button>
+				<button id="clearChild" type="button" class="btn btn-outline-secondary position-absolute top-0 end-0 d-none" onclick="child.loadData([' ', ' ']);">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace" viewBox="0 0 16 16">
+					  <path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z"/>
+					  <path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z"/>
 					</svg>
 				</button>
 			</div>
@@ -356,10 +365,7 @@
 			toggleFullScreen();
 			e.preventDefault();
 			}
-			else if (e.keyCode == '27') {
-			// esc key
-			//document.title = docTitle;
-			}
+			
 		}
 		
 		function toggleFullScreen(){
@@ -378,7 +384,6 @@
 		} else if (elem.msRequestFullscreen) { /* IE11 */
 		  elem.msRequestFullscreen();
 		}
-		//document.title = 'Songsbook';
 		}
 		
 		/* Close fullscreen */
@@ -390,7 +395,6 @@
 			} else if (document.msExitFullscreen) { /* IE11 */
 			  document.msExitFullscreen();
 			}
-			//document.title = docTitle;
 		}
 			
 		/*============ download to offline*/
