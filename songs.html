@@ -166,7 +166,7 @@
 				 openFullscreen($('#show')[0]);
 				 console.log('received');
 				 }
-				 if (parent){
+				 if (parent == true){
 					child.loadData(e);
 					console.log('sent');
 					}
@@ -313,11 +313,17 @@
 		function plusSlides(n) {
 		slideIndex = slideIndex + n;
 		showSlides(slideIndex);
+		if (parent == true){
+		child.showSlides(slideIndex);
+		}
 		}
 		
 		function currentSlide(n) {
 		slideIndex = n;
 		showSlides(n);
+		if (parent == true){
+		child.showSlides(n);
+		}
 		}
 		
 		function showSlides(n) {
