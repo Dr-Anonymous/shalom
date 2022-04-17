@@ -65,7 +65,7 @@
 			downloadingVer = false,
 			offline = false,
 			url = "https://script.google.com/macros/s/AKfycbw_mOWqvvDb_IHZS_pZ9Ob4bAjQJtmV5aRyj1AWFexmmfIg6Syd7p8P6GoHMvxgklFU/exec?";
-		
+
 			function urlParam(){
 			var url = new URL(window.location.href);
 			var param = url.searchParams.toString().slice(0, -1);
@@ -147,6 +147,8 @@
 						}
 						ac.setData(myData);
 						$('#songName').removeClass('d-none').focus();
+						if (child == true)
+						loadData([' ',' ']);
 						return;
 					}
 				$("#resultHere").empty();
