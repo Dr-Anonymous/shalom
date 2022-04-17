@@ -8,7 +8,7 @@
 	<meta name="keywords" content="Worship,songs,christianity,church">
 	<meta name="description" content="Songs">
 	<meta name="author" content="Shalom Worship Centre">
-	<!-- CSS --> 
+	<!-- CSS -->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
@@ -59,13 +59,30 @@
 	<script src="https://shalomworshipcentre.in/assets/js/autocomplete.js"></script>
 	<script>
 		var firstTime = true,
+			parent = false,
+			child = false,
 			slideIndex = 1,
 			downloadingVer = false,
 			offline = false,
-			url = "https://script.google.com/macros/s/AKfycbw_mOWqvvDb_IHZS_pZ9Ob4bAjQJtmV5aRyj1AWFexmmfIg6Syd7p8P6GoHMvxgklFU/exec?";
+			url = "https://script.google.com/macros/s/AKfycbw_mOWqvvDb_IHZS_pZ9Ob4bAjQJtmV5aRyj1AWFexmmfIg6Syd7p8P6GoHMvxgklFU/exec?",
+			docTitle = 'Shalom Songsbook';
 		
+			function urlParam(){
+			var url = new URL(window.location.href);
+			var param = url.searchParams.toString().slice(0, -1);
+			return param;
+			}
 			
 			$(document).ready(async function(){
+			var para = urlParam();
+			if (para == 'parent'){
+			parent = true;
+			child = window.open(window.location.hostname + window.location.pathname + "?child");
+			} else if (para == 'child'){
+			child = true;
+			parent = window.opener;
+			}
+			
 			if ((await window.indexedDB.databases()).map(db => db.name).includes('songsbook')){
 			offline = true;
 			}
@@ -109,6 +126,7 @@
 						//autosuggest book names
 						const field = $("#songName")[0];
 						const ac = new Autocomplete(field, {
+							maximumItems: 10,
 							onSelectItem: ({
 								label,
 								value
@@ -130,7 +148,8 @@
 				$("#resultHere").empty();
 				$(".dot-container").empty();
 				$("#show").removeClass('d-none');
-				//$('h2').text(e[0]); //is heading
+				//document.title = docTitle = e[0]; //is heading
+				
 			  try {var j = 1;
 			       for (var i = 1; i < e.length; i++) {
 				   e[i] == e[i].trim();
@@ -143,6 +162,14 @@
 				 }
 				 slideIndex = 1;
 				 showSlides(1);
+				 if (child == true){
+				 openFullscreen($('#show')[0]);
+				 console.log('received');
+				 }
+				 if (parent){
+					child.loadData(e);
+					console.log('sent');
+					}
 				}catch(err) {
 			        $("#resultHere").append(err);
 				}
@@ -282,83 +309,88 @@
 		toastBox.show();
 		return;
 		}
-			//======== slides		
-			function plusSlides(n) {
-			slideIndex = slideIndex + n;
-			showSlides(slideIndex);
-			}
+		//======== slides		
+		function plusSlides(n) {
+		slideIndex = slideIndex + n;
+		showSlides(slideIndex);
+		}
+		
+		function currentSlide(n) {
+		slideIndex = n;
+		showSlides(n);
+		}
+		
+		function showSlides(n) {
+		var i;
+		var slides = $(".mySlides");
+		var dots = $(".dot");
+		if (n > slides.length) {slideIndex = 1}    
+		if (n < 1) {slideIndex = slides.length}
+		for (i = 0; i < slides.length; i++) {
+		   slides[i].style.display = "none";  
+		}
+		for (i = 0; i < dots.length; i++) {
+		   dots[i].className = dots[i].className.replace(" active", "");
+		}
+		slides[slideIndex-1].style.display = "block";  
+		dots[slideIndex-1].className += " active";
+		}
+		
+		
+		document.onkeydown = checkKey;
+		
+		function checkKey(e) {
+			e = e || window.event;
 			
-			function currentSlide(n) {
-			slideIndex = n;
-			showSlides(n);
+			if (e.keyCode == '37' && $(':focus').attr('id') != 'songName') {
+			// left arrow
+			plusSlides(-1);
 			}
-			
-			function showSlides(n) {
-			var i;
-			var slides = $(".mySlides");
-			var dots = $(".dot");
-			if (n > slides.length) {slideIndex = 1}    
-			if (n < 1) {slideIndex = slides.length}
-			for (i = 0; i < slides.length; i++) {
-			   slides[i].style.display = "none";  
+			else if (e.keyCode == '39' && $(':focus').attr('id') != 'songName') {
+			// right arrow
+			plusSlides(1);
 			}
-			for (i = 0; i < dots.length; i++) {
-			   dots[i].className = dots[i].className.replace(" active", "");
+			else if (e.keyCode == '70' && e.ctrlKey) {
+			// f + ctrl key
+			toggleFullScreen();
+			e.preventDefault();
 			}
-			slides[slideIndex-1].style.display = "block";  
-			dots[slideIndex-1].className += " active";
+			else if (e.keyCode == '27') {
+			// esc key
+			//document.title = docTitle;
 			}
-			
-			
-			document.onkeydown = checkKey;
-			
-			function checkKey(e) {
-				e = e || window.event;
-				
-				if (e.keyCode == '37' && $(':focus').attr('id') != 'songName') {
-				// left arrow
-				plusSlides(-1);
-				}
-				else if (e.keyCode == '39' && $(':focus').attr('id') != 'songName') {
-				// right arrow
-				plusSlides(1);
-				}
-				else if (e.keyCode == '70' && e.ctrlKey) {
-				// f + ctrl key
-				//openFullscreen($('#show')[0]);
-				toggleFullScreen();
-				e.preventDefault();
-				}
+		}
+		
+		function toggleFullScreen(){
+		if (document.fullscreen || document.webkitIsFullScreen)
+		closeFullscreen();
+		else
+		openFullscreen($('#show')[0]);
+		}
+		
+		/* View in fullscreen */
+		function openFullscreen(elem) {
+		if (elem.requestFullscreen) {
+		  elem.requestFullscreen();
+		} else if (elem.webkitRequestFullscreen) { /* Safari */
+		  elem.webkitRequestFullscreen();
+		} else if (elem.msRequestFullscreen) { /* IE11 */
+		  elem.msRequestFullscreen();
+		}
+		//document.title = 'Songsbook';
+		}
+		
+		/* Close fullscreen */
+		function closeFullscreen() {
+			if (document.exitFullscreen) {
+			  document.exitFullscreen();
+			} else if (document.webkitExitFullscreen) { /* Safari */
+			  document.webkitExitFullscreen();
+			} else if (document.msExitFullscreen) { /* IE11 */
+			  document.msExitFullscreen();
 			}
-			
-			function toggleFullScreen(){
-			if (document.fullscreen || document.webkitIsFullScreen)
-			closeFullscreen();
-			else
-			openFullscreen($('#show')[0]);
-			}
-			
-			/* View in fullscreen */
-			function openFullscreen(elem) {
-			if (elem.requestFullscreen) {
-			  elem.requestFullscreen();
-			} else if (elem.webkitRequestFullscreen) { /* Safari */
-			  elem.webkitRequestFullscreen();
-			} else if (elem.msRequestFullscreen) { /* IE11 */
-			  elem.msRequestFullscreen();
-			}
-			}
-			
-			/* Close fullscreen */
-			function closeFullscreen() {
-				if (document.exitFullscreen) {
-				  document.exitFullscreen();
-				} else if (document.webkitExitFullscreen) { /* Safari */
-				  document.webkitExitFullscreen();
-				} else if (document.msExitFullscreen) { /* IE11 */
-				  document.msExitFullscreen();
-				}
-			}
+			//document.title = docTitle;
+		}
 			
 		/*============ download to offline*/
 		async function downloadOffline() {
