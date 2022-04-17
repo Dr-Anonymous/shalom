@@ -367,7 +367,11 @@
 			toggleFullScreen();
 			e.preventDefault();
 			}
-			
+			else if (e.keyCode == '27') {
+			// esc key
+			if (parent == true)
+			child.loadData([' ', ' ']);
+			}
 		}
 		
 		function toggleFullScreen(){
