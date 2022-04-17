@@ -77,7 +77,7 @@
 			var para = urlParam();
 			if (para == 'parent'){
 			parent = true;
-			child = window.open(window.location.hostname + window.location.pathname + "?child");
+			child = window.open(window.location.pathname + "?child");
 			} else if (para == 'child'){
 			child = true;
 			parent = window.opener;
@@ -162,13 +162,8 @@
 				 }
 				 slideIndex = 1;
 				 showSlides(1);
-				 if (child == true){
-				 openFullscreen($('#show')[0]);
-				 console.log('received');
-				 }
 				 if (parent == true){
 					child.loadData(e);
-					console.log('sent');
 					}
 				}catch(err) {
 			        $("#resultHere").append(err);
@@ -314,7 +309,7 @@
 		slideIndex = slideIndex + n;
 		showSlides(slideIndex);
 		if (parent == true){
-		child.showSlides(slideIndex);
+		child.plusSlides(n);
 		}
 		}
 		
@@ -322,7 +317,7 @@
 		slideIndex = n;
 		showSlides(n);
 		if (parent == true){
-		child.showSlides(n);
+		child.currentSlide(n);
 		}
 		}
 		
