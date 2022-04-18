@@ -1,6 +1,7 @@
 ---
 ---
 
+
 <head>
 	<meta charset="utf-8">
 	<title>Shalom Worship Centre</title>
@@ -167,7 +168,7 @@
 				 slideIndex = 1;
 				 showSlides(1);
 				 if(jumbleFonts)
-				 changeFont();
+				 loadCSS();
 				 if (parent == true){
 					child.loadData(e);
 					}
@@ -479,10 +480,7 @@
 			}else{
 			$(ele).removeClass('btn-outline-secondary').addClass('btn-secondary');
 			jumbleFonts = true;
-			var font = loadCSS();
-			if (parent == true){
-			child.loadCSS(font);
-			}
+			loadCSS();
 			}
 		}
 		
@@ -493,7 +491,9 @@
 		}
 		$('#fontFamily').attr('href', 'https://fonts.googleapis.com/css?family=' + font);
 		$('#resultHere').css('font-family',font);
-		return font;
+		if (parent == true){
+		child.loadCSS(font);
+		}
 		}
 	</script>
 </body>
