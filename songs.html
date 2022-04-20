@@ -499,7 +499,7 @@
 			loadCSS();
 			//set cookie to true
 			const d = new Date();
-			d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
+			d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
 			document.cookie = "jumbleFonts=true;expires="+ d.toUTCString() +";path=/;";
 			}
 		}
@@ -530,7 +530,9 @@
 				c = c.substring(1);
 			}
 			if (c.indexOf(name) == 0) {
-				$("button[onclick='changeFont();']").click();
+				$("button[onclick='changeFont();']").removeClass('btn-outline-secondary').addClass('btn-secondary');
+				jumbleFonts = true;
+				return;
 			}
 		}
 		//jumbleFonts = false;
