@@ -26,10 +26,13 @@
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 		<script src="https://shalomworshipcentre.in/assets/js/autocomplete.js"></script>
 		<script>
-			//dropdown populate
+			/* dropdown populate */
 			var lang = "te-IN",
 			ver = "14xBeAaiu1QTfOqNK0YGabiNiFV4EUtC2QxWXApVERBg",
 			downloadingVer = false,
+			parent = false,
+			child = false,
+			option = "",
 			allBooks = [
 			        [0, 0, 0, 0],
 			        [1, "ఆదికాండము", 50, "Genesis"],
@@ -98,17 +101,31 @@
 			        [64, "3 యోహాను", 1, "3 John"],
 			        [65, "యూదా", 1, "Jude"],
 			        [66, "ప్రకటన", 22, "Revelation"],
-			    ],
-			option = "";
+			    ];
+				
+			function urlParam(){
+			var url = new URL(window.location.href);
+			var param = url.searchParams.toString().slice(0, -1);
+			return param;
+			}
 			$(document).ready(async function () {
-			    let dropdowns = document.querySelectorAll(".myClass");
-			    dropdowns.forEach((dd) => {
-			        dd.addEventListener("click", function (e) {
-			            var el = this.nextElementSibling;
-			            if (el) el.style.display = el.style.display === "block" ? "none" : "block";
-			        });
-			    });
-			//default language
+			var para = urlParam();
+			if (para == 'parent'){
+			parent = true;
+			child = window.open(window.location.pathname + "?child");
+			} else if (para == 'child'){
+			child = true;
+			parent = window.opener;
+			}
+			/* non collapsing menu */
+			let dropdowns = document.querySelectorAll(".myClass");
+			dropdowns.forEach((dd) => {
+				dd.addEventListener("click", function (e) {
+					var el = this.nextElementSibling;
+					if (el) el.style.display = el.style.display === "block" ? "none" : "block";
+				});
+			});
+			/* default language */
 			lang = "te-IN";
 			    populateDropDown();
 			for (var i = 0; i < $("#versions li a").length; i++){
@@ -118,21 +135,21 @@
 			}
 			}
 			});
-			//end of on document.ready.function
+			/* end of on document.ready.function */
 			
 			function clearText() {
 			    $('#display').val('');
 			}
 			
-			//set bible version and language
+			/* set bible version and language */
 			async function changeVersion(v) {
 			$("#versions li a[ver='" + ver +"']").removeClass('list-group-item disabled');
 			$("#versions li a[ver='" + v +"']").addClass('list-group-item disabled');
 			ver = v;
 			
-			if (ver == '14xBeAaiu1QTfOqNK0YGabiNiFV4EUtC2QxWXApVERBg') { //back to default- telugu bible
+			if (ver == '14xBeAaiu1QTfOqNK0YGabiNiFV4EUtC2QxWXApVERBg') { /* back to default- telugu bible */
 			lang = "te-IN";
-			} else {//going away from telugu bible
+			} else {/* going away from telugu bible */
 			lang = "en-US";
 			}
 			
@@ -483,7 +500,7 @@
 			
 			function writeToDb(e) {
 			var request = window.indexedDB.open(downloadingVer, 1);
-			// Create schema
+			/* Create schema */ 
 			request.onupgradeneeded = function(event) {
 			const db = request.result;
 			for (var i = 1; i < 67; i++) {
@@ -498,7 +515,7 @@
 			for (var i = 1; i < 67; i++) {
 			var transaction = db.transaction(i, "readwrite");
 			var book = transaction.objectStore(i);
-			// Add data
+			/* Add data */
 			book.add(e[i]);
 			}
 			toast($("#versions li a[ver='" + downloadingVer + "']").text() + ' available offline.').then(
@@ -655,7 +672,7 @@
 			        toast(err);
 			    }
 			}
-			//=====history
+			/* =====history===================== */
 			function history(){
 			$("#historyOptions").empty();
 			option = '';
@@ -668,7 +685,7 @@
 			$("#historyOptions").append(option);
 			}
 			
-			//===========audio output
+			/* ===========audio output============================== */
 			function toVoice(data) {
 			    if (data.charAt(0) == "[") {
 			        data = data.slice(data.indexOf("]") + 2, -1).replace(/౹/, "");
@@ -692,18 +709,18 @@
 			    var blobUrl = URL.createObjectURL(blob);
 			    $("#source").attr("src", blobUrl);
 			    $("#audio")[0].pause();
-			    $("#audio")[0].load(); //suspends and restores all audio element
+			    $("#audio")[0].load(); /* suspends and restores all audio element */
 				$("#audio")[0].oncanplaythrough = function () {
 					var playPromise = $("#audio")[0].play();
 					if (playPromise !== undefined) {
 						playPromise
 							.then(() => {
-								// Automatic playback started!
-								// Show playing UI.
+								/* Automatic playback started!
+								 Show playing UI. */
 							})
 							.catch((error) => {
-								// Auto-play was prevented
-								// Show paused UI.
+								/* Auto-play was prevented
+								 Show paused UI. */
 							});
 					}
 				}
@@ -719,12 +736,12 @@
 			    return array;
 			}
 			
-			//====audio player control
+			/* ====audio player control====================== */
 			$("#audio").on("ended", function () {
 			    playing = false;
-			    //enable button/link
+			    /*enable button/link
 			    //enableClick();
-			   //show play button
+			   //show play button*/
 			    $("#speak svg").html(
 			        '<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"></path>'
 			    );
@@ -732,7 +749,7 @@
 			
 			$("#audio").on("playing", function () {
 			    playing = true;
-			    //show pause button
+			    /* show pause button */
 			    $("#speak svg").html(
 			        '<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M5 6.25a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5zm3.5 0a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5z"/>'
 			    );
@@ -749,30 +766,31 @@
 			b = allBooks[b][3];
 			
 			$('#display').val(b + " " + c + ':\n' + currentP.text()+'\n');
+			if (parent == true) child.$('#display').val(b + " " + c + ':\n' + currentP.text()+'\n');
 			});
 			}
 			
 			function playThis() {
 			    if (!playing) {
-			        //currentP.off('click');
+			        /* currentP.off('click'); */
 			        toVoice(currentP.text());
 			    } else {
 			        if ($("#audio")[0].paused) {
 			            $("#audio")[0].play();
-			            //show pause button
+			            /* show pause button */
 			            $("#speak svg").html(
 			                '<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M5 6.25a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5zm3.5 0a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5z"/>'
 			            );
 			            return;
 			        }
 			        $("#audio")[0].pause();
-			        //show play button
+			        /* show play button */
 			        $("#speak svg").html(
 			            '<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"></path>'
 			        );
 			    }
 			}
-			//autosuggest book names
+			/* autosuggest book names */
 			const field = document.getElementById("book");
 			const ac = new Autocomplete(field, {
 			    data: [],
@@ -793,7 +811,7 @@
 			}
 			ac.setData(myData);
 			
-			//chapters field
+			/* chapters field */
 			$("#chapter").keypress(function (event) {
 			    var keycode = event.keyCode ? event.keyCode : event.which;
 			    if (keycode == "13") {
@@ -805,7 +823,7 @@
 			    }
 			});
 			
-			//verse field
+			/* verse field */
 			$("#verse").keypress(function (event) {
 			    var keycode = event.keyCode ? event.keyCode : event.which;
 			    if (keycode == "13") {
@@ -821,6 +839,53 @@
 			$("html, body").animate({ scrollTop: vElement.offset().top - 300 }, 500);
 			    }
 			});
+			
+			/* keyboard shortcuts */
+			document.onkeydown = checkKey;
+		
+			function checkKey(e) {
+				e = e || window.event;
+				
+				if (e.keyCode == '70' && e.ctrlKey || e.keyCode == '70' && e.metaKey) {
+				// f + ctrl or cmd key
+				toggleFullScreen();
+				e.preventDefault();
+				}
+				else if (e.keyCode == '27') {
+				// esc key
+				clearText();
+				if (parent == true) child.clearText();
+				}
+			}
+			
+			function toggleFullScreen(){
+			if (document.fullscreen || document.webkitIsFullScreen)
+			closeFullscreen();
+			else
+			openFullscreen($('#display')[0]);
+			}
+			
+			/* View in fullscreen */
+			function openFullscreen(elem) {
+			if (elem.requestFullscreen) {
+			  elem.requestFullscreen();
+			} else if (elem.webkitRequestFullscreen) { /* Safari */
+			  elem.webkitRequestFullscreen();
+			} else if (elem.msRequestFullscreen) { /* IE11 */
+			  elem.msRequestFullscreen();
+			}
+			}
+			
+			/* Close fullscreen */
+			function closeFullscreen() {
+				if (document.exitFullscreen) {
+				  document.exitFullscreen();
+				} else if (document.webkitExitFullscreen) { /* Safari */
+				  document.webkitExitFullscreen();
+				} else if (document.msExitFullscreen) { /* IE11 */
+				  document.msExitFullscreen();
+				}
+			}
 		</script>
 	</body>
 </html>
