@@ -1,7 +1,6 @@
 ---
 ---
 
-
 <head>
 	<meta charset="utf-8">
 	<title>Shalom Worship Centre</title>
@@ -31,16 +30,17 @@
 		padding: 10px 80px 80px 80px;
 		}
 		/* The dot/bullet/indicator container */
-		.dot-container {
+		/*.dot-container {
 		text-align: center;
 		padding: 20px;
 		background: #f1f1f100;
 		}
+		*/
 		/* The bullets */
 		.dot {
 		cursor: pointer;
-		height: 15px;
-		width: 15px;
+		height: 20px;
+		width: 20px;
 		margin: 0 2px;
 		background-color: #bbb;
 		border-radius: 50%;
@@ -152,12 +152,11 @@
 						}
 						ac.setData(myData);
 						$('#songName').removeClass('d-none').focus();
-						if (child == true)
-						loadData([' ',' ']);
+						if (child == true) loadData([' ',' ']);
 						return;
 					}
 				$("#resultHere").empty();
-				$(".dot-container").empty();
+				$("#dot-container").empty();
 				$("#show").removeClass('d-none');
 				//document.title = docTitle = e[0]; //is heading				
 			  try {var j = 1;
@@ -167,7 +166,7 @@
 				   continue;
 				   }
 					$("#resultHere").append("<div class=\"mySlides\"><p class=\"fs-1 lh-base\">"+ e[i].toString().replace(/\u000b|\n/g, '<br>')+"</p></div>"); //.replace(/\t/g, '&nbsp;&nbsp;')
-					$(".dot-container").append("<span class=\"dot\" onclick=\"currentSlide("+ j +")\"></span>");
+					$("#dot-container").append("<span class=\"dot\" onclick=\"currentSlide("+ j +")\">"+ j +"</span>");
 					j++;
 				 }
 				 slideIndex = 1;
@@ -264,7 +263,7 @@
 							</button>
 						</div>
 						<div class="text-center col">
-							<div class="dot-container"></div>
+							<div id="dot-container" style="margin-top: 4%;"></div>
 						</div>
 						<div class="col">
 							<button type="button" class="btn btn-outline-secondary childControls d-none" onclick="changeFont();">
@@ -391,8 +390,7 @@
 			}
 			else if (e.keyCode == '27') {
 			// esc key
-			if (parent == true)
-			child.loadData([' ', ' ']);
+			if (parent == true) child.loadData([' ', ' ']);
 			}
 			else if (e.key == '1' || e.key == '2' || e.key == '3' || e.key == '4' || e.key == '5' || e.key == '6' || e.key == '7' || e.key == '8' || e.key == '9' || e.key == '0') {
 			// num keys
