@@ -84,7 +84,7 @@
 			} else if (para == 'child'){
 			child = true;
 			parent = window.opener;
-			document.title = "Songsbook";
+			document.title = "Presentation";
 			$('#songName').hide();
 			$('#fullScreen').addClass('d-none');
 			$('#controls').addClass('d-none');
@@ -338,6 +338,8 @@
 		function plusSlides(n) {
 		slideIndex = slideIndex + n;
 		showSlides(slideIndex);
+		if (parent == true) child.plusSlides(n);
+		else if (child ==true) parent.plusSlides(n);
 		}
 		
 		function currentSlide(n) {
@@ -373,13 +375,15 @@
 			
 			if (e.keyCode == '37' && $(':focus').attr('id') != 'songName') {
 			// left arrow
-			plusSlides(-1);
+			slideIndex = slideIndex - 1;
+			showSlides(slideIndex);
 			if (parent == true) child.plusSlides(-1);
 			else if (child ==true) parent.plusSlides(-1);
 			}
 			else if (e.keyCode == '39' && $(':focus').attr('id') != 'songName') {
 			// right arrow
-			plusSlides(1);
+			slideIndex = slideIndex + 1;
+			showSlides(slideIndex);
 			if (parent == true) child.plusSlides(1);
 			else if (child ==true) parent.plusSlides(1);
 			}
