@@ -117,6 +117,7 @@
 			child = true;
 			parent = window.opener;
 			document.title = "Presentation";
+			$('.call-to-action').hide();
 			}
 			/* non collapsing menu */
 			let dropdowns = document.querySelectorAll(".myClass");
@@ -292,7 +293,7 @@
 		<!-- display verse -->
 		<div class="container fixed-top">
 			<div class="row">
-				<textarea class="form-control-lg bg-dark text-light fs-2" id="display" rows="4" disabled readonly></textarea>
+				<textarea class="form-control-lg bg-dark text-light fs-2" id="display" rows="4" disabled readonly ondblclick="if (child == true) openFullscreen($('#display')[0]);"></textarea>
 			</div>
 		</div>
 		<!-- controls -->
