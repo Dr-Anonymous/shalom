@@ -339,7 +339,7 @@
 		slideIndex = slideIndex + n;
 		showSlides(slideIndex);
 		if (parent == true) child.plusSlides(n);
-		else if (child ==true) parent.plusSlides(n);
+		//no such button in child
 		}
 		
 		function currentSlide(n) {
@@ -384,8 +384,8 @@
 			// right arrow
 			slideIndex = slideIndex + 1;
 			showSlides(slideIndex);
-			if (parent == true) child.plusSlides(1);
-			else if (child ==true) parent.plusSlides(1);
+			if (parent == true){child.slideIndex = slideIndex; child.showSlides(slideIndex);}
+			else if (child ==true){parent.slideIndex = slideIndex; parent.showSlides(slideIndex);}
 			}
 			else if (e.keyCode == '70' && e.ctrlKey || e.keyCode == '70' && e.metaKey) {
 			// f + ctrl or cmd key
