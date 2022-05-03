@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>Shalom Worship Centre</title>
+	<title>Live Songsbook</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="keywords" content="Worship,songs,christianity,church">
 	<meta name="description" content="Songs">
@@ -61,94 +61,96 @@
 	<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-app.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-database.js"></script>
 	<script>
-		var firstTime = true,
-			parent = false,
-			child = false,
-			slideIndex = 1,
-			downloadingVer = false,
-			offline = false,
-			jumbleFonts = false,
-			url = "https://script.google.com/macros/s/AKfycbw_mOWqvvDb_IHZS_pZ9Ob4bAjQJtmV5aRyj1AWFexmmfIg6Syd7p8P6GoHMvxgklFU/exec?",
-			firebaseConfig = {
-				apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
-				authDomain: "mydatabase-c35da.firebaseapp.com",
-				databaseURL: "https://mydatabase-c35da-default-rtdb.firebaseio.com/",
-				projectId: "mydatabase-c35da",
-				storageBucket: "mydatabase-c35da.appspot.com",
-				messagingSenderId: "945373860956",
-				appId: "1:945373860956:web:3ea16749c73345eb684299"
-			  },
-			  database;
-		
-			function urlParam(){
-			var url = new URL(window.location.href);
-			var param = url.searchParams.toString().slice(0, -1);
-			return param;
-			}
-			
-			$(document).ready(async function(){
-			// Initialize Firebase
-			firebase.initializeApp(firebaseConfig);
-			// Get a reference to the database service
-			database = firebase.database().ref();
-			var para = urlParam();
-			if (para == 'parent'){
-			parent = true;
-			$('.childControls').removeClass('d-none');
-			$('#fullScreen').addClass('d-none');
-			} else {
-			child = true;
-			document.title = "Presentation";
-			$('#songName').hide();
-			$('#fullScreen').addClass('d-none');
-			$('#controls').addClass('d-none');
-			
-			database.on('value', (snapshot) => {
+var firstTime = true,
+	parent = false,
+	child = false,
+	slideIndex = 1,
+	downloadingVer = false,
+	offline = false,
+	jumbleFonts = false,
+	url = "https://script.google.com/macros/s/AKfycbw_mOWqvvDb_IHZS_pZ9Ob4bAjQJtmV5aRyj1AWFexmmfIg6Syd7p8P6GoHMvxgklFU/exec?",
+	firebaseConfig = {
+		apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
+		authDomain: "mydatabase-c35da.firebaseapp.com",
+		databaseURL: "https://mydatabase-c35da-default-rtdb.firebaseio.com/",
+		projectId: "mydatabase-c35da",
+		storageBucket: "mydatabase-c35da.appspot.com",
+		messagingSenderId: "945373860956",
+		appId: "1:945373860956:web:3ea16749c73345eb684299"
+	},
+	database,
+	songNumber;
+
+function urlParam() {
+	var url = new URL(window.location.href);
+	var param = url.searchParams.toString().slice(0, -1);
+	return param;
+}
+
+$(document).ready(async function() {
+	if ((await window.indexedDB.databases()).map(db => db.name).includes('songsbook')) {
+		offline = true;
+	}
+	if (parent == true) checkCookie();
+	getSlides('all');
+
+	// Initialize Firebase
+	firebase.initializeApp(firebaseConfig);
+	// Get a reference to the database service
+	database = firebase.database().ref();
+	var para = urlParam();
+	if (para == 'parent') {
+		parent = true;
+		$('.childControls').removeClass('d-none');
+		$('#fullScreen').addClass('d-none');
+	} else {
+		child = true;
+		$('#songName').hide();
+		$('#fullScreen').addClass('d-none');
+		$('#controls').addClass('d-none');
+
+		database.on('value', (snapshot) => {
 			var data = snapshot.val();
 			//console.dir(data);
-			var value = parseInt(data["value"]);
-			switch(data["functionName"]) {
-			case false:
-				loadData([' ','Offline']);
-				break;
-			case 'getSlides':
-				getSlides(value);
-				break;
-			case 'plusSlides':
-				plusSlides(value);
-				break;
-			case 'currentSlide':
-				currentSlide(value);
-				break;
-			case 'showSlides':
-				showSlides(value);
-				break;
-			  default:
-				// code block
+			if (data["songNumber"] == 'all') return;
+			if (data["functionName"] != false && songNumber != data["songNumber"]) getSlides(parseInt(data["songNumber"]));
+
+			var value = data["value"];
+			switch (data["functionName"]) {
+				case false:
+					break;
+				case 'getSlides':
+					getSlides(parseInt(data["songNumber"]));
+					break;
+				case 'showSlides':
+					showSlides(value);
+					break;
+				case 'currentSlide':
+					currentSlide(value);
+					break;
+				case 'loadCSS':
+					loadCSS();
+					break;
+				case 'loadData':
+					loadData([' ', ' ']);
+					break;
+				default:
+					// code block
 			}
-		
-			});
-		
-			}
-			
-			if ((await window.indexedDB.databases()).map(db => db.name).includes('songsbook')){
-			offline = true;
-			}
-			
-			if (parent == true) checkCookie();
-			
-			getSlides('all');
-			
-			
-			});
-			 
-			function getSlides(e){
-			try {
-			if (offline) {
-			if (!firstTime){
-			loadData(dbData[e-1]);
-			if (parent == true) writeFirebaseData('getSlides', e);
-			return;
+
+		});
+
+	}
+});
+
+function getSlides(e) {
+	songNumber = e;
+	try {
+		if (offline) {
+			if (!firstTime) {
+				loadData(dbData[e - 1]);
+				if (parent == true) writeFirebaseData('getSlides', 0, songNumber);
+				return;
 			}
 			var request = indexedDB.open('songsbook', 1);
 			request.onsuccess = () => {
@@ -162,69 +164,67 @@
 				};
 			}
 			return;
+		}
+		$.ajax({
+			crossDomain: true,
+			url: url + "callback=loadData&request=" + e,
+			method: "GET",
+			dataType: "jsonp"
+		});
+		if (parent == true) writeFirebaseData('getSlides', 0, songNumber);
+	} catch (error) {
+		toast(error);
+	}
+}
+async function loadData(e) {
+	//console.dir(e);
+	if (firstTime) {
+		firstTime = false;
+		//autosuggest book names
+		const field = $("#songName")[0];
+		const ac = new Autocomplete(field, {
+			maximumItems: 10,
+			onSelectItem: ({
+				label,
+				value
+			}) => {
+				getSlides(value);
+			},
+		});
+		var myData = [];
+		for (i = 0; i < e.length; i++) {
+			var myArr = {};
+			myArr["label"] = e[i][0];
+			myArr["value"] = (i + 1);
+			myData.push(myArr);
+		}
+		ac.setData(myData);
+		$('#songName').removeClass('d-none').focus();
+		if (child == true) loadData([' ', 'Offline']);
+		return;
+	}
+	$("#resultHere").empty();
+	$("#dot-container").empty();
+	$("#show").removeClass('d-none');
+	//document.title = docTitle = e[0]; //is heading				
+	try {
+		var j = 1;
+		for (var i = 1; i < e.length; i++) {
+			e[i] == e[i].trim();
+			if (e[i] == "" || e[i] == "\n" || e[i] == "\t") {
+				continue;
 			}
-			$.ajax({
-					crossDomain: true,
-					url: url + "callback=loadData&request=" + e,
-					method: "GET",
-					dataType: "jsonp"
-					});
-			} catch (error) {
-			toast(error);
-			}
-			}
-			  async function loadData(e) {
-					//console.dir(e);
-					if (firstTime){
-						firstTime = false;
-						//autosuggest book names
-						const field = $("#songName")[0];
-						const ac = new Autocomplete(field, {
-							maximumItems: 10,
-							onSelectItem: ({
-								label,
-								value
-							}) => {
-								getSlides(value);
-							},
-						});
-						var myData = [];
-						for (i = 0; i < e.length; i++) {
-							var myArr = {};
-							myArr["label"] = e[i][0];
-							myArr["value"] = (i+1);
-							myData.push(myArr);
-						}
-						ac.setData(myData);
-						$('#songName').removeClass('d-none').focus();
-						if (child == true) loadData([' ',' ']);
-						return;
-					}
-				$("#resultHere").empty();
-				$("#dot-container").empty();
-				$("#show").removeClass('d-none');
-				//document.title = docTitle = e[0]; //is heading				
-			  try {var j = 1;
-			       for (var i = 1; i < e.length; i++) {
-				   e[i] == e[i].trim();
-				   if (e[i]== "" || e[i]== "\n" || e[i]== "\t"){
-				   continue;
-				   }
-					$("#resultHere").append("<div class=\"mySlides\"><p class=\"fs-1 lh-base\">"+ e[i].toString().replace(/\u000b|\n/g, '<br>')+"</p></div>"); //.replace(/\t/g, '&nbsp;&nbsp;')
-					$("#dot-container").append("<span class=\"dot\" onclick=\"currentSlide("+ j +")\">"+ j +"</span>");
-					j++;
-				 }
-				 slideIndex = 1;
-				 showSlides(1);
-				 if(jumbleFonts)
-				 loadCSS();
-				 //if (parent == true){
-					//child.loadData(e);
-					//}
-				}catch(err) {
-			        $("#resultHere").append(err);
-				}
-			}
+			$("#resultHere").append("<div class=\"mySlides\"><p class=\"fs-1 lh-base\">" + e[i].toString().replace(/\u000b|\n/g, '<br>') + "</p></div>"); //.replace(/\t/g, '&nbsp;&nbsp;')
+			$("#dot-container").append("<span class=\"dot\" onclick=\"currentSlide(" + j + ")\">" + j + "</span>");
+			j++;
+		}
+		slideIndex = 1;
+		showSlides(1);
+		if (jumbleFonts) loadCSS();
+	} catch (err) {
+		$("#resultHere").append(err);
+	}
+}
 	</script>
 </head>
 <body>
@@ -300,7 +300,7 @@
 							</button>
 						</div>
 						<div class="col">
-							<button type="button" class="btn btn-outline-secondary childControls d-none" onclick="writeFirebaseData(false, 0);">
+							<button type="button" class="btn btn-outline-secondary childControls d-none" onclick="writeFirebaseData('loadData', 0);">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace" viewBox="0 0 16 16">
 									<path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z"/>
 									<path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z"/>
@@ -381,9 +381,7 @@
 		//======== slides		
 		function plusSlides(n) {
 		slideIndex = slideIndex + n;
-		showSlides(slideIndex);
-		if (parent == true) writeFirebaseData('plusSlides', n);
-		//no such button in child
+		currentSlide(slideIndex);
 		}
 		
 		function currentSlide(n) {
@@ -415,19 +413,17 @@
 		document.onkeydown = checkKey;
 		
 		function checkKey(e) {
+			if ($(':focus').attr('id') == 'songName') return;
+			
 			e = e || window.event;
 			
-			if (e.keyCode == '37' && $(':focus').attr('id') != 'songName') {
+			if (e.keyCode == '37') {
 			// left arrow
-			slideIndex = slideIndex - 1;
-			showSlides(slideIndex);
-			if (parent == true){writeFirebaseData('plusSlides', -1);}
+			plusSlides(-1);
 			}
-			else if (e.keyCode == '39' && $(':focus').attr('id') != 'songName') {
+			else if (e.keyCode == '39') {
 			// right arrow
-			slideIndex = slideIndex + 1;
-			showSlides(slideIndex);
-			if (parent == true){writeFirebaseData('plusSlides', 1);}
+			plusSlides(1);
 			}
 			else if (e.keyCode == '70' && e.ctrlKey || e.keyCode == '70' && e.metaKey) {
 			// f + ctrl or cmd key
@@ -436,7 +432,7 @@
 			}
 			else if (e.keyCode == '27') {
 			// esc key
-			//if (parent == true) child.loadData([' ', ' ']);
+			if (parent == true) writeFirebaseData('loadData', 0);
 			}
 			else if (e.key == '1' || e.key == '2' || e.key == '3' || e.key == '4' || e.key == '5' || e.key == '6' || e.key == '7' || e.key == '8' || e.key == '9' || e.key == '0') {
 			// num keys
@@ -534,9 +530,8 @@
 			if (jumbleFonts){
 			$("button[onclick='changeFont();']").removeClass('btn-secondary').addClass('btn-outline-secondary');
 			jumbleFonts = false;
-			loadCSS('Open+Sans:400italic,400');
+			loadCSS(0);
 			document.cookie = "jumbleFonts=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-			//if (parent == true) child.loadCSS('Open+Sans:400italic,400');
 			}else{
 			$("button[onclick='changeFont();']").removeClass('btn-outline-secondary').addClass('btn-secondary');
 			jumbleFonts = true;
@@ -553,15 +548,17 @@
 		var telFonts = ['Anek Telugu','Hind Guntur','NTR','Suranna','Ramaraja','Ramabhadra','Mandali',
 		'Gurajada','Timmana','Mallanna','Lakki Reddy','Ravi Prakash','Suravaram','Akaya Telivigala','Dhurjati','Tenali Ramakrishna'];
 		
-		if (!font){
+		if (!font || font != 0){
 		font = telFonts[f];
 		if (f < telFonts.length - 1) f++;
 		else f = 0;
+		} else {
+		font = 'Open+Sans:400italic,400';
 		}
 		
 		$('#resultHere').css('font-family', font);
 		$('#fontFamily').attr('href', 'https://fonts.googleapis.com/css?family=' + font.replace(/ /g, "+") + "&display=swap");
-		//if (parent == true) child.loadCSS(font);
+		if (parent == true) writeFirebaseData('loadCSS', 0);
 		}
 		
 		function checkCookie(){
@@ -581,8 +578,9 @@
 		}
 		//jumbleFonts = false;
 		}
-		function writeFirebaseData(name, value) {
-			database.set({"functionName" : name, "value" : value});
+		function writeFirebaseData(name, value, num) {
+			if (num) { songNumber = num; database.set({"functionName" : name, "value" : value, "songNumber" : songNumber}); }
+			else database.set({"functionName" : name, "value" : value, "songNumber" : songNumber});
 		}
 		
 		window.onbeforeunload = function(){ if (parent == true) writeFirebaseData(false, 0) };
