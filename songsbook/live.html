@@ -19,7 +19,6 @@
 		button span {
 		pointer-events: none;
 		}
-		* {box-sizing: border-box}
 		/* Slideshow container */
 		.slideshow-container {
 		position: relative;
@@ -29,13 +28,6 @@
 		display: none;
 		padding: 10px 80px 80px 80px;
 		}
-		/* The dot/bullet/indicator container */
-		/*.dot-container {
-		text-align: center;
-		padding: 20px;
-		background: #f1f1f100;
-		}
-		*/
 		/* The bullets */
 		.dot {
 		cursor: pointer;
@@ -69,6 +61,8 @@ var firstTime = true,
 	offline = false,
 	jumbleFonts = false,
 	url = "https://script.google.com/macros/s/AKfycbw_mOWqvvDb_IHZS_pZ9Ob4bAjQJtmV5aRyj1AWFexmmfIg6Syd7p8P6GoHMvxgklFU/exec?",
+	database,
+	songNumber,
 	firebaseConfig = {
 		apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
 		authDomain: "mydatabase-c35da.firebaseapp.com",
@@ -77,9 +71,7 @@ var firstTime = true,
 		storageBucket: "mydatabase-c35da.appspot.com",
 		messagingSenderId: "945373860956",
 		appId: "1:945373860956:web:3ea16749c73345eb684299"
-	},
-	database,
-	songNumber;
+	};
 
 function urlParam() {
 	var url = new URL(window.location.href);
@@ -105,10 +97,14 @@ $(document).ready(async function() {
 		$('#fullScreen').addClass('d-none');
 	} else {
 		child = true;
-		$('#songName').hide();
+		$('.page-title').addClass('d-none');
 		$('#fullScreen').addClass('d-none');
 		$('#controls').addClass('d-none');
-
+		if (para == 'present') {
+		$('.container').addClass('d-none');
+		$('#main').removeClass().addClass('container-fluid vh-100');
+		}
+		
 		database.on('value', (snapshot) => {
 			var data = snapshot.val();
 			//console.dir(data);
@@ -286,8 +282,8 @@ async function loadData(e) {
 		</div>
 	</div>
 	<!-- Services Full Width Text -->
-	<div class="container">
-		<div class="row">
+	<div id="main" class="container">
+		<div class="row" style="height: -webkit-fill-available;">
 			<div id="show" class="services-half-width-text slideshow-container bg-dark text-light d-none">
 				<div id="resultHere" class="col" ondblclick="if (child == true) openFullscreen($('#show')[0]);"></div>
 				<div class="container fixed-bottom" id="controls">
