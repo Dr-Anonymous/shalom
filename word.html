@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>Live Songsbook</title>
+	<title>Live Text</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="keywords" content="Worship,songs,christianity,church">
 	<meta name="description" content="Songs">
@@ -49,116 +49,97 @@
 	<!-- javascript -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-	<script src="https://shalomworshipcentre.in/assets/js/autocomplete.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-app.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-database.js"></script>
 	<script>
-var firstTime = true,
-	parent = false,
-	child = false,
+var presenter = false,
 	slideIndex = 1,
 	downloadingVer = false,
 	offline = false,
 	jumbleFonts = false,
 	url = "https://script.google.com/macros/s/AKfycbw_mOWqvvDb_IHZS_pZ9Ob4bAjQJtmV5aRyj1AWFexmmfIg6Syd7p8P6GoHMvxgklFU/exec?",
 	database,
-	songNumber,
+	songNumber = 'all',
 	firebaseConfig = {
-		apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
-		authDomain: "mydatabase-c35da.firebaseapp.com",
-		databaseURL: "https://mydatabase-c35da-default-rtdb.firebaseio.com/",
-		projectId: "mydatabase-c35da",
-		storageBucket: "mydatabase-c35da.appspot.com",
-		messagingSenderId: "945373860956",
-		appId: "1:945373860956:web:3ea16749c73345eb684299"
+	apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
+	authDomain: "mydatabase-c35da.firebaseapp.com",
+	databaseURL: "https://mydatabase-c35da-default-rtdb.firebaseio.com/",
+	projectId: "mydatabase-c35da",
+	storageBucket: "mydatabase-c35da.appspot.com",
+	messagingSenderId: "945373860956",
+	appId: "1:945373860956:web:3ea16749c73345eb684299"
 	};
 
-function urlParam() {
-	var url = new URL(window.location.href);
-	var param = url.searchParams.toString().slice(0, -1);
-	return param;
-}
-
 $(document).ready(async function() {
-	if ((await window.indexedDB.databases()).map(db => db.name).includes('songsbook')) {
-		offline = true;
-	}
+	if ((await window.indexedDB.databases()).map(db => db.name).includes('songsbook')){
+	offline = true;
 	getSlides('all');
-
+	}
+	else downloadOffline();
+	
 	// Initialize Firebase
 	firebase.initializeApp(firebaseConfig);
 	// Get a reference to the database service
-	database = firebase.database().ref();
-	var para = urlParam();
-	if (para == 'parent') {
-		parent = true;
-		checkCookie();
-		$('.childControls').removeClass('d-none');
-		$('#fullScreen').addClass('d-none');
-	} else {
-		child = true;
-		$('.page-title').addClass('d-none');
-		$('#fullScreen').addClass('d-none');
-		$('#controls').addClass('d-none');
-		if (para == 'present') {
-		$('.container').addClass('d-none');
-		$('#main').removeClass().addClass('container-fluid vh-100');
-		}
-		
-		database.on('value', (snapshot) => {
-			var data = snapshot.val();
-			//console.dir(data);
-			if (data["songNumber"] == 'all') return;
-			if (data["functionName"] != false && songNumber != data["songNumber"]) getSlides(parseInt(data["songNumber"]));
-
-			var value = data["value"];
-			switch (data["functionName"]) {
-				case false:
-					break;
-				case 'getSlides':
-					getSlides(parseInt(data["songNumber"]));
-					break;
-				case 'showSlides':
-					showSlides(value);
-					break;
-				case 'currentSlide':
-					currentSlide(value);
-					break;
-				case 'loadCSS':
-					loadCSS();
-					break;
-				case 'loadData':
-					loadData(value);
-					break;
-				default:
-					// code block
-			}
-
-		});
-
+	database = firebase.database().ref();	
+	
+	if ((new URL(window.location.href)).searchParams.toString().slice(0, -1) == 'present') {
+	presenter = true;
+	$('.page-title').addClass('d-none');
+	$('#fullScreen').addClass('d-none');
+	$('#controls').addClass('d-none');
+	$('.container').addClass('d-none');
+	$('#main').removeClass().addClass('container-fluid vh-100');
 	}
+	
+	database.on('value', (snapshot) => {
+		var data = snapshot.val();
+		//console.dir(data);
+		if (data["songNumber"] == 'all') return;
+
+		var value = data["value"];
+		switch (data["functionName"]) {
+			case false:
+				if (!presenter) loadData([' ', 'Offline']);
+				else loadData([' ', ' ']);
+				break;
+			case 'getSlides':
+				getSlides(data["songNumber"]);
+				break;
+			case 'currentSlide':
+				if (songNumber != data["songNumber"]) getSlides(data["songNumber"]);
+				currentSlide(value);
+				break;
+			case 'loadCSS':
+				loadCSS();
+				break;
+			case 'loadData':
+				loadData(value);
+				break;
+			default:
+				// code block--  no default behaviour
+		}
+
+	});
 });
 
 function getSlides(e) {
 	songNumber = e;
 	try {
 		if (offline) {
-			if (!firstTime) {
-				loadData(dbData[e - 1]);
-				if (parent == true) writeFirebaseData('getSlides', 0, songNumber);
-				return;
+			if (e == 'all'){
+				var request = indexedDB.open('songsbook', 1);
+				request.onsuccess = () => {
+					const db = request.result;
+					var transaction = db.transaction('songsbook', "readonly");
+					var book = transaction.objectStore('songsbook');
+					const getRequest = book.getAll();
+					getRequest.onsuccess = () => {
+						dbData = getRequest.result[0];
+					};
+				}
+			return;
 			}
-			var request = indexedDB.open('songsbook', 1);
-			request.onsuccess = () => {
-				const db = request.result;
-				var transaction = db.transaction('songsbook', "readonly");
-				var book = transaction.objectStore('songsbook');
-				const getRequest = book.getAll();
-				getRequest.onsuccess = () => {
-					dbData = getRequest.result[0];
-					loadData(dbData);
-				};
-			}
+			loadData(dbData[e - 1]);
 			return;
 		}
 		$.ajax({
@@ -167,38 +148,11 @@ function getSlides(e) {
 			method: "GET",
 			dataType: "jsonp"
 		});
-		if (parent == true) writeFirebaseData('getSlides', 0, songNumber);
 	} catch (error) {
 		toast(error);
 	}
 }
 async function loadData(e) {
-	//console.dir(e);
-	if (firstTime) {
-		firstTime = false;
-		//autosuggest book names
-		const field = $("#songName")[0];
-		const ac = new Autocomplete(field, {
-			maximumItems: 10,
-			onSelectItem: ({
-				label,
-				value
-			}) => {
-				getSlides(value);
-			},
-		});
-		var myData = [];
-		for (i = 0; i < e.length; i++) {
-			var myArr = {};
-			myArr["label"] = e[i][0];
-			myArr["value"] = (i + 1);
-			myData.push(myArr);
-		}
-		ac.setData(myData);
-		$('#songName').removeClass('d-none').focus();
-		if (child == true) loadData([' ', 'Offline']);
-		return;
-	}
 	$("#resultHere").empty();
 	$("#dot-container").empty();
 	$("#show").removeClass('d-none');
@@ -206,11 +160,10 @@ async function loadData(e) {
 	try {
 		var j = 1;
 		for (var i = 1; i < e.length; i++) {
-			e[i] == e[i].trim();
 			if (e[i] == "" || e[i] == "\n" || e[i] == "\t") {
 				continue;
 			}
-			$("#resultHere").append("<div class=\"mySlides\"><p class=\"fs-1 lh-base\">" + e[i].toString().replace(/\u000b|\n/g, '<br>') + "</p></div>"); //.replace(/\t/g, '&nbsp;&nbsp;')
+			$("#resultHere").append("<div class=\"mySlides\"><p class=\"fs-1 lh-base\">" + e[i].replace(/\u000b|\n/g, '<br>').trim() + "</p></div>"); //.replace(/\t/g, '&nbsp;&nbsp;')
 			$("#dot-container").append("<span class=\"dot\" onclick=\"currentSlide(" + j + ")\">" + j + "</span>");
 			j++;
 		}
@@ -285,7 +238,7 @@ async function loadData(e) {
 	<div id="main" class="container">
 		<div class="row" style="height: -webkit-fill-available;">
 			<div id="show" class="services-half-width-text slideshow-container bg-dark text-light d-none">
-				<div id="resultHere" class="col" ondblclick="if (child == true) openFullscreen($('#show')[0]);"></div>
+				<div id="resultHere" class="col" ondblclick="openFullscreen($('#show')[0]);"></div>
 				<div class="container fixed-bottom" id="controls">
 					<div class="row">
 						<div class="text-start col">
@@ -295,24 +248,8 @@ async function loadData(e) {
 								</svg>
 							</button>
 						</div>
-						<div class="col">
-							<button type="button" class="btn btn-outline-secondary childControls d-none" onclick="writeFirebaseData('loadData', 0);">
-								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace" viewBox="0 0 16 16">
-									<path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z"/>
-									<path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z"/>
-								</svg>
-							</button>
-						</div>
 						<div class="text-center col">
 							<div id="dot-container" style="margin-top: 4%;"></div>
-						</div>
-						<div class="col">
-							<button type="button" class="btn btn-outline-secondary childControls d-none" onclick="changeFont();">
-								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-font" viewBox="0 0 16 16">
-									<path d="M10.943 4H5.057L5 6h.5c.18-1.096.356-1.192 1.694-1.235l.293-.01v6.09c0 .47-.1.582-.898.655v.5H9.41v-.5c-.803-.073-.903-.184-.903-.654V4.755l.298.01c1.338.043 1.514.14 1.694 1.235h.5l-.057-2z"/>
-									<path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
-								</svg>
-							</button>
 						</div>
 						<div class="text-end col">
 							<button type="button" class="btn btn-outline-secondary" onclick="plusSlides(1);">
@@ -360,7 +297,7 @@ async function loadData(e) {
 			<div class="toast-body">
 				<div id="toastBody"></div>
 				<div class="mt-2 pt-2 border-top">
-					<button type="button" class="btn btn-danger btn-sm" onclick="indexedDB.deleteDatabase('songsbook');">Delete database</button>
+					<button type="button" class="btn btn-danger btn-sm" onclick="indexedDB.deleteDatabase('songsbook');offline = false;">Delete database</button>
 					<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Close</button>
 				</div>
 			</div>
@@ -374,7 +311,7 @@ async function loadData(e) {
 		toastBox.show();
 		return;
 		}
-		//======== slides		
+		//======== slides
 		function plusSlides(n) {
 		slideIndex = slideIndex + n;
 		currentSlide(slideIndex);
@@ -383,7 +320,6 @@ async function loadData(e) {
 		function currentSlide(n) {
 		slideIndex = n;
 		showSlides(slideIndex);
-		if (parent == true) writeFirebaseData('currentSlide', n);
 		}
 		
 		function showSlides(n) {
@@ -410,7 +346,6 @@ async function loadData(e) {
 		
 		function checkKey(e) {
 			if ($(':focus').attr('id') == 'songName') return;
-			
 			e = e || window.event;
 			
 			if (e.keyCode == '37') {
@@ -426,16 +361,11 @@ async function loadData(e) {
 			toggleFullScreen();
 			e.preventDefault();
 			}
-			else if (e.keyCode == '27') {
-			// esc key
-			if (parent == true) writeFirebaseData('loadData', [' ', ' ']);
-			}
 			else if (e.key == '1' || e.key == '2' || e.key == '3' || e.key == '4' || e.key == '5' || e.key == '6' || e.key == '7' || e.key == '8' || e.key == '9' || e.key == '0') {
 			// num keys
 				try {
 				slideIndex = parseInt(e.key);
 				showSlides(slideIndex);
-					if (parent == true){ writeFirebaseData('currentSlide', slideIndex); }
 				} catch(err){
 				console.log(err);
 				}
@@ -518,25 +448,9 @@ async function loadData(e) {
 			toast('Songsbook available offline.').then(
 				function() {
 				downloadingVer = false;
+				offline = true;
 				});
 		};
-		}
-		
-		function changeFont(){
-			if (jumbleFonts){
-			$("button[onclick='changeFont();']").removeClass('btn-secondary').addClass('btn-outline-secondary');
-			jumbleFonts = false;
-			loadCSS(0);
-			document.cookie = "jumbleFonts=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-			}else{
-			$("button[onclick='changeFont();']").removeClass('btn-outline-secondary').addClass('btn-secondary');
-			jumbleFonts = true;
-			loadCSS();
-			//set cookie to true
-			const d = new Date();
-			d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
-			document.cookie = "jumbleFonts=true;expires="+ d.toUTCString() +";path=/;";
-			}
 		}
 		
 		var f = 0;
@@ -554,31 +468,6 @@ async function loadData(e) {
 		
 		$('#resultHere').css('font-family', font);
 		$('#fontFamily').attr('href', 'https://fonts.googleapis.com/css?family=' + font.replace(/ /g, "+") + "&display=swap");
-		if (parent == true) writeFirebaseData('loadCSS', 0);
 		}
-		
-		function checkCookie(){
-		let name = "jumbleFonts=";
-		let decodedCookie = decodeURIComponent(document.cookie);
-		let ca = decodedCookie.split(';');
-		for (let i = 0; i < ca.length; i++) {
-			let c = ca[i];
-			while (c.charAt(0) == ' ') {
-				c = c.substring(1);
-			}
-			if (c.indexOf(name) == 0) {
-				$("button[onclick='changeFont();']").removeClass('btn-outline-secondary').addClass('btn-secondary');
-				jumbleFonts = true;
-				return;
-			}
-		}
-		//jumbleFonts = false;
-		}
-		function writeFirebaseData(name, value, num) {
-			if (num) { songNumber = num; database.set({"functionName" : name, "value" : value, "songNumber" : songNumber}); }
-			else database.set({"functionName" : name, "value" : value, "songNumber" : songNumber});
-		}
-		//before exit reset everything except last songnumber
-		window.onbeforeunload = function(){ if (parent == true) writeFirebaseData(false, 0) };
 	</script>
 </body>
