@@ -32,7 +32,6 @@
 var lang = "te-IN",
 	ver = "14xBeAaiu1QTfOqNK0YGabiNiFV4EUtC2QxWXApVERBg",
 	downloadingVer = false,
-	toDisplay,
 	option = "",
 	allBooks = [
 		[0, 0, 0, 0],
@@ -297,7 +296,7 @@ function populateDropDown() {
 		<!-- display verse -->
 		<div class="container fixed-top">
 			<div class="row">
-				<textarea class="form-control-lg bg-dark text-light fs-2" id="display" rows="4" disabled readonly></textarea>
+				<textarea class="form-control-lg bg-dark text-light fs-3" id="display" rows="3"></textarea>
 			</div>
 		</div>
 		<!-- controls -->
@@ -770,13 +769,22 @@ function enableClick() {
 		currentP = $(this);
 		var b = parseInt($("#book").attr("value")),
 			c = $("#chapter").val();
-		if (lang == "te-IN")
-			b = allBooks[b][1];
-		else if (lang == "en-US")
+		if (lang == "te-IN") b = allBooks[b][1];
+		else if (lang == "en-US") b = allBooks[b][3];
+		
+		if (window.event.ctrlKey) $('#display').val($('#display').val() + '\n' +b + " " + c + ':\n' + currentP.text());
+		else $('#display').val(b + " " + c + ':\n' + currentP.text());
+		writeFirebaseData('loadData', [' ', $('#display').val()]);
+	});
+	$('#bible2 p').on('click', function(event) {
+		currentP = $(this);
+		var b = parseInt($("#book").attr("value")),
+			c = $("#chapter").val();
 			b = allBooks[b][3];
-		toDisplay = b + " " + c + ':\n' + currentP.text() + '\n';
-		$('#display').val(toDisplay);
-		writeFirebaseData('loadData', [' ', toDisplay]);
+
+		if (window.event.ctrlKey) $('#display').val($('#display').val() + '\n' +b + " " + c + ':\n' + currentP.text());
+		else $('#display').val(b + " " + c + ':\n' + currentP.text());
+		writeFirebaseData('loadData', [' ', $('#display').val()]);
 	});
 }
 
@@ -866,6 +874,11 @@ function checkKey(e) {
 		clearText();
 		writeFirebaseData('loadData', [' ', ' ']);
 	}
+	else if (e.keyCode == '70' && e.ctrlKey || e.keyCode == '70' && e.metaKey) {
+			// f + ctrl or cmd key
+			writeFirebaseData('loadData', [' ', $('#display').val()]);
+			e.preventDefault();
+			}
 }
 
 function writeFirebaseData(name, value) {
@@ -874,10 +887,9 @@ function writeFirebaseData(name, value) {
 		"value": value
 	});
 }
+
 //before exit reset everything except last songnumber
-window.onbeforeunload = function() {
-	writeFirebaseData(false, 0)
-};
+window.onbeforeunload = function() { writeFirebaseData(false, 0) };
 		</script>
 	</body>
 </html>
