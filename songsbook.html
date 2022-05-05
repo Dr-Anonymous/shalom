@@ -58,15 +58,25 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 	<script src="https://shalomworshipcentre.in/assets/js/autocomplete.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-database.js"></script>
 	<script>
 		var firstTime = true,
 			parent = false,
-			child = false,
 			slideIndex = 1,
 			downloadingVer = false,
 			offline = false,
 			jumbleFonts = false,
-			url = "https://script.google.com/macros/s/AKfycbw_mOWqvvDb_IHZS_pZ9Ob4bAjQJtmV5aRyj1AWFexmmfIg6Syd7p8P6GoHMvxgklFU/exec?";
+			url = "https://script.google.com/macros/s/AKfycbw_mOWqvvDb_IHZS_pZ9Ob4bAjQJtmV5aRyj1AWFexmmfIg6Syd7p8P6GoHMvxgklFU/exec?",
+			firebaseConfig = {
+			apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
+			authDomain: "mydatabase-c35da.firebaseapp.com",
+			databaseURL: "https://mydatabase-c35da-default-rtdb.firebaseio.com/",
+			projectId: "mydatabase-c35da",
+			storageBucket: "mydatabase-c35da.appspot.com",
+			messagingSenderId: "945373860956",
+			appId: "1:945373860956:web:3ea16749c73345eb684299"
+			};
 		
 			function urlParam(){
 			var url = new URL(window.location.href);
@@ -75,27 +85,21 @@
 			}
 			
 			$(document).ready(async function(){
-			var para = urlParam();
-			if (para == 'parent'){
-			parent = true;
-			child = window.open(window.location.pathname + "?child");
-			$('.childControls').removeClass('d-none');
-			$('#fullScreen').addClass('d-none');
-			} else if (para == 'child'){
-			child = true;
-			parent = window.opener;
-			document.title = "Presentation";
-			$('#songName').hide();
-			$('#fullScreen').addClass('d-none');
-			$('#controls').addClass('d-none');
-			}
-			
 			if ((await window.indexedDB.databases()).map(db => db.name).includes('songsbook')){
 			offline = true;
 			}
+			// Initialize Firebase
+			firebase.initializeApp(firebaseConfig);
+			// Get a reference to the database service
+			database = firebase.database().ref();
+			var para = urlParam();
+			if (para == 'parent'){
+			parent = true;
+			$('#fullScreen').addClass('d-none');
+			$('.childControls').removeClass('d-none');
+			}
 			
-			if (parent == true) checkCookie();
-			
+			checkCookie();
 			getSlides('all');
 			});
 			 
@@ -104,6 +108,7 @@
 			if (offline) {
 			if (!firstTime){		
 			loadData(dbData[e-1]);
+			if (parent == true) writeFirebaseData('getSlides', 0, e);
 			return;
 			}
 			var request = indexedDB.open('songsbook', 1);
@@ -125,6 +130,7 @@
 					method: "GET",
 					dataType: "jsonp"
 					});
+			if (parent == true) writeFirebaseData('getSlides', 0, songNumber);
 			} catch (error) {
 			toast(error);
 			}
@@ -153,7 +159,6 @@
 						}
 						ac.setData(myData);
 						$('#songName').removeClass('d-none').focus();
-						if (child == true) loadData([' ',' ']);
 						return;
 					}
 				$("#resultHere").empty();
@@ -162,11 +167,10 @@
 				//document.title = docTitle = e[0]; //is heading				
 			  try {var j = 1;
 			       for (var i = 1; i < e.length; i++) {
-				   e[i] == e[i].trim();
 				   if (e[i]== "" || e[i]== "\n" || e[i]== "\t"){
 				   continue;
 				   }
-					$("#resultHere").append("<div class=\"mySlides\"><p class=\"fs-1 lh-base\">"+ e[i].toString().replace(/\u000b|\n/g, '<br>')+"</p></div>"); //.replace(/\t/g, '&nbsp;&nbsp;')
+					$("#resultHere").append("<div class=\"mySlides\"><p class=\"fs-1 lh-base\">"+ e[i].trim().replace(/\u000b|\n/g, '<br>') +"</p></div>"); //.replace(/\t/g, '&nbsp;&nbsp;')
 					$("#dot-container").append("<span class=\"dot\" onclick=\"currentSlide("+ j +")\">"+ j +"</span>");
 					j++;
 				 }
@@ -174,9 +178,6 @@
 				 showSlides(1);
 				 if(jumbleFonts)
 				 loadCSS();
-				 if (parent == true){
-					child.loadData(e);
-					}
 				}catch(err) {
 			        $("#resultHere").append(err);
 				}
@@ -245,7 +246,7 @@
 	<div class="container">
 		<div class="row">
 			<div id="show" class="services-half-width-text slideshow-container bg-dark text-light d-none">
-				<div id="resultHere" class="col" ondblclick="if (child == true) openFullscreen($('#show')[0]);"></div>
+				<div id="resultHere" class="col" ondblclick="openFullscreen($('#show')[0]);"></div>
 				<div class="container fixed-bottom" id="controls">
 					<div class="row">
 						<div class="text-start col">
@@ -256,7 +257,12 @@
 							</button>
 						</div>
 						<div class="col">
-							<button type="button" class="btn btn-outline-secondary childControls d-none" onclick="child.loadData([' ', ' ']);">
+							<button id="fullScreen" type="button" class="btn btn-outline-secondary" onclick="toggleFullScreen();">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen-exit" viewBox="0 0 16 16">
+									<path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/>
+								</svg>
+							</button>
+							<button type="button" class="btn btn-outline-secondary childControls d-none" onclick="writeFirebaseData('loadData', [' ', ' ']);">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace" viewBox="0 0 16 16">
 									<path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z"/>
 									<path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z"/>
@@ -267,7 +273,7 @@
 							<div id="dot-container" style="margin-top: 4%;"></div>
 						</div>
 						<div class="col">
-							<button type="button" class="btn btn-outline-secondary childControls d-none" onclick="changeFont();">
+							<button type="button" class="btn btn-outline-secondary" onclick="changeFont();">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-font" viewBox="0 0 16 16">
 									<path d="M10.943 4H5.057L5 6h.5c.18-1.096.356-1.192 1.694-1.235l.293-.01v6.09c0 .47-.1.582-.898.655v.5H9.41v-.5c-.803-.073-.903-.184-.903-.654V4.755l.298.01c1.338.043 1.514.14 1.694 1.235h.5l-.057-2z"/>
 									<path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
@@ -283,11 +289,6 @@
 						</div>
 					</div>
 				</div>
-				<button id="fullScreen" type="button" class="btn btn-outline-secondary position-absolute top-0 end-0" onclick="toggleFullScreen();">
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen-exit" viewBox="0 0 16 16">
-						<path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/>
-					</svg>
-				</button>
 			</div>
 		</div>
 	</div>
@@ -337,15 +338,13 @@
 		//======== slides		
 		function plusSlides(n) {
 		slideIndex = slideIndex + n;
-		showSlides(slideIndex);
-		if (parent == true) child.plusSlides(n);
-		//no such button in child
+		currentSlide(slideIndex);
 		}
 		
 		function currentSlide(n) {
 		slideIndex = n;
 		showSlides(slideIndex);
-		if (parent == true) child.currentSlide(n);
+		if (parent == true) writeFirebaseData('currentSlide', n);
 		}
 		
 		function showSlides(n) {
@@ -371,21 +370,16 @@
 		document.onkeydown = checkKey;
 		
 		function checkKey(e) {
+			if ($(':focus').attr('id') == 'songName') return;
 			e = e || window.event;
 			
-			if (e.keyCode == '37' && $(':focus').attr('id') != 'songName') {
+			if (e.keyCode == '37') {
 			// left arrow
-			slideIndex = slideIndex - 1;
-			showSlides(slideIndex);
-			if (parent == true){child.slideIndex = slideIndex; child.showSlides(slideIndex);}
-			else if (child ==true){parent.slideIndex = slideIndex; parent.showSlides(slideIndex);}
+			plusSlides(-1);
 			}
-			else if (e.keyCode == '39' && $(':focus').attr('id') != 'songName') {
+			else if (e.keyCode == '39') {
 			// right arrow
-			slideIndex = slideIndex + 1;
-			showSlides(slideIndex);
-			if (parent == true){child.slideIndex = slideIndex; child.showSlides(slideIndex);}
-			else if (child ==true){parent.slideIndex = slideIndex; parent.showSlides(slideIndex);}
+			plusSlides(1);
 			}
 			else if (e.keyCode == '70' && e.ctrlKey || e.keyCode == '70' && e.metaKey) {
 			// f + ctrl or cmd key
@@ -394,20 +388,14 @@
 			}
 			else if (e.keyCode == '27') {
 			// esc key
-			if (parent == true) child.loadData([' ', ' ']);
+			if (parent == true) writeFirebaseData('loadData', [' ', ' ']);
 			}
 			else if (e.key == '1' || e.key == '2' || e.key == '3' || e.key == '4' || e.key == '5' || e.key == '6' || e.key == '7' || e.key == '8' || e.key == '9' || e.key == '0') {
 			// num keys
 				try {
 				slideIndex = parseInt(e.key);
 				showSlides(slideIndex);
-					if (parent == true){
-					child.slideIndex = slideIndex;
-					child.showSlides(slideIndex);
-					} else if (child ==true){
-					parent.slideIndex = slideIndex;
-					parent.showSlides(slideIndex);
-					}
+					if (parent == true){ writeFirebaseData('currentSlide', slideIndex); }
 				} catch(err){
 				console.log(err);
 				}
@@ -498,9 +486,8 @@
 			if (jumbleFonts){
 			$("button[onclick='changeFont();']").removeClass('btn-secondary').addClass('btn-outline-secondary');
 			jumbleFonts = false;
-			loadCSS('Open+Sans:400italic,400');
+			loadCSS(0);
 			document.cookie = "jumbleFonts=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-			if (parent == true) child.loadCSS('Open+Sans:400italic,400');
 			}else{
 			$("button[onclick='changeFont();']").removeClass('btn-outline-secondary').addClass('btn-secondary');
 			jumbleFonts = true;
@@ -517,15 +504,17 @@
 		var telFonts = ['Anek Telugu','Hind Guntur','NTR','Suranna','Ramaraja','Ramabhadra','Mandali',
 		'Gurajada','Timmana','Mallanna','Lakki Reddy','Ravi Prakash','Suravaram','Akaya Telivigala','Dhurjati','Tenali Ramakrishna'];
 		
-		if (!font){
+		if (!font || font != 0){
 		font = telFonts[f];
 		if (f < telFonts.length - 1) f++;
 		else f = 0;
+		} else {
+		font = 'Open+Sans:400italic,400';
 		}
 		
 		$('#resultHere').css('font-family', font);
 		$('#fontFamily').attr('href', 'https://fonts.googleapis.com/css?family=' + font.replace(/ /g, "+") + "&display=swap");
-		if (parent == true) child.loadCSS(font);
+		if (parent == true) writeFirebaseData('loadCSS', 0);
 		}
 		
 		function checkCookie(){
@@ -545,5 +534,12 @@
 		}
 		//jumbleFonts = false;
 		}
+		
+		function writeFirebaseData(name, value, num) {
+			if (num) { songNumber = num; database.set({"functionName" : name, "value" : value, "songNumber" : songNumber}); }
+			else database.set({"functionName" : name, "value" : value, "songNumber" : songNumber});
+		}
+		//before exit reset everything except last songnumber
+		window.onbeforeunload = function(){ if (parent == true) writeFirebaseData(false, 0) };
 	</script>
 </body>
