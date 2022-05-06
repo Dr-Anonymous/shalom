@@ -68,7 +68,7 @@
 			offline = false,
 			jumbleFonts = false,
 			url = "https://script.google.com/macros/s/AKfycbw_mOWqvvDb_IHZS_pZ9Ob4bAjQJtmV5aRyj1AWFexmmfIg6Syd7p8P6GoHMvxgklFU/exec?",
-		    	songNumber,
+		    songNumber,
 			firebaseConfig = {
 			apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
 			authDomain: "mydatabase-c35da.firebaseapp.com",
@@ -105,12 +105,10 @@
 			});
 			 
 			function getSlides(e){
-			songNumber = e;
 			try {
 			if (offline) {
 			if (!firstTime){		
 			loadData(dbData[e-1]);
-			if (parent == true) writeFirebaseData('getSlides', 0, e);
 			return;
 			}
 			var request = indexedDB.open('songsbook', 1);
@@ -132,7 +130,6 @@
 					method: "GET",
 					dataType: "jsonp"
 					});
-			if (parent == true) writeFirebaseData('getSlides', 0, songNumber);
 			} catch (error) {
 			toast(error);
 			}
@@ -178,8 +175,9 @@
 				 }
 				 slideIndex = 1;
 				 showSlides(1);
-				 if(jumbleFonts)
-				 loadCSS();
+				 if(jumbleFonts) loadCSS();
+				 songNumber = e;
+				 if (parent == true) writeFirebaseData('loadData', 0, songNumber);
 				}catch(err) {
 			        $("#resultHere").append(err);
 				}
