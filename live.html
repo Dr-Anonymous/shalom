@@ -3,10 +3,10 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>Live Text</title>
+	<title>Live Notes</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="keywords" content="Worship,songs,christianity,church">
-	<meta name="description" content="Songs">
+	<meta name="keywords" content="Worship,Lyrics,Notes">
+	<meta name="description" content="Lyrics, Sermon notes">
 	<meta name="author" content="Shalom Worship Centre">
 	<!-- CSS -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,12 +54,8 @@
 	<script>
 var presenter = false,
 	slideIndex = 1,
-	downloadingVer = false,
-	offline = false,
 	jumbleFonts = false,
-	url = "https://script.google.com/macros/s/AKfycbw_mOWqvvDb_IHZS_pZ9Ob4bAjQJtmV5aRyj1AWFexmmfIg6Syd7p8P6GoHMvxgklFU/exec?",
-	database,
-	songNumber = 'all',
+	songNumber = 'something',
 	firebaseConfig = {
 	apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
 	authDomain: "mydatabase-c35da.firebaseapp.com",
@@ -70,13 +66,7 @@ var presenter = false,
 	appId: "1:945373860956:web:3ea16749c73345eb684299"
 	};
 
-$(document).ready(async function() {
-	if ((await window.indexedDB.databases()).map(db => db.name).includes('songsbook')){
-	offline = true;
-	getSlides('all');
-	}
-	else downloadOffline();
-	
+$(document).ready(async function() {	
 	// Initialize Firebase
 	firebase.initializeApp(firebaseConfig);
 	// Get a reference to the database service
@@ -94,7 +84,6 @@ $(document).ready(async function() {
 	database.on('value', (snapshot) => {
 		var data = snapshot.val();
 		//console.dir(data);
-		if (data["songNumber"] == 'all') return;
 
 		var value = data["value"];
 		switch (data["functionName"]) {
@@ -102,18 +91,16 @@ $(document).ready(async function() {
 				if (!presenter) loadData([' ', 'Offline']);
 				else loadData([' ', ' ']);
 				break;
-			case 'getSlides':
-				getSlides(data["songNumber"]);
-				break;
 			case 'currentSlide':
-				if (songNumber != data["songNumber"]) getSlides(data["songNumber"]);
+				if (songNumber != data["songNumber"]) loadData(data["songNumber"]);
 				currentSlide(value);
 				break;
 			case 'loadCSS':
 				loadCSS();
 				break;
 			case 'loadData':
-				loadData(value);
+				if (value == 0) loadData(data["songNumber"]);
+				else loadData(value);
 				break;
 			default:
 				// code block--  no default behaviour
@@ -122,36 +109,6 @@ $(document).ready(async function() {
 	});
 });
 
-function getSlides(e) {
-	songNumber = e;
-	try {
-		if (offline) {
-			if (e == 'all'){
-				var request = indexedDB.open('songsbook', 1);
-				request.onsuccess = () => {
-					const db = request.result;
-					var transaction = db.transaction('songsbook', "readonly");
-					var book = transaction.objectStore('songsbook');
-					const getRequest = book.getAll();
-					getRequest.onsuccess = () => {
-						dbData = getRequest.result[0];
-					};
-				}
-			return;
-			}
-			loadData(dbData[e - 1]);
-			return;
-		}
-		$.ajax({
-			crossDomain: true,
-			url: url + "callback=loadData&request=" + e,
-			method: "GET",
-			dataType: "jsonp"
-		});
-	} catch (error) {
-		toast(error);
-	}
-}
 async function loadData(e) {
 	$("#resultHere").empty();
 	$("#dot-container").empty();
@@ -399,59 +356,7 @@ async function loadData(e) {
 			} else if (document.msExitFullscreen) { /* IE11 */
 			  document.msExitFullscreen();
 			}
-		}
-			
-		/*============ download to offline*/
-		async function downloadOffline() {
-		if (!('indexedDB' in window)) {
-			toast('This browser doesn\'t support offline storage.');
-			return;
-		}
-		if (downloadingVer){
-		toast('Kindly wait for the previous download to complete.');
-		return;
-		}
-			
-		if ((await window.indexedDB.databases()).map(db => db.name).includes('songsbook')){
-		toast('Songsbook already available offline.');
-		return;
-		}
-		
-		downloadingVer = true;
-		
-		toast('Download of songsbook started.');
-		$.ajax({
-			crossDomain: true,
-			url: url + "callback=writeToDb&request=download",
-			method: "GET",
-			dataType: "jsonp"
-		});
-		
-		}
-		
-		function writeToDb(e) {
-		var request = window.indexedDB.open('songsbook', 1);
-		// Create schema
-		request.onupgradeneeded = function(event) {
-			const db = request.result;
-				db.createObjectStore('songsbook', {
-					autoIncrement: true
-				});
-		};
-		
-		request.onsuccess = () => {
-			const db = request.result;
-			var transaction = db.transaction('songsbook', "readwrite");
-			var store = transaction.objectStore('songsbook');
-			// Add data
-			store.add(e);
-			toast('Songsbook available offline.').then(
-				function() {
-				downloadingVer = false;
-				offline = true;
-				});
-		};
-		}
+		}	
 		
 		var f = 0;
 		function loadCSS(font) {
