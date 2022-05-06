@@ -68,6 +68,7 @@
 			offline = false,
 			jumbleFonts = false,
 			url = "https://script.google.com/macros/s/AKfycbw_mOWqvvDb_IHZS_pZ9Ob4bAjQJtmV5aRyj1AWFexmmfIg6Syd7p8P6GoHMvxgklFU/exec?",
+		    	songNumber,
 			firebaseConfig = {
 			apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
 			authDomain: "mydatabase-c35da.firebaseapp.com",
@@ -104,6 +105,7 @@
 			});
 			 
 			function getSlides(e){
+			songNumber = e;
 			try {
 			if (offline) {
 			if (!firstTime){		
