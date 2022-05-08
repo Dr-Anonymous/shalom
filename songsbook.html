@@ -68,7 +68,7 @@
 			offline = false,
 			jumbleFonts = false,
 			url = "https://script.google.com/macros/s/AKfycbw_mOWqvvDb_IHZS_pZ9Ob4bAjQJtmV5aRyj1AWFexmmfIg6Syd7p8P6GoHMvxgklFU/exec?",
-		    	songNumber = 'nothing',
+		    songNumber = 'nothing',
 			firebaseConfig = {
 			apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
 			authDomain: "mydatabase-c35da.firebaseapp.com",
@@ -80,8 +80,8 @@
 			};
 		
 			function urlParam(){
-			var url = new URL(window.location.href);
-			var param = url.searchParams.toString().slice(0, -1);
+			var url2 = new URL(window.location.href);
+			var param = url2.searchParams.toString().slice(0, -1);
 			return param;
 			}
 			
@@ -120,11 +120,16 @@
 				getRequest.onsuccess = () => {
 					dbData = getRequest.result[0];
 					loadData(dbData);
+					$.get(url+"request=all", function(data){
+								data = JSON.parse(data.slice(10, -1));
+								if (data.length != dbData.length) toast('Database needs update');
+							  });
 				};
 			}
+			
 			return;
 			}
-			$.ajax({
+			$.jquery({
 					crossDomain: true,
 					url: url + "callback=loadData&request=" + e,
 					method: "GET",
@@ -134,52 +139,53 @@
 			toast(error);
 			}
 			}
-			  async function loadData(e) {
-					//console.dir(e);
-					if (firstTime){
-						firstTime = false;
-						//autosuggest book names
-						const field = $("#songName")[0];
-						const ac = new Autocomplete(field, {
-							maximumItems: 10,
-							onSelectItem: ({
-								label,
-								value
-							}) => {
-								getSlides(value);
-							},
-						});
-						var myData = [];
-						for (i = 0; i < e.length; i++) {
-							var myArr = {};
-							myArr["label"] = e[i][0];
-							myArr["value"] = (i+1);
-							myData.push(myArr);
-						}
-						ac.setData(myData);
-						$('#songName').removeClass('d-none').focus();
-						return;
-					}
-				$("#resultHere").empty();
-				$("#dot-container").empty();
-				$("#show").removeClass('d-none');
-				//document.title = docTitle = e[0]; //is heading				
-			  try {var j = 1;
-			       for (var i = 1; i < e.length; i++) {
-				   if (e[i]== "" || e[i]== "\n" || e[i]== "\t"){
-				   continue;
-				   }
-					$("#resultHere").append("<div class=\"mySlides\"><p class=\"fs-1 lh-base\">"+ e[i].trim().replace(/\u000b|\n/g, '<br>') +"</p></div>"); //.replace(/\t/g, '&nbsp;&nbsp;')
-					$("#dot-container").append("<span class=\"dot\" onclick=\"currentSlide("+ j +")\">"+ j +"</span>");
-					j++;
-				 }
-				 slideIndex = 1;
-				 showSlides(1);
-				 if(jumbleFonts) loadCSS();
-				 songNumber = e;
-				 if (parent == true) writeFirebaseData('loadData', 0, songNumber);
+			async function loadData(e) {
+			//console.dir(e);
+			if (firstTime){
+				firstTime = false;
+				//autosuggest book names
+				const field = $("#songName")[0];
+				const ac = new Autocomplete(field, {
+					maximumItems: 10,
+					onSelectItem: ({
+						label,
+						value
+					}) => {
+						getSlides(value);
+					},
+				});
+				var myData = [];
+				for (i = 0; i < e.length; i++) {
+					var myArr = {};
+					myArr["label"] = e[i][0];
+					myArr["value"] = (i+1);
+					myData.push(myArr);
+				}
+				ac.setData(myData);
+				$('#songName').removeClass('d-none').focus();
+				return;
+			}
+			$("#resultHere").empty();
+			$("#dot-container").empty();
+			$("#show").removeClass('d-none');
+			//document.title = docTitle = e[0]; //is heading				
+			  try {
+				var j = 1;
+				for (var i = 1; i < e.length; i++) {
+				if (e[i]== "" || e[i]== "\n" || e[i]== "\t"){
+				continue;
+				}
+				$("#resultHere").append("<div class=\"mySlides\"><p class=\"fs-1 lh-base\">"+ e[i].trim().replace(/\u000b|\n/g, '<br>') +"</p></div>"); //.replace(/\t/g, '&nbsp;&nbsp;')
+				$("#dot-container").append("<span class=\"dot\" onclick=\"currentSlide("+ j +")\">"+ j +"</span>");
+				j++;
+				}
+				slideIndex = 1;
+				showSlides(1);
+				if(jumbleFonts) loadCSS();
+				songNumber = e;
+				if (parent == true) writeFirebaseData('loadData', 0, songNumber);
 				}catch(err) {
-			        $("#resultHere").append(err);
+				$("#resultHere").append(err);
 				}
 			}
 	</script>
@@ -248,7 +254,7 @@
 			<div id="show" class="services-half-width-text slideshow-container bg-dark text-light d-none">
 				<div id="resultHere" class="col" ondblclick="openFullscreen($('#show')[0]);"></div>
 				<div class="container fixed-bottom" id="controls">
-					<div class="row">
+					<div class="row text-center">
 						<div class="text-start col">
 							<button type="button" class="btn btn-outline-secondary" onclick="plusSlides(-1);">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
@@ -256,23 +262,22 @@
 								</svg>
 							</button>
 						</div>
-						<div class="col">
-							<button id="fullScreen" type="button" class="btn btn-outline-secondary" onclick="toggleFullScreen();">
-								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen-exit" viewBox="0 0 16 16">
-									<path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/>
-								</svg>
-							</button>
-							<button type="button" class="btn btn-outline-secondary childControls d-none" onclick="writeFirebaseData('loadData', [' ', ' ']);">
-								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace" viewBox="0 0 16 16">
-									<path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z"/>
-									<path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z"/>
-								</svg>
-							</button>
+						<div class="col childControls d-none">
+							<div class="input-group">
+								<input id="fontSize" type="text" class="form-control" value="2">
+								<button type="button" class="btn btn-outline-secondary" onclick="fontSize(parseInt($('#fontSize').val()));">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-textarea-t" viewBox="0 0 16 16">
+									  <path d="M1.5 2.5A1.5 1.5 0 0 1 3 1h10a1.5 1.5 0 0 1 1.5 1.5v3.563a2 2 0 0 1 0 3.874V13.5A1.5 1.5 0 0 1 13 15H3a1.5 1.5 0 0 1-1.5-1.5V9.937a2 2 0 0 1 0-3.874V2.5zm1 3.563a2 2 0 0 1 0 3.874V13.5a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V9.937a2 2 0 0 1 0-3.874V2.5A.5.5 0 0 0 13 2H3a.5.5 0 0 0-.5.5v3.563zM2 7a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm12 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+									  <path d="M11.434 4H4.566L4.5 5.994h.386c.21-1.252.612-1.446 2.173-1.495l.343-.011v6.343c0 .537-.116.665-1.049.748V12h3.294v-.421c-.938-.083-1.054-.21-1.054-.748V4.488l.348.01c1.56.05 1.963.244 2.173 1.496h.386L11.434 4z"/>
+									</svg>
+								</button>
+							</div>
 						</div>
-						<div class="text-center col">
+						
+						<div class="col">
 							<div id="dot-container" style="margin-top: 4%;"></div>
 						</div>
-						<div class="col">
+						<div class="col childControls d-none">
 							<button type="button" class="btn btn-outline-secondary" onclick="changeFont();">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-font" viewBox="0 0 16 16">
 									<path d="M10.943 4H5.057L5 6h.5c.18-1.096.356-1.192 1.694-1.235l.293-.01v6.09c0 .47-.1.582-.898.655v.5H9.41v-.5c-.803-.073-.903-.184-.903-.654V4.755l.298.01c1.338.043 1.514.14 1.694 1.235h.5l-.057-2z"/>
@@ -289,6 +294,17 @@
 						</div>
 					</div>
 				</div>
+				<button id="fullScreen" type="button" class="btn btn-outline-secondary position-absolute top-0 end-0" onclick="toggleFullScreen();">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen-exit" viewBox="0 0 16 16">
+						<path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/>
+					</svg>
+				</button>
+				<button type="button" class="btn btn-outline-secondary childControls d-none position-absolute top-0 end-0" onclick="writeFirebaseData('loadData', [' ', ' ']);">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace" viewBox="0 0 16 16">
+						<path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z"/>
+						<path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z"/>
+					</svg>
+				</button>
 			</div>
 		</div>
 	</div>
@@ -368,9 +384,8 @@
 		
 		
 		document.onkeydown = checkKey;
-		
 		function checkKey(e) {
-			if ($(':focus').attr('id') == 'songName') return;
+			if ($(':focus').attr('id') == 'songName' || $(':focus').attr('id') == 'fontSize') return;
 			e = e || window.event;
 			
 			if (e.keyCode == '37') {
@@ -400,6 +415,11 @@
 				console.log(err);
 				}
 			}
+		}
+		
+		function fontSize(e){
+		$("#resultHere p").attr('style', 'font-size:'+ (parseFloat($("#resultHere p").css('font-size')) + e ) +'px !important');
+		if (parent == true){ writeFirebaseData('fontSize', e); }
 		}
 		
 		function toggleFullScreen(){
