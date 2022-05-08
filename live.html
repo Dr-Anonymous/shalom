@@ -99,6 +99,10 @@ $(document).ready(async function() {
 				if (value == 0) loadData(data["songNumber"]);
 				else loadData(value);
 				break;
+			case 'fontSize':
+				if (songNumber != data["songNumber"]) loadData(data["songNumber"]);
+				fontSize(value);
+				break;
 			default:
 				// code block--  no default behaviour
 		}
@@ -324,6 +328,10 @@ async function loadData(e) {
 				console.log(err);
 				}
 			}
+		}
+		
+		function fontSize(e){
+		$("#resultHere p").attr('style', 'font-size:'+ (parseFloat($("#resultHere p").css('font-size')) + e ) +'px !important');
 		}
 		
 		function toggleFullScreen(){
