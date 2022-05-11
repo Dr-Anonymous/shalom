@@ -1,43 +1,210 @@
+---
+---
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Hello!</title>
+<head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="./style.css">
-    <!-- Manifest -->
-    <link rel="manifest" href="./manifest.json">
-  </head>  
-  <body>
-    <h1>
-      InstallableR
-    </h1>
-    
-    <p id="requireHTTPS" class="hidden">
-      <b>STOP!</b> This page <b>must</b> be served over HTTPS.
-      Please <a>reload this page via HTTPS</a>.
-    </p>
-    
-    <p>
-      Make me installable, follow the 
-      <a href="https://web.dev/codelab-make-installable/">instructions</a> here.
-    </p>
-    
-    <!-- Install button, hidden by default -->
-    <div id="installContainer" class="hidden">
-      <button id="butInstall" type="button">
-        Install
-      </button>
-    </div>
+    <title>Live Notes Editor</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="keywords" content="Worship,Lyrics,Notes">
+	<meta name="description" content="Lyrics, Sermon notes">
+	<meta name="author" content="Shalom Worship Centre">
+	<style>
+		/* Slideshow container */
+		.slideshow-container {
+		position: relative;
+		}
+		/* Slides */
+		.mySlides {
+		display: none;
+		padding: 10px 80px 80px 80px;
+		}
+		/* The dot/bullet/indicator container */
+		/*.dot-container {
+		text-align: center;
+		padding: 20px;
+		background: #f1f1f100;
+		}
+		*/
+		/* The bullets */
+		.dot {
+		cursor: pointer;
+		height: 20px;
+		width: 20px;
+		margin: 0 2px;
+		background-color: #bbb;
+		border-radius: 50%;
+		display: inline-block;
+		transition: background-color 0.6s ease;
+		}
+		/* Add a background color to the active dot/circle */
+		.active, .dot:hover {
+		background-color: #717171;
+		}
+	</style>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-database.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/decoupled-document/ckeditor.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/ckeditor5-base64-upload-adapter@1.0.2/src/Base64UploadAdapter.js"></script>
+	
+</head>
+<body>
+    <div class="container">
+		<div class="row">
+				<!-- The toolbar will be rendered in this container. -->
+				<div id="toolbar-container"></div>
+				<!-- This container will become the editable. -->
+				<div id="editor"><h1>Live Notes Editor</h1></div>
+		</div>
+		<div class="row">
+				<button id="postButton" onclick='loadData(editor.getData())'>Post</button>
+		</div>
+	</div>
+	
+	<div class="container">
+		<div class="row">
+			<div id="show" class="col slideshow-container bg-dark text-light d-none">
+				<div id="resultHere"></div>
+				<div class="text-center" id="dot-container" style="margin-top: 4%;"></div>
+			</div>
+		</div>
+	</div>
+    <script>
 
-    <!-- import the webpage's javascript file -->
-    <script src="./script.js" defer></script>
-    
-    <!-- include the Glitch button to show what the webpage is about and
-          to make it easier for folks to view source and remix -->
-    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
-    <script src="https://button.glitch.me/button.js"></script>
-  </body>
+var slideIndex = 1,
+	editor,
+	songNumber,
+	firebaseConfig = {
+		apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
+		authDomain: "mydatabase-c35da.firebaseapp.com",
+		databaseURL: "https://mydatabase-c35da-default-rtdb.firebaseio.com/",
+		projectId: "mydatabase-c35da",
+		storageBucket: "mydatabase-c35da.appspot.com",
+		messagingSenderId: "945373860956",
+		appId: "1:945373860956:web:3ea16749c73345eb684299"
+	};
+
+function writeFirebaseData(functionName, value, num) {
+	songNumber = num;
+	database.set({
+		"functionName": functionName,
+		"value": value,
+		"songNumber" : songNumber
+	});
+}
+
+function loadData(e) {
+	e = [" "].concat(e.replace(/<img /g, '<img class=\"img-fluid\" ').split("=========="));
+	writeFirebaseData("loadData", 0, e);
+	$("#resultHere").empty();
+	$("#dot-container").empty();
+	$("#show").removeClass('d-none');
+	//document.title = docTitle = e[0]; //is heading				
+	try {
+		var j = 1;
+		for (var i = 1; i < e.length; i++) {
+			if (e[i] == "" || e[i] == "\n" || e[i] == "\t") {
+				continue;
+			}
+			$("#resultHere").append("<div class=\"mySlides\">" + e[i] + "</div>");
+			$("#dot-container").append("<span class=\"dot\" onclick=\"currentSlide(" + j + ")\">" + j + "</span>");
+			j++;
+		}
+		slideIndex = 1;
+		showSlides(1);
+	} catch (err) {
+		$("#resultHere").append(err);
+	}
+}
+//======== slides		
+function plusSlides(n) {
+	slideIndex = slideIndex + n;
+	currentSlide(slideIndex);
+}
+
+function currentSlide(n) {
+	slideIndex = n;
+	showSlides(slideIndex);
+	writeFirebaseData('currentSlide', n, songNumber);
+}
+
+function showSlides(n) {
+	var i;
+	var slides = $(".mySlides");
+	var dots = $(".dot");
+	if (slides.length == 0) return;
+
+	if (n > slides.length) {
+		slideIndex = 1
+	}
+	if (n < 1) {
+		slideIndex = slides.length
+	}
+	for (i = 0; i < slides.length; i++) {
+		slides[i].style.display = "none";
+		dots[i].className = dots[i].className.replace(" active", "");
+	}
+	
+	slides[slideIndex - 1].style.display = "block";
+	dots[slideIndex - 1].className += " active";
+}
+
+document.onkeydown = checkKey;
+
+function checkKey(e) {
+	if ($(':focus').attr('id') == 'editor') return;
+	e = e || window.event;
+
+	if (e.keyCode == '37') {
+		// left arrow
+		plusSlides(-1);
+	} else if (e.keyCode == '39') {
+		// right arrow
+		plusSlides(1);
+	} else if (e.keyCode == '70' && e.ctrlKey || e.keyCode == '70' && e.metaKey) {
+		// f + ctrl or cmd key
+		$("#postButton").click();
+		e.preventDefault();
+	} else if (e.keyCode == '27') {
+		// esc key
+		loadData(' ');
+	} else if (e.key == '1' || e.key == '2' || e.key == '3' || e.key == '4' || e.key == '5' || e.key == '6' || e.key == '7' || e.key == '8' || e.key == '9' || e.key == '0') {
+		// num keys
+		try {
+			slideIndex = parseInt(e.key);
+			showSlides(slideIndex);
+			writeFirebaseData('currentSlide', slideIndex, songNumber);
+		} catch (err) {
+			console.log(err);
+		}
+	}
+}
+//before exit reset everything
+window.onbeforeunload = function() {
+	writeFirebaseData(false, 0, songNumber);
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+// Get a reference to the database service
+database = firebase.database().ref();
+//editor
+DecoupledEditor
+	.create(document.querySelector('#editor'), {
+        plugins: [ Base64UploadAdapter ]
+    } )
+	.then(newEditor => {
+		editor = newEditor;
+		const toolbarContainer = document.querySelector('#toolbar-container');
+		toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+	})
+	.catch(error => {
+		console.error(error);
+	});
+    </script>
+</body>
 </html>
