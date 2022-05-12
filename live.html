@@ -75,7 +75,7 @@ $(document).ready(async function() {
 	$('#fullScreen').addClass('d-none');
 	$('#controls').addClass('d-none');
 	$('.container').addClass('d-none');
-	$('#main').removeClass().addClass('container-fluid vh-100');
+	$('#main').removeClass().addClass('container-fluid');
 	}
 	
 	database.on('value', (snapshot) => {
@@ -193,7 +193,7 @@ async function loadData(e) {
 	</div>
 	<!-- Services Full Width Text -->
 	<div id="main" class="container">
-		<div class="row" style="height: -webkit-fill-available;">
+		<div class="row vh-100">
 			<div id="show" class="services-half-width-text slideshow-container bg-dark text-light d-none">
 				<div id="resultHere" class="col" ondblclick="openFullscreen($('#show')[0]);"></div>
 				<div class="container fixed-bottom" id="controls">
