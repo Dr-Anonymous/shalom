@@ -20,13 +20,6 @@
 		display: none;
 		padding: 10px 80px 80px 80px;
 		}
-		/* The dot/bullet/indicator container */
-		/*.dot-container {
-		text-align: center;
-		padding: 20px;
-		background: #f1f1f100;
-		}
-		*/
 		/* The bullets */
 		.dot {
 		cursor: pointer;
@@ -49,6 +42,7 @@
 	<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-app.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-database.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/decoupled-document/ckeditor.js"></script>
+    
 </head>
 <body>
     <div class="container">
@@ -90,12 +84,12 @@ function writeFirebaseData(functionName, value, num) {
 	database.set({
 		"functionName": functionName,
 		"value": value,
-		"songNumber" : songNumber
+		"songNumber": songNumber
 	});
 }
 
 function loadData(e) {
-	e = [" "].concat(e.replace(/<img /g, '<img class=\"img-fluid\" ').split("=========="));
+	e = [" "].concat(e.replace(/<img /g, '<img class=\"img-fluid\" ').replace(/<table/g, '<table class=\"table table-dark table-bordered\"').split("=========="));
 	writeFirebaseData("loadData", 0, e);
 	$("#resultHere").empty();
 	$("#dot-container").empty();
@@ -145,7 +139,7 @@ function showSlides(n) {
 		slides[i].style.display = "none";
 		dots[i].className = dots[i].className.replace(" active", "");
 	}
-	
+
 	slides[slideIndex - 1].style.display = "block";
 	dots[slideIndex - 1].className += " active";
 }
@@ -189,9 +183,36 @@ window.onbeforeunload = function() {
 firebase.initializeApp(firebaseConfig);
 // Get a reference to the database service
 database = firebase.database().ref();
+
+
 //editor
+class MyUploadAdapter {
+	constructor(loader) {
+		this.loader = loader;
+	}
+
+	upload() {
+		return this.loader.file
+			.then(file => new Promise((resolve) => {
+				const reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onloadend = function() { 
+				resolve({ default: reader.result });
+				}
+			}));
+	}
+}
+
+function MyCustomUploadAdapterPlugin(editor) {
+	editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+		return new MyUploadAdapter(loader);
+	};
+}
+
 DecoupledEditor
-	.create(document.querySelector('#editor'))
+	.create(document.querySelector('#editor'), {
+		extraPlugins: [MyCustomUploadAdapterPlugin]
+	})
 	.then(newEditor => {
 		editor = newEditor;
 		const toolbarContainer = document.querySelector('#toolbar-container');
