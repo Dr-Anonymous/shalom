@@ -197,10 +197,26 @@ class MyUploadAdapter {
 		return this.loader.file
 			.then(file => new Promise((resolve) => {
 				const reader = new FileReader();
+				// to upload to drive
+				reader.readAsArrayBuffer(file);
+				reader.onload = f => {
+					const url = "https://script.google.com/macros/s/AKfycbzh5_HNiZHoB07gGqeGSsPp-55UYd8Ow68WfFtTrTAB6egaQXtG2Nl89up9yfMQsoi6/exec";
+					const qs = new URLSearchParams({
+						filename: file.name,
+						mimeType: file.type
+					});
+					fetch(`${url}?${qs}`, {	method: "POST",	mode: 'no-cors', body: JSON.stringify([...new Int8Array(f.target.result)]) })
+						.then(fetch(url).then(response => response.json()).then(data => 
+						resolve({ default: "https://drive.google.com/uc?id=" + data })
+						))
+						.catch(err => console.log(err));
+				}
+				/* //to do base 64 encoding
 				reader.readAsDataURL(file);
 				reader.onloadend = function() { 
 				resolve({ default: reader.result });
 				}
+				*/
 			}));
 	}
 }
