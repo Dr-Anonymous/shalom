@@ -206,10 +206,10 @@ class MyUploadAdapter {
 						mimeType: file.type
 					});
 					fetch(`${url}?${qs}`, {	method: "POST",	mode: 'no-cors', body: JSON.stringify([...new Int8Array(f.target.result)]) })
-						.then(fetch(url).then(response => response.json()).then(data => 
-						resolve({ default: "https://drive.google.com/uc?id=" + data })
-						))
-						.catch(err => console.log(err));
+					.then(res => fetch(url).then(response => response.json()).then(data => 
+					resolve({ default: "https://drive.google.com/uc?id=" + data })
+					))
+					.catch(err => console.log(err));
 				}
 				/* //to do base 64 encoding
 				reader.readAsDataURL(file);
