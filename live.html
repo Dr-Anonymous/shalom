@@ -76,7 +76,7 @@ $(document).ready(async function() {
 	$('#controls').addClass('d-none');
 	$('.container').addClass('d-none');
 	$('#main').removeClass().addClass('container-fluid');
-	parameters.includes('transparent=') $('#show').removeClass('bg-dark').addClass('bg-transparent');
+	if (parameters.includes('transparent=')) $('#show').removeClass('bg-dark').addClass('bg-transparent');
 	}
 	
 	database.on('value', (snapshot) => {
