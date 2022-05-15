@@ -68,15 +68,15 @@ $(document).ready(async function() {
 	firebase.initializeApp(firebaseConfig);
 	// Get a reference to the database service
 	database = firebase.database().ref();	
-	
-	if ((new URL(window.location.href)).searchParams.toString().slice(0, -1) == 'present') {
+	var parameters = ((new URL(window.location.href)).searchParams.toString()).split('&');
+	if (parameters.includes('present=')) {
 	presenter = true;
 	$('.page-title').addClass('d-none');
 	$('#fullScreen').addClass('d-none');
 	$('#controls').addClass('d-none');
 	$('.container').addClass('d-none');
 	$('#main').removeClass().addClass('container-fluid');
-	$('#show').removeClass('bg-dark').addClass('bg-transparent');
+	parameters.includes('transparent=') $('#show').removeClass('bg-dark').addClass('bg-transparent');
 	}
 	
 	database.on('value', (snapshot) => {
@@ -113,11 +113,10 @@ $(document).ready(async function() {
 async function loadData(e) {
 	$("#resultHere").empty();
 	$("#dot-container").empty();
-	$("#show").removeClass('d-none');
-	//document.title = docTitle = e[0]; //is heading				
+	$("#show").removeClass('d-none');				
 	try {
 		var j = 1;
-		for (var i = 1; i < e.length; i++) {
+		for (var i = 1; i < e.length; i++) { // e[0] is heading
 			if (e[i] == "" || e[i] == "\n" || e[i] == "\t") {
 				continue;
 			}
