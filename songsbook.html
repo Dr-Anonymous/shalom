@@ -69,6 +69,7 @@
 			jumbleFonts = false,
 			url = "https://script.google.com/macros/s/AKfycbw_mOWqvvDb_IHZS_pZ9Ob4bAjQJtmV5aRyj1AWFexmmfIg6Syd7p8P6GoHMvxgklFU/exec?",
 		    songNumber = 'nothing',
+			changeFontSize = 0,
 			firebaseConfig = {
 			apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
 			authDomain: "mydatabase-c35da.firebaseapp.com",
@@ -183,6 +184,7 @@
 				showSlides(1);
 				if(jumbleFonts) loadCSS();
 				songNumber = e;
+				changeFontSize = 0;
 				if (parent == true) writeFirebaseData('loadData', 0, songNumber);
 				}catch(err) {
 				$("#resultHere").append(err);
@@ -264,7 +266,7 @@
 						</div>
 						<div class="col childControls d-none">
 							<div class="input-group">
-								<input id="fontSize" type="text" class="form-control" value="2">
+								<input id="fontSize" type="text" class="form-control" value="5">
 								<button type="button" class="btn btn-outline-secondary" onclick="fontSize(parseInt($('#fontSize').val()));">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-textarea-t" viewBox="0 0 16 16">
 									  <path d="M1.5 2.5A1.5 1.5 0 0 1 3 1h10a1.5 1.5 0 0 1 1.5 1.5v3.563a2 2 0 0 1 0 3.874V13.5A1.5 1.5 0 0 1 13 15H3a1.5 1.5 0 0 1-1.5-1.5V9.937a2 2 0 0 1 0-3.874V2.5zm1 3.563a2 2 0 0 1 0 3.874V13.5a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V9.937a2 2 0 0 1 0-3.874V2.5A.5.5 0 0 0 13 2H3a.5.5 0 0 0-.5.5v3.563zM2 7a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm12 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
@@ -418,8 +420,9 @@
 		}
 		
 		function fontSize(e){
-		$("#resultHere p").attr('style', 'font-size:'+ (parseFloat($("#resultHere p").css('font-size')) + e ) +'px !important');
-		if (parent == true){ writeFirebaseData('fontSize', e); }
+		changeFontSize += e;
+		$("#resultHere p").attr('style', 'font-size:'+ (parseFloat($("#resultHere p").css('font-size')) + changeFontSize ) +'px !important');
+		if (parent == true){ writeFirebaseData('fontSize', changeFontSize); }
 		}
 		
 		function toggleFullScreen(){
