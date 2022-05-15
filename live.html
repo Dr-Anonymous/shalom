@@ -52,7 +52,7 @@
 var presenter = false,
 	slideIndex = 1,
 	jumbleFonts = false,
-	songNumber = 'something',
+	songNumber = 'nothing',
 	firebaseConfig = {
 	apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
 	authDomain: "mydatabase-c35da.firebaseapp.com",
@@ -81,8 +81,6 @@ $(document).ready(async function() {
 	
 	database.on('value', (snapshot) => {
 		var data = snapshot.val();
-		//console.dir(data);
-
 		var value = data["value"];
 		switch (data["functionName"]) {
 			case false:
@@ -90,7 +88,7 @@ $(document).ready(async function() {
 				else loadData([' ', ' ']);
 				break;
 			case 'currentSlide':
-				if (songNumber != data["songNumber"]) loadData(data["songNumber"]);
+				if (songNumber == 'nothing') loadData(data["songNumber"]);
 				currentSlide(value);
 				break;
 			case 'loadCSS':
@@ -104,13 +102,14 @@ $(document).ready(async function() {
 				fontSize(value);
 				break;
 			default:
-				// code block--  no default behaviour
+				//no default behaviour
 		}
 
 	});
 });
 
 async function loadData(e) {
+	songNumber = e;
 	$("#resultHere").empty();
 	$("#dot-container").empty();
 	$("#show").removeClass('d-none');				
