@@ -1,6 +1,7 @@
 ---
 ---
 
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -118,17 +119,9 @@ $(document).ready(async function() {
 	firebase.initializeApp(firebaseConfig);
 	// Get a reference to the database service
 	database = firebase.database().ref();
-	/* non collapsing menu */
-	let dropdowns = document.querySelectorAll(".myClass");
-	dropdowns.forEach((dd) => {
-		dd.addEventListener("click", function(e) {
-			var el = this.nextElementSibling;
-			if (el) el.style.display = el.style.display === "block" ? "none" : "block";
-		});
-	});
+	
 	/* default language */
 	lang = "te-IN";
-	populateDropDown();
 	for (var i = 0; i < $("#versions li a").length; i++) {
 		if ((await window.indexedDB.databases()).map(db => db.name).includes($($("#versions li a")[i]).attr('ver'))) {
 			$($("#versions li a")[i]).next().remove();
@@ -156,7 +149,6 @@ async function changeVersion(v) {
 		lang = "en-US";
 	}
 
-	populateDropDown();
 
 	$('#version').text($("#versions li a[ver='" + ver + "']").attr('name'));
 
@@ -168,26 +160,6 @@ async function changeVersion(v) {
 	return;
 }
 
-
-function populateDropDown() {
-	$("#books").empty();
-	option = '';
-	for (var i = 1; i < allBooks.length; i++) {
-		if (i == 1) option += '<li>Old Testament</li><li><hr class="dropdown-divider"></li>';
-		if (i == 40) option += '<li><hr class="dropdown-divider"></li><li>New Testament</li><li><hr class="dropdown-divider"></li>';
-
-		if (lang == "te-IN")
-			option += '<li class="dropdown dropend"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" href="javascript:;">' + allBooks[i][1] + '</a><ul class="dropdown-menu">';
-		else
-			option += '<li class="dropdown dropend"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" href="javascript:;">' + allBooks[i][3] + '</a><ul class="dropdown-menu">';
-
-		for (var n = 1; n < allBooks[i][2] + 1; n++) {
-			option += '<li><a class="dropdown-item" href="javascript:;" onclick="getVerse(' + allBooks[i][0] + ", " + n + ');">' + n + "</a></li>";
-		}
-		option += "</ul></li>";
-	}
-	$("#books").append(option);
-}
 		</script>
 	</head>
 	<body>
@@ -255,12 +227,6 @@ function populateDropDown() {
 			<div class="row">
 				<div class="call-to-action-text col" style="overflow: visible;">
 					<div class="ca-text input-group">
-						<div class="dropdown input-group-append">
-							<button class="btn btn-outline-secondary myClass dropdown-toggle" type="button" data-bs-toggle="dropdown"></button>
-							<ul id="books" class="dropdown-menu">
-								<!-- chapters here -->
-							</ul>
-						</div>
 						<input type="text" class="form-control" id="book" val="" placeholder="Enter Book" autocomplete="off" />
 						<input type="text" class="form-control" id="chapter" placeholder="Chapter" autocomplete="off" /> 
 						<input type="text" class="form-control" id="verse" placeholder="Verse" autocomplete="off" />
@@ -770,7 +736,7 @@ function enableClick() {
 		if (lang == "te-IN") b = allBooks[b][1];
 		else if (lang == "en-US") b = allBooks[b][3];
 		
-		if (window.event.ctrlKey) $('#display').val($('#display').val() + '\n' +b + " " + c + ':\n' + currentP.text());
+		if (window.event.ctrlKey || window.event.metaKey) $('#display').val($('#display').val() + '\n' +b + " " + c + ':\n' + currentP.text());
 		else $('#display').val(b + " " + c + ':\n' + currentP.text());
 		writeFirebaseData('loadData', [' ', $('#display').val()]);
 	});
@@ -779,8 +745,7 @@ function enableClick() {
 		var b = parseInt($("#book").attr("value")),
 			c = $("#chapter").val();
 			b = allBooks[b][3];
-
-		if (window.event.ctrlKey) $('#display').val($('#display').val() + '\n' +b + " " + c + ':\n' + currentP.text());
+		if (window.event.ctrlKey || window.event.metaKey) $('#display').val($('#display').val() + '\n' +b + " " + c + ':\n' + currentP.text());
 		else $('#display').val(b + " " + c + ':\n' + currentP.text());
 		writeFirebaseData('loadData', [' ', $('#display').val()]);
 	});
@@ -810,7 +775,7 @@ function playThis() {
 const field = document.getElementById("book");
 const ac = new Autocomplete(field, {
 	data: [],
-	maximumItems: 5,
+	maximumItems: 8,
 	threshold: 1,
 	onSelectItem: ({
 		label,
@@ -823,11 +788,15 @@ const ac = new Autocomplete(field, {
 });
 var myData = [];
 for (i = 1; i < allBooks.length; i++) {
-	var myArr = {};
-	myArr["label"] = allBooks[i][3];
-	myArr["value"] = allBooks[i][0];
-	myData.push(myArr);
+	var myArr1 = {}, myArr2 = {};
+	myArr1["label"] = allBooks[i][3];
+	myArr1["value"] = allBooks[i][0];
+	myData.push(myArr1);
+	myArr2["label"] = allBooks[i][1];
+	myArr2["value"] = allBooks[i][0];
+	myData.push(myArr2);
 }
+
 ac.setData(myData);
 
 /* chapters field */
