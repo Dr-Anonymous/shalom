@@ -66,7 +66,10 @@
 				<button class="btn btn-secondary" id="postButton" onclick='loadData(editor.getData())'>Post</button>
 			</div>
 			<div class="col">
-				<button class="btn btn-secondary" id="backButton">Background</button>
+				<div class="btn-group">
+				<button class="btn btn-secondary" onclick="setBackground();">Background</button>
+				<button class="btn btn-secondary" onclick="setVideoUrl()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/><path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/></svg></button>
+				</div>
 			</div>
 			<div class="col">
 				<button class="btn btn-secondary" id="" onclick='loadData(songNumber[1] + "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><h1 class=\"text-center\" style=\"font-size: 10vw;text-shadow: 20px 3px 4px #00000054;position: relative;\">Welcome!</h1><h1 style=\"text-align: center;position: relative;\">We are glad you are here</h1><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>")'>Welcome</button>
@@ -79,6 +82,9 @@
 			</div>
 			<div class="col">
 				<button class="btn btn-secondary" id="" onclick='loadData("<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><h2><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0z\"/><path d=\"M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1h-.003zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195l.054.012z\"/><path d=\"M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083c.058-.344.145-.678.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1H1z\"/><path d=\"M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 5.982 5.982 0 0 1 3.13-1.567z\"/></svg> 96666 15555</h2><h3>For offerings: BHIM/GPay/Paytm</h3>")'>Offering</button>
+			</div>
+			<div class="col">
+				<button class="btn btn-secondary" id="" onclick='loadData("<video autoplay muted loop><source src=\"https://drive.google.com/uc?id=1uOA6lE1zQOlSRfS01cyeLbM-4pOeReGK\" type=\"video/mp4\" /></video>")'>Ending</button>
 			</div>
 		</div>
 	</div>
@@ -95,7 +101,7 @@
 var slideIndex = 1,
 	editor,
 	songNumber,
-	videoUrl = 'nothing',//"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+	videoUrl = undefined,
 	firebaseConfig = {
 		apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
 		authDomain: "mydatabase-c35da.firebaseapp.com",
@@ -106,11 +112,15 @@ var slideIndex = 1,
 		appId: "1:945373860956:web:3ea16749c73345eb684299"
 	};
 
-$( "#backButton" ).click(function() {
-	if (videoUrl == 'nothing'){
-	$.ajax({
+function setBackground() {
+	if (videoUrl == undefined) setVideoUrl();
+	else loadData("<video autoplay muted loop><source src=\"" + videoUrl + "\" type=\"video/mp4\" /></video>");
+}
+
+function setVideoUrl(){
+$.ajax({
 		  type: "GET",
-		  url: "https://api.pexels.com/videos/search?query=background&orientation=landscape&per_page=1&page="+(Math.ceil(Math.random() * 1500)),
+		  url: "https://api.pexels.com/videos/search?query=background&orientation=landscape&per_page=1&page="+(Math.ceil(Math.random() * 500)),
 		  dataType: 'json',
 		  headers: {
 			"Authorization": "563492ad6f917000010000015e82e359ce0c41678c17ff83984ba492"
@@ -120,11 +130,7 @@ $( "#backButton" ).click(function() {
 			loadData("<video autoplay muted loop><source src=\"" + videoUrl + "\" type=\"video/mp4\" /></video>");
 		  }
 		});
-	} else {
-		loadData("<video autoplay muted loop><source src=\"" + videoUrl + "\" type=\"video/mp4\" /></video>");
-	}
-});
-
+}
 function writeFirebaseData(functionName, value) {
 	database.set({
 		"functionName": functionName,
