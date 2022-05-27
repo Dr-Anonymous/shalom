@@ -1,5 +1,3 @@
----
----
 
 <head>
 	<meta charset="utf-8">
@@ -19,6 +17,15 @@
 		/* Slideshow container */
 		.slideshow-container {
 		position: relative;
+		overflow: hidden;
+		}
+		.slideshow-container video {
+		min-width: 100%;
+		min-height: 100%;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translateX(-50%) translateY(-50%);
 		}
 		/* Slides */
 		.mySlides {
