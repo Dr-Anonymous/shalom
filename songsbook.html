@@ -30,13 +30,6 @@
 		display: none;
 		padding: 10px 80px 80px 80px;
 		}
-		/* The dot/bullet/indicator container */
-		/*.dot-container {
-		text-align: center;
-		padding: 20px;
-		background: #f1f1f100;
-		}
-		*/
 		/* The bullets */
 		.dot {
 		cursor: pointer;
@@ -115,15 +108,9 @@
 						if (songNumber == 'nothing') loadData(data["songNumber"]);
 						currentSlide(value);
 						break;
-					case 'loadCSS':
-						loadCSS();
-						break;
 					case 'loadData':
 						if (value == 0) loadData(data["songNumber"]);
 						else loadData(value);
-						break;
-					case 'fontSize':
-						fontSize(value);
 						break;
 					default:
 						//no default behaviour
