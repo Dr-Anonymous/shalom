@@ -1,6 +1,7 @@
 ---
 ---
 
+
 <head>
 	<meta charset="utf-8">
 	<title>Shalom Songsbook</title>
@@ -103,13 +104,40 @@
 			
 			checkCookie();
 			getSlides('all');
+			
+			if (parent == true) database.on('value', (snapshot) => {
+				var data = snapshot.val();
+				var value = data["value"];
+				switch (data["functionName"]) {
+					case false:
+						break;
+					case 'currentSlide':
+						if (songNumber == 'nothing') loadData(data["songNumber"]);
+						currentSlide(value);
+						break;
+					case 'loadCSS':
+						loadCSS();
+						break;
+					case 'loadData':
+						if (value == 0) loadData(data["songNumber"]);
+						else loadData(value);
+						break;
+					case 'fontSize':
+						fontSize(value);
+						break;
+					default:
+						//no default behaviour
+				}
+
+			});
 			});
 			 
 			function getSlides(e){
 			try {
 			if (offline) {
-			if (!firstTime){		
-			loadData(dbData[e-1]);
+			if (!firstTime){
+			if (parent == true) writeFirebaseData('loadData', 0, dbData[e-1]);
+			else loadData(dbData[e-1]);
 			return;
 			}
 			var request = indexedDB.open('songsbook', 1);
