@@ -344,7 +344,7 @@ database = firebase.database().ref();
 
 var camDegree = 0,
 	side = 0
-	camUrl = "http://192.168.1.7/?angle=";
+	camUrl = "https://cam.shalomworshipcentre.in/?angle=";
 function camControl(functionName, value){
 if (side == functionName) camDegree += functionName * value;
 else { side = functionName; camDegree = functionName * value;}
