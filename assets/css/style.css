@@ -468,9 +468,10 @@ footer .social {
 footer .social a { display: inline-block; width: 24px; height: 24px; margin: 0 0 0 8px; vertical-align: middle; }
 
 footer .social a.facebook { background: url(../img/social-icons/facebook.png) left bottom no-repeat; }
-footer .social a.email { background: url(../img/social-icons/email.png) left bottom no-repeat; }
-footer .social a.googleplus { background: url(../img/social-icons/googleplus.png) left bottom no-repeat; }
+footer .social a.insta { background: url(../img/social-icons/email.png) left bottom no-repeat; }
+footer .social a.google { background: url(../img/social-icons/github.png) left bottom no-repeat; }
 footer .social a.youtube { background: url(../img/social-icons/youtube.png) left bottom no-repeat; }
+footer .social a.twitter { background: url(../img/social-icons/twitter.png) left bottom no-repeat; }
 footer .social a:hover { background-position: left top; }
 
 
