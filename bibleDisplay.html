@@ -802,7 +802,7 @@ ac.setData(myData);
 /* chapters field */
 $("#chapter").keypress(function(event) {
 	var keycode = event.keyCode ? event.keyCode : event.which;
-	if (keycode == "13") {
+	if (keycode == "13" || keycode == "9") {
 		var b = parseInt($("#book").attr("value")),
 			c = parseInt($("#chapter").val()) || 1;
 		if (isNaN(c)) return;
