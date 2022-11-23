@@ -111,7 +111,7 @@ $(document).ready(async function() {
 				fontSize(value);
 				break;
 			case 'scroll':
-				if (value == up) $("html, body").animate({scrollTop: $('div').offset().top}, 500);
+				if (value == 'up') $("html, body").animate({scrollTop: $('div').offset().top}, 500);
 				else $("html, body").animate({scrollTop: $('footer').offset().top}, 500);
 				break;
 			default:
