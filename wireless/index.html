@@ -1,0 +1,176 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Intercom</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="keywords" content="Intercom">
+		<meta name="description" content="intercom, connect, webRTC">
+		<meta name="author" content="Orthosam.com">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row position-relative">
+				<div class="col">
+					<Video class="mw-100 h-auto" id="remoteVideo" controls>
+				</div>
+				<div class="position-absolute top-0 start-0">
+					<Video class="w-25" id="localVideo" controls muted loop>
+				</div>
+				<div class="row position-absolute bottom-0 start-0">
+					<div class="col text-center">
+						<!-- empty space for play button -->
+					</div>
+					<div class="col text-center">
+						<button id="record" class="btn btn-secondary" state="start">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-record-circle" viewBox="0 0 16 16">
+								<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+								<path d="M11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+							</svg>
+						</button>
+					</div>
+					<div class="col text-center d-none">
+						<button id="play" class="btn btn-secondary">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+								<path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+							</svg>
+						</button>
+					</div>
+					<div class="col text-center d-none">
+						<button id="download" class="btn btn-secondary">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+								<path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+								<path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+							</svg>
+						</button>
+					</div>
+					<div class="col text-center">
+						<button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#settings">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tools" viewBox="0 0 16 16">
+								<path d="M1 0 0 1l2.2 3.081a1 1 0 0 0 .815.419h.07a1 1 0 0 1 .708.293l2.675 2.675-2.617 2.654A3.003 3.003 0 0 0 0 13a3 3 0 1 0 5.878-.851l2.654-2.617.968.968-.305.914a1 1 0 0 0 .242 1.023l3.27 3.27a.997.997 0 0 0 1.414 0l1.586-1.586a.997.997 0 0 0 0-1.414l-3.27-3.27a1 1 0 0 0-1.023-.242L10.5 9.5l-.96-.96 2.68-2.643A3.005 3.005 0 0 0 16 3c0-.269-.035-.53-.102-.777l-2.14 2.141L12 4l-.364-1.757L13.777.102a3 3 0 0 0-3.675 3.68L7.462 6.46 4.793 3.793a1 1 0 0 1-.293-.707v-.071a1 1 0 0 0-.419-.814L1 0Zm9.646 10.646a.5.5 0 0 1 .708 0l2.914 2.915a.5.5 0 0 1-.707.707l-2.915-2.914a.5.5 0 0 1 0-.708ZM3 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026L3 11Z"/>
+							</svg>
+						</button>
+					</div>
+				</div>
+			</div>
+			<br/>
+		</div>
+		<div class="modal fade" id="settings" tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 id="myModalLabel">Settings</h3>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-4">
+								<button class="btn btn-secondary" id="screenShare" share="no" onclick="scrShare();">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+										<path d="M3 3.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Zm1.5 0a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1Z"/>
+										<path d="M.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h15a.5.5 0 0 0 .5-.5v-13a.5.5 0 0 0-.5-.5H.5ZM1 5V2h14v3H1Zm0 1h14v8H1V6Z"/>
+									</svg>
+									Share screen
+								</button>
+							</div>
+							<div class="col-4 d-none">
+								<div class="form-check form-switch">
+									<input class="form-check-input" type="checkbox" id="screenShareAudio" onclick="if ($(this).attr('checked')) $(this).attr('checked', false); else $(this).attr('checked', true);">
+									<label class="form-check-label" for="screenShareAudio">Include mic audio</label>
+								</div>
+							</div>
+							<div class="col-4">
+								<input id="loadLocal" type="file" oninput="loadLocalFile()">
+							</div>
+						</div>
+						<br/>
+						<div class="row">
+							<div class="col-12">
+								<span>Codec preferences: </span>
+								<select id="codecPreferences" disabled>
+									<option selected value="">Default</option>
+								</select>
+							</div>
+						</div>
+						<br/>
+						<div class="row">
+							<div class="col-4">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mic" viewBox="0 0 16 16">
+									<path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"/>
+									<path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0v5zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3z"/>
+								</svg>
+								<select id="audioSource"></select>
+							</div>
+							<div class="col-4">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-volume-up" viewBox="0 0 16 16">
+									<path d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"/>
+									<path d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.706.706z"/>
+									<path d="M10.025 8a4.486 4.486 0 0 1-1.318 3.182L8 10.475A3.489 3.489 0 0 0 9.025 8c0-.966-.392-1.841-1.025-2.475l.707-.707A4.486 4.486 0 0 1 10.025 8zM7 4a.5.5 0 0 0-.812-.39L3.825 5.5H1.5A.5.5 0 0 0 1 6v4a.5.5 0 0 0 .5.5h2.325l2.363 1.89A.5.5 0 0 0 7 12V4zM4.312 6.39 6 5.04v5.92L4.312 9.61A.5.5 0 0 0 4 9.5H2v-3h2a.5.5 0 0 0 .312-.11z"/>
+								</svg>
+								<select id="audioOutput"></select>
+							</div>
+							<div class="col-4">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera" viewBox="0 0 16 16">
+									<path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z"/>
+									<path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/>
+								</svg>
+								<select id="videoSource"></select>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" id="start" data-bs-dismiss="modal" onclick="start();">Start.</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="./webrtc.js"></script>
+		<script type="module">
+			import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js";
+			import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-database.js";
+			// Firebase configuration
+			const firebaseConfig = {
+					apiKey: "AIzaSyBclMUk5tqdNWgdIOB8MRnq9m31t0QFlDQ",
+					authDomain: "cam-control-a9d76.firebaseapp.com",
+					databaseURL: "https://cam-control-a9d76-default-rtdb.firebaseio.com",
+					projectId: "cam-control-a9d76",
+					storageBucket: "cam-control-a9d76.appspot.com",
+					messagingSenderId: "835440701577",
+					appId: "1:835440701577:web:3ba52373edd9b2db3b9658"
+				},
+				app = initializeApp(firebaseConfig);
+			window.set = set;
+			window.ref = ref;
+			window.db = getDatabase();
+			
+			onValue(ref(db), (snapshot) => {
+				const data = snapshot.val();
+				if (data == null) {
+					if (localStream) { hangup(); }
+					one = true;
+					three = false;
+					//start();
+				} else {
+					if (data.length == 2) {
+						if (one) { pc3 = pc1; setRemoteDescription1(pc1, JSON.parse(data[1])); }
+						else if (three) { window.offer = JSON.parse(data[0]); callFrom(); }
+					} else if (data.length == 3) {
+						if (one) setRemoteDescription1(pc3, JSON.parse(data[2]));
+					} else {
+						if (one) return;
+						three = false;
+						window.offer = JSON.parse(data[0]);
+						callFrom();//start();
+					}
+				}
+			});
+			
+			window.onunload = function() {
+				deleteDB();
+			};
+		</script>
+	</body>
+</html>
