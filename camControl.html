@@ -1,0 +1,42 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-database.js"></script>
+
+<script>
+const firebaseConfig = {
+		apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
+		authDomain: "mydatabase-c35da.firebaseapp.com",
+		databaseURL: "https://mydatabase-c35da-default-rtdb.firebaseio.com/",
+		projectId: "mydatabase-c35da",
+		storageBucket: "mydatabase-c35da.appspot.com",
+		messagingSenderId: "945373860956",
+		appId: "1:945373860956:web:3ea16749c73345eb684299"
+	};
+
+	// Initialize Firebase
+	firebase.initializeApp(firebaseConfig);
+	// Get a reference to the database service
+	database = firebase.database().ref();
+	
+	database.on('value', (snapshot) => {
+		var data = snapshot.val();
+		//console.log(data);
+		var value = data["value"] || 0;
+		if (data["functionName"]== 'camControl') {
+				//alert(value);
+				$.ajax({
+						url: "http://" + $('#camIp').val() + "/?angle="+ value,
+						context: document.body
+						});
+			}
+	});
+</script>
+</head>
+<body>
+<p><label for="camIp">Cam IP address:</label></p>
+  <textarea id="camIp" rows="1">192.168.1.7</textarea>
+  <br>
+</body>
+</html>
