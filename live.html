@@ -55,46 +55,33 @@
 	<!-- javascript -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-	<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-app.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-database.js"></script>
-	<script>
-var presenter = false,
-	slideIndex = 1,
-	jumbleFonts = false,
-	songNumber = 'nothing',
-	firebaseConfig = {
-	apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
-	authDomain: "mydatabase-c35da.firebaseapp.com",
-	databaseURL: "https://mydatabase-c35da-default-rtdb.firebaseio.com/",
-	projectId: "mydatabase-c35da",
-	storageBucket: "mydatabase-c35da.appspot.com",
-	messagingSenderId: "945373860956",
-	appId: "1:945373860956:web:3ea16749c73345eb684299"
-	};
-
-$(document).ready(async function() {	
-	// Initialize Firebase
-	firebase.initializeApp(firebaseConfig);
-	// Get a reference to the database service
-	database = firebase.database().ref();	
-	var parameters = ((new URL(window.location.href)).searchParams.toString()).split('&');
-	if (parameters.includes('present=')) {
-	presenter = true;
-	$('.page-title').addClass('d-none');
-	$('#fullScreen').addClass('d-none');
-	$('#controls').addClass('d-none');
-	$('.container').addClass('d-none');
-	$('#main').removeClass().addClass('container-fluid');
-	if (parameters.includes('transparent=')) $('#show').removeClass('bg-dark').addClass('bg-transparent');
-	}
-	
-	database.on('value', (snapshot) => {
+	<script src="./webrtc.js"></script>
+	<script type="module">
+			import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js";
+			import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-database.js";
+			// Firebase configuration
+			const firebaseConfig = {
+					apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
+					authDomain: "mydatabase-c35da.firebaseapp.com",
+					databaseURL: "https://mydatabase-c35da-default-rtdb.firebaseio.com/",
+					projectId: "mydatabase-c35da",
+					storageBucket: "mydatabase-c35da.appspot.com",
+					messagingSenderId: "945373860956",
+					appId: "1:945373860956:web:3ea16749c73345eb684299"
+					},
+			app = initializeApp(firebaseConfig);
+			window.set = set;
+			window.ref = ref;
+			window.db = getDatabase();
+		
+		onValue(ref(db), (snapshot) => {
 		var data = snapshot.val();
 		var value = data["value"];
 		switch (data["functionName"]) {
 			case false:
 				if (!presenter) loadData([' ', 'Offline']);
 				else loadData([' ', ' ']);
+				if (pc2) pc2 = null;
 				break;
 			case 'currentSlide':
 				if (songNumber == 'nothing') loadData(data["songNumber"]);
@@ -114,11 +101,37 @@ $(document).ready(async function() {
 				if (value == 'up') $("html, body").animate({scrollTop: $('div').offset().top}, 500);
 				else $("html, body").animate({scrollTop: $('footer').offset().top}, 500);
 				break;
+			case 'project':
+				if (pc2) return;
+				loadData("");
+				$("#resultHere").append('<Video class="mw-100 h-auto" id="remoteVideo" controls>');
+				window.offer = JSON.parse(value[0]);
+				callFrom();
+				break;
 			default:
 				//no default behaviour
 		}
 
 	});
+	</script>
+	
+	<script>
+var presenter = false,
+	slideIndex = 1,
+	jumbleFonts = false,
+	songNumber = 'nothing';
+
+$(document).ready(async function() {
+	var parameters = ((new URL(window.location.href)).searchParams.toString()).split('&');
+	if (parameters.includes('present=')) {
+	presenter = true;
+	$('.page-title').addClass('d-none');
+	$('#fullScreen').addClass('d-none');
+	$('#controls').addClass('d-none');
+	$('.container').addClass('d-none');
+	$('#main').removeClass().addClass('container-fluid');
+	if (parameters.includes('transparent=')) $('#show').removeClass('bg-dark').addClass('bg-transparent');
+	}
 });
 
 async function loadData(e) {
