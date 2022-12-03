@@ -1,5 +1,4 @@
-var localStream, remoteStream, pc1, pc2,
-	one = false, three = false;
+var localStream, remoteStream, pc1, pc2, one;
 
 function getName(pc) { return (pc === pc1) ? 'pc1' : 'pc2'; }
 function getOtherPc(pc) { return (pc === pc1) ? pc2 : pc1; }
