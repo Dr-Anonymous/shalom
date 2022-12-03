@@ -19,10 +19,7 @@
 		<div class="container">
 			<div class="row position-relative">
 				<div class="col">
-					<Video class="mw-100 h-auto" id="remoteVideo" controls>
-				</div>
-				<div class="position-absolute top-0 start-0">
-					<Video class="w-25" id="localVideo" controls muted loop>
+					<Video class="mw-100 h-auto" id="localVideo" controls muted loop>
 				</div>
 				<div class="row position-absolute bottom-0 start-0">
 					<div class="col text-center">
@@ -132,6 +129,7 @@
 			</div>
 		</div>
 		
+		<script src="./webrtc.js"></script>
 		<script type="module">
 			import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js";
 			import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-database.js";
@@ -163,6 +161,6 @@
 				deleteDB();
 			};
 		</script>
-		<script src="./webrtc.js"></script>
+		
 	</body>
 </html>
