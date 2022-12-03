@@ -1,4 +1,4 @@
-var localStream, remoteStream, pc1, pc2, one;
+var localStream, remoteStream, pc1, pc2, one = false;
 
 function getName(pc) { return (pc === pc1) ? 'pc1' : 'pc2'; }
 function getOtherPc(pc) { return (pc === pc1) ? pc2 : pc1; }
@@ -201,7 +201,7 @@ function gotDevices(deviceInfos) {
 	});
 }
 
-if (one) navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
+if (audioInputSelect) navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
 
 // Attach audio output device to video element using device/sink ID.
 function attachSinkId(element, sinkId) {
