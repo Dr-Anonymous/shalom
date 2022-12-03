@@ -1,4 +1,4 @@
-var localStream, remoteStream, pc1, pc2, pc3,
+var localStream, remoteStream, pc1, pc2,
 	one = false, three = false;
 
 function getName(pc) { return (pc === pc1) ? 'pc1' : 'pc2'; }
@@ -52,7 +52,7 @@ function callFrom() {
 		pc1.oniceconnectionstatechange = e => onIceStateChange(pc1, e);
 		localStream.getTracks().forEach(track => pc1.addTrack(track, localStream));
 		//pc1.ontrack = gotRemoteStream;
-		//setCodec(pc1);
+		setCodec(pc1);
 		pc1.createOffer().then(onCreateOfferSuccess, onCreateSessionDescriptionError);
 	} else {
 		pc2 = new RTCPeerConnection(servers);
@@ -99,10 +99,7 @@ function gotRemoteStream(e) {
 	//console.log('gotRemoteStream', e.track, e.streams[0]);
 	remoteVideo.srcObject = null;
 	remoteVideo.srcObject = e.streams[0];
-	remoteVideo.play().then(_ => {
-			
-		})
-		.catch(error => {});
+	remoteVideo.play().then(_ => { }).catch(error => {});
 	remoteStream = e.streams[0];
 }
 
@@ -205,7 +202,7 @@ function gotDevices(deviceInfos) {
 	});
 }
 
-if (pc1) navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
+if (one) navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
 
 // Attach audio output device to video element using device/sink ID.
 function attachSinkId(element, sinkId) {
@@ -385,47 +382,6 @@ function stopRecording() {
 	mediaRecorder.stop();
 }
 
-/* ======================== codecs ===================================================== */
-/*const codecPreferences = document.getElementById('codecPreferences');
-const supportsSetCodecPreferences = window.RTCRtpTransceiver && 'setCodecPreferences' in window.RTCRtpTransceiver.prototype;
-
-if (supportsSetCodecPreferences) {
-	const {
-		codecs
-	} = RTCRtpSender.getCapabilities('video');
-	codecs.forEach(codec => {
-		if (['video/red', 'video/ulpfec', 'video/rtx'].includes(codec.mimeType)) {
-			return;
-		}
-		const option = document.createElement('option');
-		option.value = (codec.mimeType + ' ' + (codec.sdpFmtpLine || '')).trim();
-		option.innerText = option.value;
-		codecPreferences.appendChild(option);
-	});
-	codecPreferences.disabled = false;
-}
-
-function setCodec(x) {
-	if (supportsSetCodecPreferences) {
-		const preferredCodec = codecPreferences.options[codecPreferences.selectedIndex];
-		if (preferredCodec.value !== '') {
-			const [mimeType, sdpFmtpLine] = preferredCodec.value.split(' ');
-			const {
-				codecs
-			} = RTCRtpSender.getCapabilities('video');
-			const selectedCodecIndex = codecs.findIndex(c => c.mimeType === mimeType && c.sdpFmtpLine === sdpFmtpLine);
-			const selectedCodec = codecs[selectedCodecIndex];
-			codecs.splice(selectedCodecIndex, 1);
-			codecs.unshift(selectedCodec);
-			//console.log(codecs);
-			const transceiver = x.getTransceivers().find(t => t.sender && t.sender.track === localStream.getVideoTracks()[0]);
-			transceiver.setCodecPreferences(codecs);
-			console.log('Preferred video codec: ', selectedCodec);
-		}
-	}
-	codecPreferences.disabled = true;
-}
-*/
 /* =====================local files============================ */
 function loadLocalFile(){
 	if ($("#loadLocal").val() === '') return;
@@ -448,4 +404,45 @@ function loadLocalFile(){
 		
 		return navigator.mediaDevices.enumerateDevices();
 	});
+}
+
+/* ======================== codecs ===================================================== */
+var codecPreferences = document.getElementById('codecPreferences');
+var supportsSetCodecPreferences = window.RTCRtpTransceiver && 'setCodecPreferences' in window.RTCRtpTransceiver.prototype;
+
+if (codecPreferences && supportsSetCodecPreferences) {
+	const {
+		codecs
+	} = RTCRtpSender.getCapabilities('video');
+	codecs.forEach(codec => {
+		if (['video/red', 'video/ulpfec', 'video/rtx'].includes(codec.mimeType)) {
+			return;
+		}
+		var option = document.createElement('option');
+		option.value = (codec.mimeType + ' ' + (codec.sdpFmtpLine || '')).trim();
+		option.innerText = option.value;
+		codecPreferences.appendChild(option);
+	});
+	//codecPreferences.disabled = false;
+}
+
+function setCodec(x) {
+	if (supportsSetCodecPreferences) {
+		const preferredCodec = codecPreferences.options[codecPreferences.selectedIndex];
+		if (preferredCodec.value !== '') {
+			const [mimeType, sdpFmtpLine] = preferredCodec.value.split(' ');
+			const {
+				codecs
+			} = RTCRtpSender.getCapabilities('video');
+			const selectedCodecIndex = codecs.findIndex(c => c.mimeType === mimeType && c.sdpFmtpLine === sdpFmtpLine);
+			const selectedCodec = codecs[selectedCodecIndex];
+			codecs.splice(selectedCodecIndex, 1);
+			codecs.unshift(selectedCodec);
+			//console.log(codecs);
+			const transceiver = x.getTransceivers().find(t => t.sender && t.sender.track === localStream.getVideoTracks()[0]);
+			transceiver.setCodecPreferences(codecs);
+			console.log('Preferred video codec: ', selectedCodec);
+		}
+	}
+	codecPreferences.disabled = true;
 }
