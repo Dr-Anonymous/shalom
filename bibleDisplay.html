@@ -133,6 +133,7 @@ $(document).ready(async function() {
 
 function clearText() {
 	$('#display').val('');
+	writeFirebaseData('loadData', [' ', ' ']);
 }
 
 /* set bible version and language */
@@ -839,7 +840,6 @@ function checkKey(e) {
 	if (e.keyCode == '27') {
 		// esc key
 		clearText();
-		writeFirebaseData('loadData', [' ', ' ']);
 	}
 	else if (e.keyCode == '70' && e.ctrlKey || e.keyCode == '70' && e.metaKey) {
 			// f + ctrl or cmd key
