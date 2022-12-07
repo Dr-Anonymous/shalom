@@ -55,7 +55,7 @@
 	<!-- javascript -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-	<script src="/project/webrtc.js"></script>
+	<script src="project/webrtc.js"></script>
 	<script type="module">
 			import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js";
 			import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-database.js";
@@ -88,6 +88,7 @@
 				currentSlide(value);
 				break;
 			case 'loadCSS':
+				if (songNumber == 'nothing') loadData(data["songNumber"]);
 				loadCSS();
 				break;
 			case 'loadData':
@@ -125,6 +126,7 @@ $(document).ready(async function() {
 	var parameters = ((new URL(window.location.href)).searchParams.toString()).split('&');
 	if (parameters.includes('present=')) {
 	presenter = true;
+	$('footer').remove();
 	$('.page-title').addClass('d-none');
 	$('#fullScreen').addClass('d-none');
 	$('#controls').addClass('d-none');
@@ -266,33 +268,9 @@ async function loadData(e) {
 			</div>
 		</div>
 	</footer>
-	<!--toast-->
-	<div class="position-fixed top-50 start-50 translate-middle" style="z-index: 11">
-		<div id="myToast" class="toast fade hide" role="alert">
-			<div class="toast-header">
-				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="rounded me-2" viewBox="0 0 16 16">
-					<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-					<path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-				</svg>
-				<strong class="me-auto">Notification</strong>
-			</div>
-			<div class="toast-body">
-				<div id="toastBody"></div>
-				<div class="mt-2 pt-2 border-top">
-					<button type="button" class="btn btn-danger btn-sm" onclick="indexedDB.deleteDatabase('songsbook');offline = false;">Delete database</button>
-					<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>
+	
 	<!-- Javascript -->
 	<script>
-		async function toast(tex){
-		$('#toastBody').text(tex);
-		var toastBox = new bootstrap.Toast($('#myToast'))
-		toastBox.show();
-		return;
-		}
 		//======== slides
 		function plusSlides(n) {
 		slideIndex = slideIndex + n;
