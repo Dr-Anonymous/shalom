@@ -1,6 +1,3 @@
----
----
-
 <head>
 	<meta charset="utf-8">
 	<title>Live Notes</title>
@@ -133,6 +130,7 @@ $(document).ready(async function() {
 	$('.container').addClass('d-none');
 	$('#main').removeClass().addClass('container-fluid');
 	if (parameters.includes('transparent=')) $('#show').removeClass('bg-dark').addClass('bg-transparent');
+	else $('#show').removeClass('bg-dark').css("background-color", "black");
 	}
 });
 
