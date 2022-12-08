@@ -1,3 +1,6 @@
+---
+---
+
 <head>
 	<meta charset="utf-8">
 	<title>Live Notes</title>
@@ -96,8 +99,9 @@
 				fontSize(value);
 				break;
 			case 'scroll':
-				if (value == 'up') $("html, body").animate({scrollTop: $('div').offset().top}, 500);
-				else $("html, body").animate({scrollTop: $('footer').offset().top}, 500);
+				if (songNumber == 'nothing') loadData(data["songNumber"]);
+				if (value == 'up') $("html, body").animate({scrollTop: $('div').offset().top}, 0);
+				else $("html, body").animate({scrollTop: $(document).height()}, 0);
 				break;
 			case 'project':
 				if (pc2) return;
