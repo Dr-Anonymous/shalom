@@ -111,7 +111,8 @@
 				callFrom();
 				break;
 			case 'streaming':
-				if (!window.obsstudio) break;
+				if (songNumber == 'nothing') loadData(data["songNumber"]);
+				if (!window.obsstudio) return;
 				if (value == 'start') window.obsstudio.startStreaming();
 				else window.obsstudio.stopStreaming();
 			default:
