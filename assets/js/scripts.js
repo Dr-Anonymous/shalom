@@ -2,17 +2,19 @@
 Slider
 */
 $(window).load(function() {
-    $('.flexslider').flexslider({
+    if ($('.flexslider')) {
+	$('.flexslider').flexslider({
         animation: "slide",
         controlNav: "thumbnails"
     });
+    }
 });
 /*
 fb plugin
 */
 function statusChangeCallback(response) {
-    console.log('statusChangeCallback');
-    console.log(response);
+    //console.log('statusChangeCallback');
+    //console.log(response);
 	if (response.status === 'connected') {
       testAPI();
     } else if (response.status === 'not_authorized') {
@@ -46,7 +48,7 @@ function statusChangeCallback(response) {
      fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
    function testAPI() {
-    console.log('Welcome! Fetching your information....');
+    //console.log('Welcome! Fetching your information....');
     FB.api('/me', function(response) {
       res = response.name.split(" ", 1);
 	 var loginbtn = document.getElementById('loginbtn');
