@@ -2,7 +2,7 @@
 Slider
 */
 $(window).load(function() {
-    if ($('.flexslider')) {
+    if ($('.flexslider').length > 1) {
 	$('.flexslider').flexslider({
         animation: "slide",
         controlNav: "thumbnails"
