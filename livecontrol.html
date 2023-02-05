@@ -469,7 +469,7 @@ function ytLink(e) {
 getLink();
 
 function startStreaming(){
-var childWindow = window.open(ytVideoLink," ","width=100,height=50");
+var childWindow = window.open(ytVideoLink);
 setTimeout(function (){
 writeFirebaseData('streaming', 'start');            
 childWindow.close();
