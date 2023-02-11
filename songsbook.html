@@ -1,7 +1,6 @@
 ---
 ---
 
-
 <head>
 	<meta charset="utf-8">
 	<title>Shalom Songsbook</title>
@@ -136,15 +135,25 @@
 				getRequest.onsuccess = () => {
 					dbData = getRequest.result[0];
 					loadData(dbData);
+                    //check for database updates
 					$.get(url+"request=all", function(data){
 								data = JSON.parse(data.slice(10, -1));
-								if (data.length != dbData.length) toast('Database needs update');
+                                //if discrepancy- then update it
+								if (data.length != dbData.length){
+                                    toast('Database needs update..');
+                                    window.indexedDB.deleteDatabase('songsbook').onsuccess = () => {
+                                        offline = false;
+                                        //downloadOffline();
+                                        //above line not working still
+                                    };
+                                }
 							  });
 				};
 			}
-			
 			return;
 			}
+                
+            //songs not stored offline
 			$.ajax({
 					crossDomain: true,
 					url: url + "callback=loadData&request=" + e,
@@ -155,6 +164,7 @@
 			toast(error);
 			}
 			}
+        
 			async function loadData(e) {
 			//console.dir(e);
 			if (firstTime){
@@ -181,6 +191,7 @@
 				$('#songName').removeClass('d-none').focus();
 				return;
 			}
+                
 			$("#resultHere").empty();
 			$("#dot-container").empty();
 			$("#show").removeClass('d-none');
@@ -353,7 +364,7 @@
 			<div class="toast-body">
 				<div id="toastBody"></div>
 				<div class="mt-2 pt-2 border-top">
-					<button type="button" class="btn btn-danger btn-sm" onclick="indexedDB.deleteDatabase('songsbook');">Delete database</button>
+					<button type="button" class="btn btn-danger btn-sm" onclick="indexedDB.deleteDatabase('songsbook').onsuccess = () => {offline = false;};">Delete database</button>
 					<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Close</button>
 				</div>
 			</div>
@@ -478,8 +489,8 @@
 		toast('Kindly wait for the previous download to complete.');
 		return;
 		}
-			
-		if ((await window.indexedDB.databases()).map(db => db.name).includes('songsbook')){
+
+        if (offline){
 		toast('Songsbook already available offline.');
 		return;
 		}
@@ -493,8 +504,8 @@
 			method: "GET",
 			dataType: "jsonp"
 		});
-		
-		}
+        return true;
+        }
 		
 		function writeToDb(e) {
 		var request = window.indexedDB.open('songsbook', 1);
@@ -515,6 +526,7 @@
 			toast('Songsbook available offline.').then(
 				function() {
 				downloadingVer = false;
+                offline = true;
 				});
 		};
 		}
