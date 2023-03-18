@@ -1,0 +1,167 @@
+
+<head>
+	<meta charset="utf-8">
+	<title>Live Notes</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="keywords" content="Worship,Lyrics,Notes">
+	<meta name="description" content="Lyrics, Sermon notes">
+	<meta name="author" content="Shalom Worship Centre">
+	<!-- CSS -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link id="fontFamily" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+	<link rel="stylesheet" href="https://shalomworshipcentre.in/assets/css/font-awesome.css">
+	<link rel="stylesheet" href="https://shalomworshipcentre.in/assets/css/style.css">
+	
+    <!-- Favicon and touch icons --> 
+	<link rel="shortcut icon" href="https://shalomworshipcentre.in/assets/ico/favicon.ico">
+	<!-- javascript -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script src="./webrtc.js"></script>
+	<script type="module">
+			import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js";
+			import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-database.js";
+			// Firebase configuration
+			const firebaseConfig = {
+					apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
+					authDomain: "mydatabase-c35da.firebaseapp.com",
+					databaseURL: "https://mydatabase-c35da-default-rtdb.firebaseio.com/",
+					projectId: "mydatabase-c35da",
+					storageBucket: "mydatabase-c35da.appspot.com",
+					messagingSenderId: "945373860956",
+					appId: "1:945373860956:web:3ea16749c73345eb684299"
+					},
+			app = initializeApp(firebaseConfig);
+			window.set = set;
+			window.ref = ref;
+			window.db = getDatabase();
+		
+		onValue(ref(db), (snapshot) => {
+		var data = snapshot.val();
+		var value = data["value"];
+		switch (data["functionName"]) {
+			case false:
+				if (!presenter) loadData([' ', 'Offline']);
+				else loadData([' ', ' ']);
+				if (pc2) pc2 = null;
+				break;
+			case 'currentSlide':
+				if (songNumber == 'nothing') loadData(data["songNumber"]);
+				currentSlide(value);
+				break;
+			case 'loadCSS':
+				if (songNumber == 'nothing') loadData(data["songNumber"]);
+				loadCSS();
+				break;
+			case 'loadData':
+				if (value == 0) loadData(data["songNumber"]);
+				else loadData(value);
+				break;
+			case 'fontSize':
+				fontSize(value);
+				break;
+			case 'scroll':
+				if (songNumber == 'nothing') loadData(data["songNumber"]);
+				if (value == 'up') $("html, body").animate({scrollTop: $('div').offset().top}, 0);
+				else $("html, body").animate({scrollTop: $(document).height()}, 0);
+				break;
+			case 'project':
+				if (pc2) return;
+				window.offer = JSON.parse(value[0]);
+				callFrom();
+				break;
+			case 'streaming':
+				if (songNumber == 'nothing') loadData(data["songNumber"]);
+				if (!window.obsstudio) return;
+				if (value == 'start') window.obsstudio.startStreaming();
+				else window.obsstudio.stopStreaming();
+			default:
+				//no default behaviour
+		}
+
+	});
+	</script>
+
+</head>
+<body>
+	<!-- Header -->
+	<div class="container">
+		<div class="header row" style="--bs-gutter-x: 0;">
+			<div class="span12">
+				<div class="navbar">
+					<div class="navbar-inner">
+						<h1><a class="brand" href="/">Shalom Worship Centre</a></h1>
+						<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
+						<div class="nav-collapse collapse">
+							<ul class="nav pull-right">
+								<li>
+									<a href="/">
+									<i class="icon-home"></i><br />
+									Home
+									</a>
+								</li>
+								<li class="current-page">
+									<a href="/Our Ministries.html">
+									<i class="icon-camera"></i><br />
+									Our Ministries
+									</a>
+								</li>
+								<li>
+									<a href="/testimonies/">
+									<i class="icon-user"></i><br />
+									Testimonies
+									</a>
+								</li>
+								<li>
+									<a href="/messages">
+									<i class="icon-tasks"></i><br />
+									Messages
+									</a>
+								</li>
+								<li>
+									<a href="/contact.html">
+									<i class="icon-envelope-alt"></i><br />
+									Contact
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Page Title --> 
+	<div class="page-title">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<input type="text" class="form-control d-none" id="songName" placeholder="Type song name" autocomplete="off" />
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Services Full Width Text -->
+	<div id="main" class="container">
+		<div class="row vh-100">
+            <audio id="remoteVideo" controls></audio>
+        </div>
+	</div>
+	<!-- Footer --> 
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="social col d-flex justify-content-center">
+					<a class="facebook" href="https://www.facebook.com/shalomworshipcentre.kkd"></a>
+				</div>
+				<div class="copyright col d-flex justify-content-center">
+					<p>&#169;Shalom Worship Centre</p>
+				</div>
+				<div class="social col d-flex justify-content-center">
+					<a class="youtube" href="https://www.youtube.com/PrasadCherukuri"></a>
+				</div>
+			</div>
+		</div>
+	</footer>
