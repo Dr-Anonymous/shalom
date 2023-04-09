@@ -1,6 +1,7 @@
 ---
 ---
 
+
 <head>
 	<meta charset="utf-8">
 	<title>Shalom Songsbook</title>
@@ -128,24 +129,23 @@
 			}
 			var request = indexedDB.open('songsbook', 1);
 			request.onsuccess = () => {
-				const db = request.result;
+				var db = request.result;
 				var transaction = db.transaction('songsbook', "readonly");
 				var book = transaction.objectStore('songsbook');
-				const getRequest = book.getAll();
+				var getRequest = book.getAll();
 				getRequest.onsuccess = () => {
 					dbData = getRequest.result[0];
 					loadData(dbData);
+                    
                     //check for database updates
-					$.get(url+"request=all", function(data){
+					$.get(url + "request=all", function(data){
 								data = JSON.parse(data.slice(10, -1));
-                                //if discrepancy- then update it
+                                //if discrepancy in database- then update it
 								if (data.length != dbData.length){
-                                    toast('Database needs update..');
-                                    window.indexedDB.deleteDatabase('songsbook').onsuccess = () => {
-                                        offline = false;
-                                        //downloadOffline();
-                                        //above line not working still
-                                    };
+                                    toast('Database is updating ...');
+                                    offline = false;
+                                    $("#dltDB").click();
+                                    downloadOffline();
                                 }
 							  });
 				};
@@ -170,8 +170,8 @@
 			if (firstTime){
 				firstTime = false;
 				//autosuggest book names
-				const field = $("#songName")[0];
-				const ac = new Autocomplete(field, {
+				var field = $("#songName")[0];
+				var ac = new Autocomplete(field, {
 					maximumItems: 10,
 					onSelectItem: ({
 						label,
@@ -364,7 +364,7 @@
 			<div class="toast-body">
 				<div id="toastBody"></div>
 				<div class="mt-2 pt-2 border-top">
-					<button type="button" class="btn btn-danger btn-sm" onclick="indexedDB.deleteDatabase('songsbook').onsuccess = () => {offline = false;};">Delete database</button>
+					<button id="dltDB" type="button" class="btn btn-danger btn-sm" onclick="indexedDB.deleteDatabase('songsbook').onsuccess = () => {offline = false;};">Delete database</button>
 					<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Close</button>
 				</div>
 			</div>
@@ -529,6 +529,11 @@
                 offline = true;
 				});
 		};
+        
+        //load suggestions accordingly
+        firstTime = true;
+        getSlides('all');
+        $("#songName").next().remove();
 		}
 		
 		function changeFont(){
