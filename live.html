@@ -138,7 +138,7 @@ $(document).ready(async function() {
 	$('#controls').addClass('d-none');
 	$('.container').addClass('d-none');
 	$('#main').removeClass().addClass('container-fluid');
-	if (parameters.includes('transparent=')) $('#show').removeClass('bg-dark').addClass('bg-transparent');
+	if (parameters.includes('transparent=')) $('#show').removeClass('bg-dark text-light').addClass('bg-transparent text-dark');
 	else $('#show').removeClass('bg-dark').css("background-color", "black");
 	}
 });
