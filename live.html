@@ -158,7 +158,7 @@ async function loadData(e) {
 			if (e[i] == "" || e[i] == "\n" || e[i] == "\t") {
 				continue;
 			}
-			$("#resultHere").append("<div class=\"mySlides\"><p class=\"fs-1 lh-base\"><mark>" + e[i].replace(/\u000b|\n/g, '<br>') + "</mark></p></div>"); //.replace(/\t/g, '&nbsp;&nbsp;')
+			$("#resultHere").append("<div class=\"mySlides\"><p class=\"fs-1 lh-base\">" + e[i].replace(/\u000b|\n/g, '<br>') + "</p></div>"); //.replace(/\t/g, '&nbsp;&nbsp;')
 			$("#dot-container").append("<span class=\"dot\" onclick=\"currentSlide(" + j + ")\">" + j + "</span>");
 			j++;
 		}
