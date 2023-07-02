@@ -142,7 +142,7 @@ $(document).ready(async function() {
 	$('#controls').addClass('d-none');
 	$('.container').addClass('d-none');
 	$('#main').removeClass().addClass('container-fluid');
-	if (parameters.includes('transparent=')) $('#show').removeClass('bg-dark text-light').addClass('bg-transparent text-dark');
+	if (parameters.includes('transparent=')) $('#show').removeClass('bg-dark text-light').addClass('bg-transparent text-dark').css('textShadow','0px 0px 20px #FFFFFF');
 	else $('#show').removeClass('bg-dark').css("background-color", "black");
 	}
 });
