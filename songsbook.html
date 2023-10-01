@@ -212,7 +212,7 @@
 				if(jumbleFonts) loadCSS();
 				songNumber = e;
 				changeFontSize = 0;
-				$("#resultHere").on("swipeleft",function(){ plusSlides(-1)}).on("swiperight",function(){ plusSlides(1)});
+				$("#resultHere").on("swipeleft",function(){ plusSlides(1)}).on("swiperight",function(){ plusSlides(-1)});
 				}catch(err) {
 				$("#resultHere").append(err);
 				}
