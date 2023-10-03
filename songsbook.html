@@ -33,8 +33,8 @@
 		/* The bullets */
 		.dot {
 		cursor: pointer;
-		height: 30px;
-		width: 30px;
+		height: 35px;
+		width: 35px;
 		margin: 0 2px;
 		background-color: #bbb;
 		border-radius: 50%;
@@ -212,7 +212,6 @@
 				if(jumbleFonts) loadCSS();
 				songNumber = e;
 				changeFontSize = 0;
-				$("#resultHere").on("swipeleft",function(){ plusSlides(1)}).on("swiperight",function(){ plusSlides(-1)});
 				}catch(err) {
 				$("#resultHere").append(err);
 				}
@@ -597,5 +596,7 @@
 		}
 		//before exit reset everything except last songnumber
 		window.onbeforeunload = function(){ if (parent == true) writeFirebaseData(false, 0) };
+		//for touchscreen swipe
+		$("#show").on("swipeleft",function(){ plusSlides(1) }).on("swiperight",function(){ plusSlides(-1) });
 	</script>
 </body>
