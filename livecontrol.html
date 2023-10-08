@@ -225,7 +225,7 @@
 var slideIndex = 1,
 	editor,
 	songNumber = null,
-	videoUrl = checkCookie(),
+	videoUrl = getBgVideoUrl(),
 	firebaseConfig = {
 		apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
 		authDomain: "mydatabase-c35da.firebaseapp.com",
@@ -454,23 +454,27 @@ function getCookie(cname) {
 	return "";
 }
 
-function checkCookie() {
+function getBgVideoUrl() {
 	if (getCookie("videoUrl") != "") return getCookie("videoUrl");
 	else return false;
 }
 	    
 /* streaming controls*/
 function getLink (){
-$.ajax({ 
-      crossDomain: true,
-      url: "https://script.google.com/macros/s/AKfycbyYOlekh8vT2dVEXYWZ1-J1y1vDWYx-AfeScN6Xj-_eCpx_oGOhrcdw-mYbfDhAJm8p/exec?callback=ytLink",
-      method: "GET",
-      dataType: "jsonp"
-    });
+if (getCookie("ytVideoLink") != "") window.ytVideoLink = getCookie("ytVideoLink");
+else {
+	$.ajax({ 
+	      crossDomain: true,
+	      url: "https://script.google.com/macros/s/AKfycbyYOlekh8vT2dVEXYWZ1-J1y1vDWYx-AfeScN6Xj-_eCpx_oGOhrcdw-mYbfDhAJm8p/exec?callback=ytLink",
+	      method: "GET",
+	      dataType: "jsonp"
+	    });
+}
 }
 
 function ytLink(e) {
 	window.ytVideoLink = "https://studio.youtube.com/video/"+ e.split("/")[3] +"/livestreaming";
+	setCookie('ytVideoLink', ytVideoLink, 1);
 }
 
 getLink();
