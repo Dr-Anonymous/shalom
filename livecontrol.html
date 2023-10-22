@@ -483,8 +483,8 @@ function startStreaming(){
 var childWindow = window.open(ytVideoLink);
 setTimeout(function (){
 writeFirebaseData('streaming', 'start');            
-childWindow.close();
-}, 12000);
+//childWindow.close();
+}, 15000);
 }
 
 function stopStreaming(){
