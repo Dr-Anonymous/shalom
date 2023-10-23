@@ -527,7 +527,8 @@
 			toast('Songsbook available offline.').then(
 				function() {
 				downloadingVer = false;
-                offline = true;
+        			offline = true;
+				location.reload();
 				});
 		};
         
