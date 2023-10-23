@@ -99,7 +99,11 @@
 			$('.childControls').removeClass('d-none');
 			}
 			
-			checkCookie();
+			if (checkCookie('jumbleFonts')){
+				$("button[onclick='changeFont();']").removeClass('btn-outline-secondary').addClass('btn-secondary');
+				jumbleFonts = true;
+				return;
+			}
 			getSlides('all');
 			
 			if (parent == true) database.on('value', (snapshot) => {
@@ -604,8 +608,8 @@
 		if (parent == true) writeFirebaseData('loadCSS', 0);
 		}
 		
-		function checkCookie(){
-		let name = "jumbleFonts=";
+		function checkCookie(e){
+		let name = e + "=";
 		let decodedCookie = decodeURIComponent(document.cookie);
 		let ca = decodedCookie.split(';');
 		for (let i = 0; i < ca.length; i++) {
@@ -614,10 +618,9 @@
 				c = c.substring(1);
 			}
 			if (c.indexOf(name) == 0) {
-				$("button[onclick='changeFont();']").removeClass('btn-outline-secondary').addClass('btn-secondary');
-				jumbleFonts = true;
-				return;
+				return c.substring(name.length, c.length);
 			}
+			
 		}
 		//jumbleFonts = false;
 		}
@@ -629,18 +632,29 @@
 
 		/* =====history===================== */
 		function history() {
+			if (histo == []) histo = checkCookie('histo').split(",");
 			$("#historyOptions").empty();
 			option = '';
 			for (var i = 0; i < histo.length; i++) {
-				option += '<li><a class="dropdown-item" href="javascript:;" onclick="fromHistory=true;getSlides(' + histo[i] + ');">' + dbData[i][0] + '</a></li>';
+				option += '<li><a class="dropdown-item" href="javascript:;" onclick="fromHistory=true;getSlides(' + histo[i] + ');">' + dbData[histo[i]][0] + '</a></li>';
 				}
 			$("#historyOptions").append(option);
 		}
 		
 		//before exit reset everything except last songnumber
-		window.onbeforeunload = function(){ if (parent == true) writeFirebaseData(false, 0) };
+		window.onbeforeunload = function(){ 
+			if (parent == true) writeFirebaseData(false, 0);
+			setCookie("histo", histo.toString(), 2);
+		};
 		
 		//for touchscreen swipe
 		$("#show").on("swipeleft",function(){ plusSlides(1) }).on("swiperight",function(){ plusSlides(-1) });
+
+		function setCookie(cname, cvalue, exdays) {
+		const d = new Date();
+		d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+		let expires = "expires=" + d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+		}
 	</script>
 </body>
