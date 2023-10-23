@@ -104,7 +104,6 @@
 				jumbleFonts = true;
 			}
 			if (checkCookie('histo')){
-			history();
 			$("#show").removeClass('d-none');
 			}
 			getSlides('all');
@@ -635,7 +634,7 @@
 
 		/* =====history===================== */
 		function history() {
-			if (histo == []) histo = checkCookie('histo').split(",");
+			if (histo.length == 0) histo = checkCookie('histo').split(",");
 			$("#historyOptions").empty();
 			option = '';
 			for (var i = 0; i < histo.length; i++) {
