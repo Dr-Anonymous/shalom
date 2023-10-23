@@ -632,7 +632,7 @@
 			$("#historyOptions").empty();
 			option = '';
 			for (var i = 0; i < histo.length; i++) {
-				option += '<li><a class="dropdown-item" href="javascript:;" onclick="fromHistory=true;getSlides(' + histo[i] + ');">' + dbData[i-1][0] + '</a></li>';
+				option += '<li><a class="dropdown-item" href="javascript:;" onclick="fromHistory=true;getSlides(' + histo[i] + ');">' + dbData[i][0] + '</a></li>';
 				}
 			$("#historyOptions").append(option);
 		}
