@@ -103,6 +103,10 @@
 				$("button[onclick='changeFont();']").removeClass('btn-outline-secondary').addClass('btn-secondary');
 				jumbleFonts = true;
 			}
+			if (checkCookie('histo')){
+			history();
+			$("#show").removeClass('d-none');
+			}
 			getSlides('all');
 			
 			if (parent == true) database.on('value', (snapshot) => {
@@ -635,7 +639,7 @@
 			$("#historyOptions").empty();
 			option = '';
 			for (var i = 0; i < histo.length; i++) {
-				option += '<li><a class="dropdown-item" href="javascript:;" onclick="fromHistory=true;getSlides(' + histo[i] + ');">' + dbData[histo[i]][0] + '</a></li>';
+				option += '<li><a class="dropdown-item" href="javascript:;" onclick="fromHistory=true;getSlides(' + histo[i] + ');">' + dbData[histo[i]-1][0] + '</a></li>';
 				}
 			$("#historyOptions").append(option);
 		}
