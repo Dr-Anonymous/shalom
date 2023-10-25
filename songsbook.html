@@ -107,8 +107,10 @@
 			parent = true;
 			$('.parentControls').addClass('d-none');
 			$('.childControls').removeClass('d-none');
-			} else if (Number(para) {
+			} else {
+				if (Number(para) {
 				getSlides(para);
+				}
 			}
 				
 			if (parent == true) database.on('value', (snapshot) => {
