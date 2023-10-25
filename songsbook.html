@@ -108,7 +108,7 @@
 			$('.parentControls').addClass('d-none');
 			$('.childControls').removeClass('d-none');
 			} else {
-				if (Number(para) {
+				if (Number(para)) {
 				getSlides(para);
 				}
 			}
@@ -645,7 +645,8 @@
 			$("#historyOptions").empty();
 			option = '';
 			for (var i = 0; i < histo.length; i++) {
-				option += '<li><a class="dropdown-item" href="javascript:;" onclick="fromHistory=true;getSlides(' + histo[i] + ');">' + dbData[histo[i]-1][0] + '</a></li>';
+				option += '<li class="d-flex"><a class="dropdown-item" href="javascript:;" onclick="fromHistory=true;getSlides(' + histo[i] + ');">' + 
+					dbData[histo[i]-1][0] + '</a><button type="button" class="btn" onclick="histo.splice('+ i + ', 1);$(this).remove();"> X </button></li>';
 				}
 			$("#historyOptions").append(option);
 		}
