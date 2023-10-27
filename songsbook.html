@@ -651,8 +651,8 @@
 			$("#historyOptions").append(option);
 		}
 		
-		//before exit reset everything except last songnumber
-		window.onbeforeunload = function(){ 
+		//before exit reset everything except last songnumber and save cookie
+		window.onpagehide = window.onbeforeunload = function(){ 
 			if (parent == true) writeFirebaseData(false, 0);
 			setCookie("histo", histo.toString(), 2);
 		};
