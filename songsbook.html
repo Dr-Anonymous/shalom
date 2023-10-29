@@ -652,9 +652,13 @@
 		}
 		
 		//before exit reset everything except last songnumber and save cookie
-		window.onpagehide = window.onbeforeunload = function(){ 
-			if (parent == true) writeFirebaseData(false, 0);
-			setCookie("histo", histo.toString(), 2);
+		var onBeforeUnLoadEvent = false;
+		window.onpagehide = window.onbeforeunload = window.onunload = function(){ 
+			if(!onBeforeUnLoadEvent){
+				onBeforeUnLoadEvent = true;
+				if (parent == true) writeFirebaseData(false, 0);
+				setCookie("histo", histo.toString(), 6);
+			}
 		};
 		
 		//for touchscreen swipe
