@@ -433,7 +433,8 @@ DecoupledEditor
 //-----------cookies
 function setCookie(cname, cvalue, exdays) {
 	const d = new Date();
-	d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+	if (exdays == 0) d = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59);
+	else d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
 	let expires = "expires=" + d.toUTCString();
 	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
@@ -474,7 +475,7 @@ else {
 
 function ytLink(e) {
 	window.ytVideoLink = "https://studio.youtube.com/video/"+ e.split("/")[3] +"/livestreaming";
-	setCookie('ytVideoLink', ytVideoLink, 1);
+	setCookie('ytVideoLink', ytVideoLink, 0);
 }
 
 getLink();
