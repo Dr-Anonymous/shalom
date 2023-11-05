@@ -676,8 +676,7 @@
 		function index(){
 		var something = '<ol style="columns: 2;">';
 		for (i in dbData){
-		var n = i+1;
-		something += '<li onclick="getSlides('+ n +');$(\'#index\').toggle();">' + dbData[i][0] + '</li>' ;
+		something += '<li onclick="getSlides('+ (parseInt(i)+1) +');$(\'#index\').toggle();$(\'#songName\').val('+ dbData[i][0] +')">' + dbData[i][0] + '</li>' ;
 		}
 		something += '</ol>';
 		$('#index').html(something);
