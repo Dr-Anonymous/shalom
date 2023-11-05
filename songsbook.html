@@ -107,10 +107,6 @@
 			parent = true;
 			$('.parentControls').addClass('d-none');
 			$('.childControls').removeClass('d-none');
-			} else {
-				if (Number(para)) {
-				getSlides(para);
-				}
 			}
 				
 			if (parent == true) database.on('value', (snapshot) => {
@@ -678,9 +674,10 @@
 
 		// create index
 		function index(){
-		var something = '<ol>';
+		var something = '<ol style="columns: 2;">';
 		for (i in dbData){
-		something += '<li onclick="getSlides('+ (1 + i) +');$(\'#index\').toggle();">' + dbData[i][0] + '</li>' ;
+		var n = i+1;
+		something += '<li onclick="getSlides('+ n +');$(\'#index\').toggle();">' + dbData[i][0] + '</li>' ;
 		}
 		something += '</ol>';
 		$('#index').html(something);
