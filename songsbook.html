@@ -209,6 +209,7 @@
 				}
 				ac.setData(myData);
 				$('#songName').removeClass('d-none').focus();
+				index();
 				return;
 			}
                 
@@ -290,8 +291,10 @@
 		<div class="container">
 			<div class="row">
 				<div class="col">
+					<div class="ca-text input-group">
 					<button class="btn btn-outline-secondary dropdown-toggle" type="button" onclick="$('#index').toggle();"></button>
 					<input type="text" class="form-control d-none" id="songName" placeholder="Type song name" autocomplete="off" />
+					</div>
 				</div>
 			</div>
 		</div>
@@ -299,7 +302,7 @@
 	<!-- Services Full Width Text -->
 	<div class="container">
 		<div class="row">
-			<div id="index" class="services-half-width-text slideshow-container d-none"></div>
+			<div id="index" class="services-half-width-text slideshow-container" style="display: none;"></div>
 			<div id="show" class="services-half-width-text slideshow-container bg-dark text-light d-none">
 				<div id="resultHere" class="col" ondblclick="openFullscreen($('#show')[0]);"></div>
 				<div class="container fixed-top" id="topControls">
@@ -682,6 +685,6 @@
 		something += '</ol>';
 		$('#index').html(something);
 		}
-		index();
+		
 	</script>
 </body>
