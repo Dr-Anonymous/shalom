@@ -680,7 +680,7 @@
 		function index(){
 		var something = '<ol>';
 		for (i in dbData){
-		something += '<li onclick="getSlides('+ i +')">' + dbData[i][0] + '</li>' ;
+		something += '<li onclick="getSlides('+ i+1 +');$(\"#index\").toggle();">' + dbData[i][0] + '</li>' ;
 		}
 		something += '</ol>';
 		$('#index').html(something);
