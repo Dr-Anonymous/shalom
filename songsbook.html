@@ -61,7 +61,7 @@
 			downloadingVer = false,
 			offline = false,
 			jumbleFonts = false,
-			url = "https://script.google.com/macros/s/AKfycbw_mOWqvvDb_IHZS_pZ9Ob4bAjQJtmV5aRyj1AWFexmmfIg6Syd7p8P6GoHMvxgklFU/exec?",
+			url = "https://script.google.com/macros/s/AKfycbxZi0HVBM8Pkne8XQS28j0GTaD11b96qTy8jc0nSxaQpwkNdigEDl9_q6743OxjbK2Xrw/exec?",
 		 	songNumber = 'nothing',
 			changeFontSize = 0,
 			histo = [],
@@ -142,7 +142,8 @@
 			}
 			return;
 			}
-			var request = indexedDB.open('songsbook', 1);
+			var request = indexedDB.open('songsbook');
+                
 			request.onsuccess = () => {
 				var db = request.result;
 				var transaction = db.transaction('songsbook', "readonly");
@@ -152,11 +153,13 @@
 					dbData = getRequest.result[0];
 					loadData(dbData);
                     
-                		//check for database updates
+                //check for database updates
 				$.get(url + "request=all", function(data){
-					data = JSON.parse(data.slice(10, -1));
+					data = data.slice(10, -1);
+                    console.log(data);
+                    console.log(checkCookie('dbDate'));
 	                                //if discrepancy in database- then update it
-					if (data.length != dbData.length){
+					if (new Date(data) > new Date(checkCookie('dbDate'))){
 	                                    toast('Database is updating ...');
 	                                    offline = false;
 	                                    $("#dltDB").click();
@@ -554,7 +557,7 @@
         }
 		
 		function writeToDb(e) {
-		var request = window.indexedDB.open('songsbook', 1);
+		var request = window.indexedDB.open('songsbook', );
 		// Create schema
 		request.onupgradeneeded = function(event) {
 			const db = request.result;
@@ -572,7 +575,8 @@
 			toast('Songsbook available offline.').then(
 				function() {
 				downloadingVer = false;
-        			offline = true;
+                offline = true;
+                setCookie('dbDate', new Date(), 120)
 				});
 		};
         
