@@ -156,8 +156,6 @@
                 //check for database updates
 				$.get(url + "request=all", function(data){
 					data = data.slice(10, -1);
-                    console.log(data);
-                    console.log(checkCookie('dbDate'));
 	                                //if discrepancy in database- then update it
 					if (new Date(data) > new Date(checkCookie('dbDate'))){
 	                                    toast('Database is updating ...');
