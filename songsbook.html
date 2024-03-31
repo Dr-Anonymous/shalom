@@ -111,6 +111,9 @@
 				var data = snapshot.val();
 				var value = data["value"];
 				prefs = data["prefs"];
+                if (prefs['histo']){
+                $("#show").removeClass('d-none');
+                }
 				switch (data["functionName"]) {
 					case false:
 						break;
@@ -128,9 +131,6 @@
 
 			});
 				
-			if (prefs['histo']){
-			$("#show").removeClass('d-none');
-			}
 				
 			});
 			 
