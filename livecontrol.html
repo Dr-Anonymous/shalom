@@ -462,7 +462,7 @@ function getCookie(cname) {
 }
 
 function getBgVideoUrl() {
-	if (getCookie("videoUrl") != "") return getCookie("videoUrl");
+	if (prefs["videoUrl"] != "") return prefs["videoUrl"];
 	else return false;
 }
 	    
