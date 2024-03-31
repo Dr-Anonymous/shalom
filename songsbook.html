@@ -62,7 +62,7 @@
 			offline = false,
 			jumbleFonts = false,
 			url = "https://script.google.com/macros/s/AKfycbxZi0HVBM8Pkne8XQS28j0GTaD11b96qTy8jc0nSxaQpwkNdigEDl9_q6743OxjbK2Xrw/exec?",
-		 	songNumber = 'nothing',
+		 	songNumber = prefs = 'nothing',
 			changeFontSize = 0,
 			histo = [],
 			fromHistory = false,
@@ -96,9 +96,7 @@
 				$("button[onclick='changeFont();']").removeClass('btn-outline-secondary').addClass('btn-secondary');
 				jumbleFonts = true;
 			}
-			if (checkCookie('histo')){
-			$("#show").removeClass('d-none');
-			}
+			
 			getSlides('all');
 
 			var para = urlParam();
@@ -111,6 +109,7 @@
 			if (parent == true) database.on('value', (snapshot) => {
 				var data = snapshot.val();
 				var value = data["value"];
+				prefs = data["prefs"];
 				switch (data["functionName"]) {
 					case false:
 						break;
@@ -127,6 +126,11 @@
 				}
 
 			});
+				
+			if (prefs['histo']){
+			$("#show").removeClass('d-none');
+			}
+				
 			});
 			 
 			function getSlides(e){
@@ -637,13 +641,14 @@
 		}
 		
 		function writeFirebaseData(name, value, num) {
-			if (num) { songNumber = num; database.set({"functionName" : name, "value" : value, "songNumber" : songNumber}); }
-			else database.set({"functionName" : name, "value" : value, "songNumber" : songNumber});
+			if (num) songNumber = num;
+            prefs[histo] = histo.toString();
+            database.set({"functionName" : name, "value" : value, "songNumber" : songNumber, "prefs" : prefs});
 		}
 
 		/* =====history===================== */
 		function history() {
-			if (histo.length == 0) histo = checkCookie('histo').split(",");
+			if (histo.length == 0) histo = prefs['histo'].split(",");
 			$("#historyOptions").empty();
 			option = '';
 			for (var i = 0; i < histo.length; i++) {
@@ -659,7 +664,6 @@
 			if(!onBeforeUnLoadEvent){
 				onBeforeUnLoadEvent = true;
 				if (parent == true) writeFirebaseData(false, 0);
-				setCookie("histo", histo.toString(), 6);
 			}
 		};
 		
