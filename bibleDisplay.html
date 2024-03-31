@@ -848,12 +848,13 @@ function checkKey(e) {
 			e.preventDefault();
 			}
 }
-
+			
+database.on('value', (snapshot) => {
+			var data = snapshot.val();
+			prefs = data["prefs"];
+});
+			
 function writeFirebaseData(name, value) {
-	prefs = database.on('value', (snapshot) => {
-				var data = snapshot.val();
-				prefs = data["prefs"];
-	}
 	database.set({
 		"functionName": name,
 		"value": value,
