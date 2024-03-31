@@ -31,6 +31,7 @@
 var lang = "te-IN",
 	ver = "14xBeAaiu1QTfOqNK0YGabiNiFV4EUtC2QxWXApVERBg",
 	downloadingVer = false,
+	prefs = [],
 	option = "",
 	allBooks = [
 		[0, 0, 0, 0],
@@ -849,9 +850,14 @@ function checkKey(e) {
 }
 
 function writeFirebaseData(name, value) {
+	prefs = database.on('value', (snapshot) => {
+				var data = snapshot.val();
+				prefs = data["prefs"];
+	}
 	database.set({
 		"functionName": name,
-		"value": value
+		"value": value,
+		"prefs" : prefs
 	});
 }
 
