@@ -369,10 +369,7 @@ window.onbeforeunload = function() {
 firebase.initializeApp(firebaseConfig);
 // Get a reference to the database service
 database = firebase.database().ref();
-database.on('value', (snapshot) => {
-	var data = snapshot.val();
-	prefs = data["prefs"];
-});
+
 	    
 var camDegree = 0,
 	side = 0;
@@ -462,8 +459,11 @@ function getCookie(cname) {
 }
 
 function getBgVideoUrl() {
-	if (prefs["videoUrl"] != "") return prefs["videoUrl"];
-	else return false;
+	database.on('value', (snapshot) => {
+	var data = snapshot.val();
+	prefs = data["prefs"];
+	});
+	return prefs["videoUrl"];
 }
 	    
 function setEnd(){
