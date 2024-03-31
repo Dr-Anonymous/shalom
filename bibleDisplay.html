@@ -120,6 +120,10 @@ $(document).ready(async function() {
 	firebase.initializeApp(firebaseConfig);
 	// Get a reference to the database service
 	database = firebase.database().ref();
+	database.on('value', (snapshot) => {
+			var data = snapshot.val();
+			prefs = data["prefs"];
+	});
 	
 	/* default language */
 	lang = "te-IN";
@@ -848,11 +852,6 @@ function checkKey(e) {
 			e.preventDefault();
 			}
 }
-			
-database.on('value', (snapshot) => {
-			var data = snapshot.val();
-			prefs = data["prefs"];
-});
 			
 function writeFirebaseData(name, value) {
 	database.set({
