@@ -226,7 +226,6 @@ var slideIndex = 1,
 	editor,
 	prefs = [],
 	songNumber = null,
-	videoUrl = getBgVideoUrl(),
 	firebaseConfig = {
 		apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
 		authDomain: "mydatabase-c35da.firebaseapp.com",
@@ -236,8 +235,17 @@ var slideIndex = 1,
 		messagingSenderId: "945373860956",
 		appId: "1:945373860956:web:3ea16749c73345eb684299"
 	};
+	// Initialize Firebase
+	firebase.initializeApp(firebaseConfig);
+	// Get a reference to the database service
+	database = firebase.database().ref();
 	
-	
+	database.on('value', (snapshot) => {
+	var data = snapshot.val();
+	prefs = data["prefs"];
+	});
+	    
+	var videoUrl = prefs["videoUrl"];
 function setBackground() {
 	if (!videoUrl) return setVideoUrl();
 	else return loadData("<video autoplay muted loop><source src=\"" + videoUrl + "\" type=\"video/mp4\" /></video>");
@@ -455,18 +463,6 @@ function getCookie(cname) {
 	return "";
 }
 
-function getBgVideoUrl() {
-	// Initialize Firebase
-	firebase.initializeApp(firebaseConfig);
-	// Get a reference to the database service
-	database = firebase.database().ref();
-	
-	database.on('value', (snapshot) => {
-	var data = snapshot.val();
-	prefs = data["prefs"];
-	});
-	return prefs["videoUrl"];
-}
 	    
 function setEnd(){
 loadData(setBackground() + "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><h1 class=\"text-center\" style=\"font-size: 10vw;text-shadow: 20px 3px 4px #00000054;position: relative;\">Thankyou</h1><h1 style=\"text-align: center;position: relative;\">Have a great week ahead!</h1><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>");
