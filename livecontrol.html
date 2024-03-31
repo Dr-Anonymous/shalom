@@ -224,6 +224,7 @@
     <script>
 var slideIndex = 1,
 	editor,
+	videoUrl,
 	prefs = [],
 	songNumber = null,
 	firebaseConfig = {
@@ -243,9 +244,9 @@ var slideIndex = 1,
 	database.on('value', (snapshot) => {
 	var data = snapshot.val();
 	prefs = data["prefs"];
+	videoUrl = prefs["videoUrl"];
 	});
 	    
-	var videoUrl = prefs["videoUrl"];
 function setBackground() {
 	if (!videoUrl) return setVideoUrl();
 	else return loadData("<video autoplay muted loop><source src=\"" + videoUrl + "\" type=\"video/mp4\" /></video>");
