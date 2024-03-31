@@ -62,7 +62,8 @@
 			offline = false,
 			jumbleFonts = false,
 			url = "https://script.google.com/macros/s/AKfycbxZi0HVBM8Pkne8XQS28j0GTaD11b96qTy8jc0nSxaQpwkNdigEDl9_q6743OxjbK2Xrw/exec?",
-		 	songNumber = prefs = 'nothing',
+		 	songNumber = 'nothing',
+            prefs = [],
 			changeFontSize = 0,
 			histo = [],
 			fromHistory = false,
@@ -642,7 +643,7 @@
 		
 		function writeFirebaseData(name, value, num) {
 			if (num) songNumber = num;
-            prefs[histo] = histo.toString();
+            prefs["histo"] = histo.toString();
             database.set({"functionName" : name, "value" : value, "songNumber" : songNumber, "prefs" : prefs});
 		}
 
