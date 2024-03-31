@@ -224,6 +224,7 @@
     <script>
 var slideIndex = 1,
 	editor,
+	prefs = [],
 	songNumber = null,
 	videoUrl = getBgVideoUrl(),
 	firebaseConfig = {
@@ -252,7 +253,7 @@ $.ajax({
 		  },
 		  success: function (pexelUrl){
 			videoUrl = pexelUrl['videos'][0]['video_files'][0]['link'];
-			setCookie('videoUrl', videoUrl, 1);
+			prefs['videoUrl'] = videoUrl;
 			return loadData("<video autoplay muted loop><source src=\"" + videoUrl + "\" type=\"video/mp4\" /></video>");
 		  }
 		});
@@ -261,7 +262,8 @@ function writeFirebaseData(functionName, value) {
 	database.set({
 		"functionName": functionName,
 		"value": value,
-		"songNumber": songNumber
+		"songNumber": songNumber,
+		"prefs": prefs
 	});
 }
 
@@ -367,7 +369,11 @@ window.onbeforeunload = function() {
 firebase.initializeApp(firebaseConfig);
 // Get a reference to the database service
 database = firebase.database().ref();
-
+database.on('value', (snapshot) => {
+	var data = snapshot.val();
+	prefs = data["prefs"];
+});
+	    
 var camDegree = 0,
 	side = 0;
 function camControl(functionName, value){
