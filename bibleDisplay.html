@@ -836,6 +836,11 @@ $("#verse").keypress(function(event) {
 	}
 });
 
+$('textarea').click(function(){
+	if ($(':focus').attr('id') == 'book') $('#book').val('');
+	if ($(':focus').attr('id') == 'chapter') $('#chapter').val('');
+});
+
 /* keyboard shortcuts */
 document.onkeydown = checkKey;
 
