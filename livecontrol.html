@@ -441,10 +441,11 @@ function getCookie(cname) {
 function setEnd(){
 loadData(setBackground() + "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><h1 class=\"text-center\" style=\"font-size: 10vw;text-shadow: 20px 3px 4px #00000054;position: relative;\">Thankyou</h1><h1 style=\"text-align: center;position: relative;\">Have a great week ahead!</h1><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>");
 }
-	    
+
+var ytVideoLink = "";
 /* streaming controls*/
 function getLink (){
-if (getCookie("ytVideoLink") != "") window.ytVideoLink = getCookie("ytVideoLink");
+if (getCookie("ytVideoLink") != "") ytVideoLink = getCookie("ytVideoLink");
 else {
 	$.ajax({ 
 	      crossDomain: true,
@@ -456,7 +457,7 @@ else {
 }
 
 function ytLink(e) {
-	window.ytVideoLink = "https://studio.youtube.com/video/"+ e.split("/")[3] +"/livestreaming";
+	ytVideoLink = "https://studio.youtube.com/video/"+ e.split("/")[3] +"/livestreaming";
 	setCookie('ytVideoLink', ytVideoLink, 0);
 }
 
