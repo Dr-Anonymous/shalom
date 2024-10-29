@@ -463,7 +463,7 @@ function offline(version) {
 	downloadingVer = version;
 
 	toast('Download of ' + $("#versions li a[ver='" + downloadingVer + "']").text() + ' started.');
-	var url = "https://script.google.com/macros/s/AKfycbxi0FTDzmjZNj5_Ru1wC7VNCSVDy9G_ntrOFSd6ynm-Twh7TGm8JnHtD89jDGAIup0y/exec?callback=writeToDb&download=true&ver=" + downloadingVer;
+	var url = "https://script.google.com/macros/s/AKfycbwtqo4yBZjinlz5EzRaD2Lxs4BMctNbSL-LOZJSyH_uhqY1dIRkWJuTYndTi5RqEjcK/exec?callback=writeToDb&download=true&ver=" + downloadingVer;
 	$.ajax({
 		crossDomain: true,
 		url: url,
