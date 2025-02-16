@@ -442,26 +442,8 @@ function setEnd(){
 loadData(setBackground() + "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><h1 class=\"text-center\" style=\"font-size: 10vw;text-shadow: 20px 3px 4px #00000054;position: relative;\">Thankyou</h1><h1 style=\"text-align: center;position: relative;\">Have a great week ahead!</h1><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>");
 }
 
-var ytVideoLink = "";
+var ytVideoLink = "{% include yt.txt %}";
 /* streaming controls*/
-function getLink (){
-if (getCookie("ytVideoLink") != "") ytVideoLink = getCookie("ytVideoLink");
-else {
-	$.ajax({ 
-	      crossDomain: true,
-	      url: "https://script.google.com/macros/s/AKfycbyYOlekh8vT2dVEXYWZ1-J1y1vDWYx-AfeScN6Xj-_eCpx_oGOhrcdw-mYbfDhAJm8p/exec?callback=ytLink",
-	      method: "GET",
-	      dataType: "jsonp"
-	    });
-}
-}
-
-function ytLink(e) {
-	ytVideoLink = "https://studio.youtube.com/video/"+ e.split("/")[3] +"/livestreaming";
-	setCookie('ytVideoLink', ytVideoLink, 0);
-}
-
-getLink();
 
 function startStreaming(){
 var childWindow = window.open(ytVideoLink);
