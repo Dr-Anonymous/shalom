@@ -32,7 +32,11 @@
 <!-- Javascript --> <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
 <script>
 function getLink (){
-loadLink("{{% include yt.txt % | strip_newlines }}");
+{% capture live_content %}
+  {% include live.txt %}
+{% endcapture %}
+
+loadLink("{{ live_content | strip_newlines }}");
 /*$.ajax({ 
       crossDomain: true,
       url: "https://script.google.com/macros/s/AKfycbyYOlekh8vT2dVEXYWZ1-J1y1vDWYx-AfeScN6Xj-_eCpx_oGOhrcdw-mYbfDhAJm8p/exec?callback=loadLink",
