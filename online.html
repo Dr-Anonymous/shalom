@@ -33,7 +33,7 @@
 <script>
 function getLink (){
 {% capture live_content %}
-  {% include live.txt %}
+  {% include yt.txt %}
 {% endcapture %}
 
 loadLink("{{ live_content | strip_newlines }}");
