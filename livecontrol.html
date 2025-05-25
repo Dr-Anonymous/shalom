@@ -441,13 +441,17 @@ function getCookie(cname) {
 function setEnd(){
 loadData(setBackground() + "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><h1 class=\"text-center\" style=\"font-size: 10vw;text-shadow: 20px 3px 4px #00000054;position: relative;\">Thankyou</h1><h1 style=\"text-align: center;position: relative;\">Have a great week ahead!</h1><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>");
 }
-
-const ytVideoLink = "{% include yt.txt %}";
+	    
+{% capture live_content %}
+  {% include yt.txt %}
+{% endcapture %}
+	    
+const ytVideoLink = "{{ live_content | strip_newlines }}";
 	    
 /* streaming controls*/
 
 function startStreaming(){
-var childWindow = window.open(ytVideoLink);
+var childWindow = window.open("https://studio.youtube.com/video/" + ytVideoLink.split('/').pop() + "/livestreaming");
 setTimeout(function (){
 writeFirebaseData('streaming', 'start');            
 //childWindow.close();
