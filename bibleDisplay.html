@@ -618,7 +618,6 @@ function getVerse(b, c) {
 }
 			
 
-let clickOrigin = 'bible'; // can be 'bible' or 'bible2'
 function loadData(e) {
 	if (!secondBible)
 		$("#bible").empty();
@@ -640,7 +639,7 @@ function loadData(e) {
 		}
 		navig(0);
 		enableClick();
-		if (!secondBible && clickOrigin === 'bible') {
+		if (!secondBible) {
 			secondBible = "1d3JuoPHkclEV6XmGNSvwLyL96nf_7HhnrC8OFjoGvxA";
 			getVerse(B, C);
 		} else {
@@ -739,7 +738,6 @@ $("#audio").on("playing", function() {
 function enableClick() {
 	$('#bible p').on('click', function(event) {
 		currentP = $(this);
-		clickOrigin = 'bible';
 		var b = parseInt($("#book").attr("value")),
 			c = $("#chapter").val();
 		if (lang == "te-IN") b = allBooks[b][1];
@@ -751,7 +749,6 @@ function enableClick() {
 	});
 	$('#bible2 p').on('click', function(event) {
 		currentP = $(this);
-		clickOrigin = 'bible2';
 		var b = parseInt($("#book").attr("value")),
 			c = $("#chapter").val();
 			b = allBooks[b][3];
