@@ -744,7 +744,7 @@ function enableClick() {
             c = $("#chapter").val();
         
         // Get book name based on which bible container was clicked
-        var bookName = (element.closest('#bible2') ? allBooks[b][3] : 
+        var bookName = $(element).closest('#bible2').length ? allBooks[b][3] : 
                       (lang == "te-IN" ? allBooks[b][1] : allBooks[b][3]);
         
         var verseText = bookName + " " + c + ':\n' + currentP.text();
@@ -770,6 +770,7 @@ function enableClick() {
         handleVerseClick(event, this);
     });
 }
+			
 function playThis() {
 	if (!playing) {
 		/* currentP.off('click'); */
