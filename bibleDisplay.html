@@ -616,7 +616,8 @@ function getVerse(b, c) {
 		indexedDB.deleteDatabase(ver);
 	}
 }
-
+			
+let justClickedBible2 = false;
 function loadData(e) {
 	if (!secondBible)
 		$("#bible").empty();
@@ -638,7 +639,7 @@ function loadData(e) {
 		}
 		navig(0);
 		enableClick();
-		if (!secondBible) {
+		if (!secondBible && !justClickedBible2) {
 			secondBible = "1d3JuoPHkclEV6XmGNSvwLyL96nf_7HhnrC8OFjoGvxA";
 			getVerse(B, C);
 		} else {
@@ -737,6 +738,7 @@ $("#audio").on("playing", function() {
 function enableClick() {
 	$('#bible p').on('click', function(event) {
 		currentP = $(this);
+		justClickedBible2 = false; // clicked #bible
 		var b = parseInt($("#book").attr("value")),
 			c = $("#chapter").val();
 		if (lang == "te-IN") b = allBooks[b][1];
@@ -748,6 +750,7 @@ function enableClick() {
 	});
 	$('#bible2 p').on('click', function(event) {
 		currentP = $(this);
+		justClickedBible2 = true; // clicked #bible2
 		var b = parseInt($("#book").attr("value")),
 			c = $("#chapter").val();
 			b = allBooks[b][3];
