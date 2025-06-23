@@ -735,29 +735,41 @@ $("#audio").on("playing", function() {
 	);
 });
 
-function enableClick() {
-	$('#bible p').on('click', function(event) {
-		currentP = $(this);
-		var b = parseInt($("#book").attr("value")),
-			c = $("#chapter").val();
-		if (lang == "te-IN") b = allBooks[b][1];
-		else if (lang == "en-US") b = allBooks[b][3];
-		
-		if (window.event.ctrlKey || window.event.metaKey) $('#display').val($('#display').val() + '\n' +b + " " + c + ':\n' + currentP.text());
-		else $('#display').val(b + " " + c + ':\n' + currentP.text());
-		writeFirebaseData('loadData', [' ', $('#display').val()]);
-	});
-	$('#bible2 p').on('click', function(event) {
-		currentP = $(this);
-		var b = parseInt($("#book").attr("value")),
-			c = $("#chapter").val();
-			b = allBooks[b][3];
-		if (window.event.ctrlKey || window.event.metaKey) $('#display').val($('#display').val() + '\n' +b + " " + c + ':\n' + currentP.text());
-		else $('#display').val(b + " " + c + ':\n' + currentP.text());
-		writeFirebaseData('loadData', [' ', $('#display').val()]);
-	});
-}
 
+function enableClick() {
+    // Common function to handle verse clicks
+    function handleVerseClick(event, element) {
+        currentP = $(element);
+        var b = parseInt($("#book").attr("value")),
+            c = $("#chapter").val();
+        
+        // Get book name based on which bible container was clicked
+        var bookName = (element.closest('#bible2') ? allBooks[b][3] : 
+                      (lang == "te-IN" ? allBooks[b][1] : allBooks[b][3]);
+        
+        var verseText = bookName + " " + c + ':\n' + currentP.text();
+        
+        if (event.ctrlKey || event.metaKey) {
+            $('#display').val($('#display').val() + '\n' + verseText);
+        } else {
+            $('#display').val(verseText);
+        }
+        writeFirebaseData('loadData', [' ', $('#display').val()]);
+    }
+
+    // Clear existing handlers to prevent duplicates
+    $('#bible p').off('click');
+    $('#bible2 p').off('click');
+    
+    // Set up new handlers
+    $('#bible p').on('click', function(event) {
+        handleVerseClick(event, this);
+    });
+    
+    $('#bible2 p').on('click', function(event) {
+        handleVerseClick(event, this);
+    });
+}
 function playThis() {
 	if (!playing) {
 		/* currentP.off('click'); */
