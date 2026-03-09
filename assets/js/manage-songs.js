@@ -33,7 +33,13 @@ function loadAllSongs() {
             data.docId = doc.id;
             rawDocs.push(data);
         });
-        rawDocs.sort((a, b) => a.id - b.id);
+        rawDocs.sort((a, b) => {
+            let titleA = (a.title || "").toLowerCase();
+            let titleB = (b.title || "").toLowerCase();
+            if (titleA < titleB) return -1;
+            if (titleA > titleB) return 1;
+            return 0;
+        });
         allSongs = rawDocs;
         renderSongs(allSongs);
     }, (error) => {
@@ -56,7 +62,7 @@ function renderSongs(songsToRender) {
 
         let item = `
         <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center mb-2 shadow-sm rounded border">
-            <h5 class="mb-0 text-truncate" style="max-width: 80%;">${title} <small class="text-muted ms-2">(ID: ${song.id})</small></h5>
+            <h5 class="mb-0 text-truncate" style="max-width: 80%;">${title}</h5>
             <div>
                 <button class="btn btn-outline-primary btn-sm" onclick="editSong('${song.docId}')">Edit</button>
                 <button class="btn btn-outline-danger btn-sm ms-2" onclick="deleteSong('${song.docId}', '${escapedTitle}')">Delete</button>
@@ -77,7 +83,6 @@ function editSong(docId) {
     if (!song) return;
 
     $("#editSongDocId").val(song.docId);
-    $("#editSongId").val(song.id);
     $("#editSongTitle").val(song.title);
 
     $("#slides-container").empty();
@@ -94,13 +99,6 @@ function editSong(docId) {
 function openEditor() {
     $("#editSongDocId").val("");
 
-    let maxId = 0;
-    if (allSongs.length > 0) {
-        maxId = Math.max(...allSongs.map(s => s.id || 0));
-    }
-    let nextId = maxId + 1;
-
-    $("#editSongId").val(nextId);
     $("#editSongTitle").val("");
     $("#slides-container").empty();
     addSlideField("");
@@ -122,7 +120,6 @@ function addSlideField(content = "") {
 
 function saveSong() {
     let docId = $("#editSongDocId").val();
-    let songId = parseInt($("#editSongId").val());
     let title = $("#editSongTitle").val().trim();
 
     if (!title) {
@@ -146,14 +143,14 @@ function saveSong() {
     $("#saveSongBtn").prop("disabled", true).text("Saving...");
 
     let payload = {
-        id: songId,
         title: title,
         slides: slides
     };
 
     if (!docId) {
-        docId = String(songId);
-        dbFirestore.collection("songs").doc(docId).set(payload)
+        // Use a generated ID or the title as document ID if desired
+        // For Firestore, it's often best to let it auto-generate or use a sanitized title
+        dbFirestore.collection("songs").add(payload)
             .then(() => {
                 toast("Song added successfully!");
                 editorModal.hide();

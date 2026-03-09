@@ -106,7 +106,13 @@ function getSlides(e) {
 				querySnapshot.forEach((doc) => {
 					rawDocs.push(doc.data());
 				});
-				rawDocs.sort((a, b) => a.id - b.id);
+				rawDocs.sort((a, b) => {
+					let titleA = (a.title || "").toLowerCase();
+					let titleB = (b.title || "").toLowerCase();
+					if (titleA < titleB) return -1;
+					if (titleA > titleB) return 1;
+					return 0;
+				});
 				rawDocs.forEach((data) => {
 					let songArr = [];
 					songArr.push(data.title);
@@ -136,7 +142,6 @@ function getSlides(e) {
 							window.ac.setData(myData);
 						}
 						index();
-						toast("Songs list updated automatically.");
 					}
 				}
 			}, (error) => {
