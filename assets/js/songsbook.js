@@ -81,35 +81,26 @@ $(document).ready(async function () {
 
 function getSlides(e) {
 	try {
-		if (offline) {
-			if (!firstTime) {
-				if (parent == true) writeFirebaseData('loadData', 0, dbData[e - 1]);
-				else loadData(dbData[e - 1]);
-				if (!fromHistory) {
-					histo.push(e);
-				} else {
-					fromHistory = false;
-				}
-				return;
-			}
-			var request = indexedDB.open('songsbook');
-
-			request.onsuccess = () => {
-				var db = request.result;
-				var transaction = db.transaction('songsbook', "readonly");
-				var book = transaction.objectStore('songsbook');
-				var getRequest = book.getAll();
-				getRequest.onsuccess = () => {
-					dbData = getRequest.result[0];
-					loadData(dbData);
-				};
-			}
-			return;
-		}
-
-		// songs not stored offline
 		if (e === 'all') {
-			dbFirestore.collection("songs").get().then((querySnapshot) => {
+			if (offline) {
+				var request = indexedDB.open('songsbook');
+				request.onsuccess = () => {
+					var db = request.result;
+					if (!db.objectStoreNames.contains('songsbook')) return;
+					var transaction = db.transaction('songsbook', "readonly");
+					var book = transaction.objectStore('songsbook');
+					var getRequest = book.getAll();
+					getRequest.onsuccess = () => {
+						if (getRequest.result && getRequest.result.length > 0) {
+							dbData = getRequest.result[0];
+							loadData(dbData);
+						}
+					};
+				}
+			}
+
+			// Listen to Firestore for real-time updates
+			dbFirestore.collection("songs").onSnapshot((querySnapshot) => {
 				var dataArr = [];
 				var rawDocs = [];
 				querySnapshot.forEach((doc) => {
@@ -122,12 +113,39 @@ function getSlides(e) {
 					data.slides.forEach((s) => songArr.push(s));
 					dataArr.push(songArr);
 				});
-				dbData = dataArr;
-				loadData(dbData);
-			}).catch((error) => {
+
+				// Compare with current dbData
+				if (JSON.stringify(dbData) !== JSON.stringify(dataArr)) {
+					dbData = dataArr;
+
+					// update IndexedDB silently
+					updateIndexedDB(dbData);
+
+					if (firstTime) {
+						loadData(dbData);
+					} else {
+						// update autocomplete and index dynamically
+						var myData = [];
+						for (let i = 0; i < dbData.length; i++) {
+							var myArr = {};
+							myArr["label"] = dbData[i][0];
+							myArr["value"] = (i + 1);
+							myData.push(myArr);
+						}
+						if (window.ac) {
+							window.ac.setData(myData);
+						}
+						index();
+						toast("Songs list updated automatically.");
+					}
+				}
+			}, (error) => {
 				console.error("Error fetching from Firestore", error);
-				toast("Error loading songs.");
+				if (!offline) {
+					toast("Error loading songs.");
+				}
 			});
+
 		} else {
 			if (dbData && dbData.length > 0) {
 				if (parent == true) writeFirebaseData('loadData', 0, dbData[e - 1]);
@@ -151,7 +169,7 @@ async function loadData(e) {
 		firstTime = false;
 		//autosuggest book names
 		var field = $("#songName")[0];
-		var ac = new Autocomplete(field, {
+		window.ac = new Autocomplete(field, {
 			maximumItems: 10,
 			onSelectItem: ({
 				label,
@@ -167,7 +185,7 @@ async function loadData(e) {
 			myArr["value"] = (i + 1);
 			myData.push(myArr);
 		}
-		ac.setData(myData);
+		window.ac.setData(myData);
 		$('#songName').removeClass('d-none').focus();
 		index();
 		return;
@@ -344,6 +362,26 @@ async function downloadOffline() {
 		});
 	}
 	return true;
+}
+
+function updateIndexedDB(e) {
+	if (!window.indexedDB) return;
+	var req = window.indexedDB.deleteDatabase('songsbook');
+	req.onsuccess = function () {
+		var request = window.indexedDB.open('songsbook', 1);
+		request.onupgradeneeded = function (event) {
+			const db = request.result;
+			db.createObjectStore('songsbook', { autoIncrement: true });
+		};
+		request.onsuccess = () => {
+			const db = request.result;
+			var transaction = db.transaction('songsbook', "readwrite");
+			var store = transaction.objectStore('songsbook');
+			store.add(e);
+			offline = true;
+			setCookie('dbDate', new Date(), 120);
+		};
+	};
 }
 
 function writeToDb(e) {
