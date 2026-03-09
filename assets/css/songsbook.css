@@ -1,249 +1,28 @@
-:root {
-  --primary: #6366f1;
-  --secondary: #a855f7;
-  --bg-dark: #0f172a;
-  --bg-card: rgba(30, 41, 59, 0.7);
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --glass-border: rgba(255, 255, 255, 0.1);
+button span {
+pointer-events: none;
 }
-
-body {
-  background: radial-gradient(circle at top right, #1e1b4b, var(--bg-dark), #09090b) !important;
-  color: var(--text-main) !important;
-  font-family: 'Outfit', sans-serif !important;
-  min-height: 100vh;
-  margin: 0;
-  overflow-x: hidden;
-  background-attachment: fixed !important;
+* {box-sizing: border-box}
+/* Slideshow container */
+.slideshow-container {
+position: relative;
 }
-
-/* Glassmorphism Navigation */
-.navbar {
-  background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--glass-border);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-  padding: 1rem 2rem;
-  border-radius: 0 0 24px 24px;
-}
-.brand {
-  color: #fff !important;
-  font-weight: 700;
-  letter-spacing: 1px;
-  background: linear-gradient(90deg, #c084fc, #60a5fa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-decoration: none;
-}
-
-/* Search Bar Overlay */
-.page-title {
-  margin-top: 3rem;
-  margin-bottom: 2rem;
-}
-.ca-text.input-group {
-  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-  border-radius: 20px;
-}
-.ca-text .form-control {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--glass-border) !important;
-  color: white;
-  border-radius: 0 20px 20px 0 !important;
-  padding: 15px 24px;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  font-size: 1.1rem;
-}
-.ca-text .form-control:focus {
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: none;
-  border-color: var(--primary) !important;
-}
-.ca-text .btn-outline-secondary {
-  border-radius: 20px 0 0 20px !important;
-  border-color: var(--glass-border) !important;
-  color: white;
-  background: rgba(255, 255, 255, 0.08);
-  padding: 0 20px;
-}
-
-/* Song Index Container */
-#index {
-  background: var(--bg-card);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
-  border-radius: 24px;
-  padding: 2.5rem;
-  animation: fadeIn 0.5s ease;
-  margin-bottom: 3rem;
-  box-shadow: 0 15px 50px rgba(0,0,0,0.3);
-}
-#index ol {
-  padding-left: 1rem;
-  column-count: 2;
-  column-gap: 3rem;
-  list-style-type: decimal-leading-zero;
-}
-@media (max-width: 768px) {
-  #index ol {
-    column-count: 1;
-  }
-}
-#index li {
-  padding: 10px 16px;
-  margin-bottom: 8px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-#index li:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  transform: translateX(8px);
-}
-
-/* Slideshow view */
-#show {
-  background: transparent !important;
-  height: 100vh;
-  display: flex !important;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 100;
-  background: radial-gradient(circle at center, #1e1b4b, #000) !important;
-}
-#show.d-none {
-  display: none !important;
-}
-
+/* Slides */
 .mySlides {
-  display: none;
-  padding: 40px;
-  width: 100%;
-  max-width: 1000px;
-  text-align: center;
-  animation: slideFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+display: none;
+padding: 10px 80px 80px 80px;
 }
-.mySlides p {
-  line-height: 1.8;
-  font-weight: 500;
-  text-shadow: 0 4px 12px rgba(0,0,0,0.6);
-  color: white;
-}
-
-@keyframes slideFadeIn {
-  from { opacity: 0; transform: translateY(20px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Controls */
-#topControls, #bottomControls {
-  background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
-  padding: 1.5rem;
-  transition: opacity 0.3s ease;
-  opacity: 0.2;
-}
-#bottomControls {
-  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-}
-#show:hover #topControls, #show:hover #bottomControls {
-  opacity: 1;
-}
-
-/* Dot Navigation */
-#dot-container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
-}
+/* The bullets */
 .dot {
-  cursor: pointer;
-  height: 44px;
-  width: 44px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.15);
-  backdrop-filter: blur(8px);
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  font-weight: bold;
-  color: var(--text-muted);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+cursor: pointer;
+height: 60px;
+width: 60px;
+margin: 0 4px;
+background-color: #bbb;
+border-radius: 50%;
+display: inline-block;
+transition: background-color 0.6s ease;
 }
+/* Add a background color to the active dot/circle */
 .active, .dot:hover {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  color: white;
-  transform: scale(1.15);
-  border-color: transparent;
-  box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
-}
-
-/* Custom Autocomplete dropdown */
-.dropdown-menu {
-  background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 10px 50px rgba(0,0,0,0.6);
-  margin-top: 10px;
-  padding: 0;
-}
-.dropdown-menu.autocomplete-items div {
-  padding: 14px 24px;
-  cursor: pointer;
-  transition: all 0.2s;
-  color: var(--text-main);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-.dropdown-menu.autocomplete-items div:last-child {
-  border-bottom: none;
-}
-.dropdown-menu.autocomplete-items div:hover {
-  background: rgba(255,255,255,0.1);
-  padding-left: 30px;
-}
-.autocomplete-active {
-  background: linear-gradient(90deg, var(--primary), transparent) !important;
-  color: white !important;
-}
-
-/* Global Buttons Override */
-.btn-outline-secondary {
-  color: white !important;
-  border-color: var(--glass-border) !important;
-  background: rgba(255,255,255,0.05) !important;
-  backdrop-filter: blur(10px);
-}
-.btn-outline-secondary:hover {
-  background: var(--primary) !important;
-  border-color: var(--primary) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(99,102,241,0.4);
-}
-button svg {
-  pointer-events: none;
-}
-.history-dropdown-item {
-  color: white !important;
-}
-.history-dropdown-item:hover {
-  background: rgba(255,255,255,0.1) !important;
+background-color: #717171;
 }
