@@ -11,6 +11,7 @@ const firebaseConfig = {
 var dbFirestore = null;
 var allSongs = [];
 var editorModal = null;
+var diffViewerModal = null;
 var showingHistory = false;
 
 $(document).ready(function () {
@@ -20,6 +21,11 @@ $(document).ready(function () {
     var myModalEl = document.getElementById('songEditorModal');
     if (myModalEl) {
         editorModal = new bootstrap.Modal(myModalEl);
+    }
+
+    var diffModalEl = document.getElementById('diffViewerModal');
+    if (diffModalEl) {
+        diffViewerModal = new bootstrap.Modal(diffModalEl);
     }
 
     loadAllSongs();
@@ -101,36 +107,84 @@ function renderHistory() {
     let container = $("#song-list");
     container.empty();
 
-    // History = Deleted songs + Recently added songs
-    // Sort by date (deletedAt or createdAt)
-    let historyList = allSongs.filter(s => s.deleted || s.createdAt);
+    let historyEvents = [];
 
-    // Custom sort: latest activity first
-    historyList.sort((a, b) => {
-        let dateA = a.deletedAt || a.createdAt || 0;
-        let dateB = b.deletedAt || b.createdAt || 0;
-        return (dateB > dateA) ? 1 : -1;
+    // Parse all songs to build a timeline of events
+    allSongs.forEach(song => {
+        let title = song.title || "Untitled";
+        let escapedTitle = title.replace(/'/g, "\\'");
+        
+        // 1. Creation Event
+        if (song.createdAt) {
+            historyEvents.push({
+                type: 'added',
+                date: song.createdAt,
+                songId: song.docId,
+                title: title,
+                escapedTitle: escapedTitle
+            });
+        }
+
+        // 2. Deletion Event
+        if (song.deleted && song.deletedAt) {
+            historyEvents.push({
+                type: 'deleted',
+                date: song.deletedAt,
+                songId: song.docId,
+                title: title,
+                escapedTitle: escapedTitle
+            });
+        }
+
+        // 3. Edit Events
+        if (song.editHistory && song.editHistory.length > 0) {
+            song.editHistory.forEach((edit, index) => {
+                historyEvents.push({
+                    type: 'edited',
+                    date: edit.editedAt,
+                    songId: song.docId,
+                    title: title,
+                    escapedTitle: escapedTitle,
+                    editIndex: index // to reference the specific edit
+                });
+            });
+        }
     });
 
-    if (historyList.length === 0) {
+    // Sort events: latest activity first
+    historyEvents.sort((a, b) => {
+        return (b.date > a.date) ? 1 : -1;
+    });
+
+    if (historyEvents.length === 0) {
         container.append("<div class='text-center py-5'>No history available</div>");
         return;
     }
 
-    historyList.forEach((song) => {
-        let title = song.title || "Untitled";
-        let escapedTitle = title.replace(/'/g, "\\'");
-        let typeLabel = song.deleted ? '<span class="badge bg-danger me-2">Deleted</span>' : '<span class="badge bg-success me-2">Added</span>';
-        let actionBtn = song.deleted ?
-            `<button class="btn btn-outline-success btn-sm" onclick="restoreSong('${song.docId}')">Restore</button>` :
-            `<button class="btn btn-outline-primary btn-sm" onclick="editSong('${song.docId}')">Edit</button>`;
+    historyEvents.forEach((ev) => {
+        let typeLabel = '';
+        let actionBtn = '';
+
+        if (ev.type === 'added') {
+            typeLabel = '<span class="badge bg-success me-2">Added</span>';
+            actionBtn = `<button class="btn btn-outline-primary btn-sm" onclick="editSong('${ev.songId}')">Edit</button>`;
+        } else if (ev.type === 'deleted') {
+            typeLabel = '<span class="badge bg-danger me-2">Deleted</span>';
+            actionBtn = `<button class="btn btn-outline-success btn-sm" onclick="restoreSong('${ev.songId}')">Restore</button>`;
+        } else if (ev.type === 'edited') {
+            typeLabel = '<span class="badge bg-warning text-dark me-2">Edited</span>';
+            actionBtn = `<button class="btn btn-outline-info btn-sm" onclick="showDiff('${ev.songId}', ${ev.editIndex})">View Changes</button>`;
+        }
+
+        let dateStr = new Date(ev.date).toLocaleString();
 
         let item = `
         <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center mb-2 shadow-sm rounded border">
             <div class="text-truncate" style="max-width: 70%;">
                 ${typeLabel}
-                <small class="text-muted me-1">#${song.docId}</small>
-                <h5 class="mb-0 d-inline">${title}</h5>
+                <small class="text-muted me-1">#${ev.songId}</small>
+                <h5 class="mb-0 d-inline">${ev.title}</h5>
+                <div class="ms-1 mt-1"><small class="text-muted">${dateStr}</small></div>
             </div>
             <div>
                 ${actionBtn}
@@ -229,6 +283,9 @@ function saveSong() {
 
     $("#saveSongBtn").prop("disabled", true).text("Saving...");
 
+    // Find current song state to compare for history
+    let existingSong = allSongs.find(s => s.docId === docId);
+
     let payload = {
         title: title,
         slides: slides,
@@ -250,6 +307,23 @@ function saveSong() {
                 $("#saveSongBtn").prop("disabled", false).text("Save changes");
             });
     } else {
+        // Existing song: check for edits
+        if (existingSong) {
+            let titleChanged = existingSong.title !== title;
+            let slidesChanged = JSON.stringify(existingSong.slides) !== JSON.stringify(slides);
+            
+            if (titleChanged || slidesChanged) {
+                let editHistoryEntry = {
+                    editedAt: new Date().toISOString(),
+                    oldTitle: existingSong.title,
+                    oldSlides: existingSong.slides
+                };
+                
+                payload.editHistory = existingSong.editHistory || [];
+                payload.editHistory.push(editHistoryEntry);
+            }
+        }
+
         dbFirestore.collection("songs").doc(docId).update(payload)
             .then(() => {
                 toast("Song updated successfully!");
@@ -262,6 +336,63 @@ function saveSong() {
                 $("#saveSongBtn").prop("disabled", false).text("Save changes");
             });
     }
+}
+
+function showDiff(songId, editIndex) {
+    let song = allSongs.find(s => s.docId === songId);
+    if (!song || !song.editHistory || !song.editHistory[editIndex]) return;
+
+    let olderVersion = song.editHistory[editIndex];
+    // The "newer" version is either the next edit in the array, or the current active state if it's the latest edit
+    let nextEdit = song.editHistory[editIndex + 1];
+    let newerTitle = nextEdit ? nextEdit.oldTitle : song.title;
+    let newerSlides = nextEdit ? nextEdit.oldSlides : song.slides;
+
+    // Construct text blocks to compare
+    let oldText = `Title: ${olderVersion.oldTitle}\n\n` + (olderVersion.oldSlides || []).join('\n---\n');
+    let newText = `Title: ${newerTitle}\n\n` + (newerSlides || []).join('\n---\n');
+
+    // Use jsdiff to generate lines diff
+    const diff = Diff.diffLines(oldText, newText);
+
+    const displayElem = document.getElementById('diff-content');
+    displayElem.innerHTML = '';
+
+    diff.forEach((part) => {
+        // Green for additions, Red for deletions, default for unchanged
+        const color = part.added ? '#d4edda' : part.removed ? '#f8d7da' : 'transparent';
+        const txtColor = part.added ? '#155724' : part.removed ? '#721c24' : 'inherit';
+        
+        const span = document.createElement('span');
+        span.style.backgroundColor = color;
+        span.style.color = txtColor;
+        // if added/removed, add a slight padding and display as block for clarity
+        if (part.added || part.removed) {
+            span.style.display = 'block';
+            span.style.padding = '2px 4px';
+            span.style.margin = '2px 0';
+            span.style.borderRadius = '3px';
+        }
+        
+        span.appendChild(document.createTextNode(part.value));
+        displayElem.appendChild(span);
+    });
+
+    // Set up restore button
+    $("#restoreVersionBtn").off('click').on('click', function() {
+        if(confirm("Are you sure you want to restore this older version?")) {
+            dbFirestore.collection("songs").doc(songId).update({
+                title: olderVersion.oldTitle,
+                slides: olderVersion.oldSlides,
+                updatedAt: new Date().toISOString()
+            }).then(() => {
+                toast("Older version restored!");
+                diffViewerModal.hide();
+            });
+        }
+    });
+
+    diffViewerModal.show();
 }
 
 function deleteSong(docId, title) {

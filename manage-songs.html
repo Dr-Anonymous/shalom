@@ -21,6 +21,7 @@
         crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-firestore.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/5.1.0/diff.min.js"></script>
     <script src="/assets/js/manage-songs.js"></script>
 </head>
 
@@ -98,6 +99,26 @@
                         <button type="button" class="btn btn-primary" onclick="saveSong()" id="saveSongBtn">Save
                             changes</button>
                     </div>
+                </div>
+        </div>
+    </div>
+
+    <!-- Diff Viewer Modal -->
+    <div class="modal fade" id="diffViewerModal" tabindex="-1" aria-labelledby="diffViewerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="diffViewerModalLabel">Edit History Diff</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="diff-content" class="p-3 bg-light border rounded" style="white-space: pre-wrap;">
+                        <!-- Diff will be rendered here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-warning" id="restoreVersionBtn">Restore This Version</button>
                 </div>
             </div>
         </div>
