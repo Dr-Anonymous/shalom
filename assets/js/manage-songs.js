@@ -84,7 +84,10 @@ function renderSongs(songsToRender) {
 
         let item = `
         <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center mb-2 shadow-sm rounded border">
-            <h5 class="mb-0 text-truncate" style="max-width: 80%;">${title}</h5>
+            <div class="text-truncate" style="max-width: 80%;">
+                <small class="text-muted me-2">#${song.docId}</small>
+                <h5 class="mb-0 d-inline">${title}</h5>
+            </div>
             <div>
                 <button class="btn btn-outline-primary btn-sm" onclick="editSong('${song.docId}')">Edit</button>
                 <button class="btn btn-outline-danger btn-sm ms-2" onclick="deleteSong('${song.docId}', '${escapedTitle}')">Delete</button>
@@ -101,7 +104,7 @@ function renderHistory() {
     // History = Deleted songs + Recently added songs
     // Sort by date (deletedAt or createdAt)
     let historyList = allSongs.filter(s => s.deleted || s.createdAt);
-    
+
     // Custom sort: latest activity first
     historyList.sort((a, b) => {
         let dateA = a.deletedAt || a.createdAt || 0;
@@ -118,7 +121,7 @@ function renderHistory() {
         let title = song.title || "Untitled";
         let escapedTitle = title.replace(/'/g, "\\'");
         let typeLabel = song.deleted ? '<span class="badge bg-danger me-2">Deleted</span>' : '<span class="badge bg-success me-2">Added</span>';
-        let actionBtn = song.deleted ? 
+        let actionBtn = song.deleted ?
             `<button class="btn btn-outline-success btn-sm" onclick="restoreSong('${song.docId}')">Restore</button>` :
             `<button class="btn btn-outline-primary btn-sm" onclick="editSong('${song.docId}')">Edit</button>`;
 
@@ -126,6 +129,7 @@ function renderHistory() {
         <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center mb-2 shadow-sm rounded border">
             <div class="text-truncate" style="max-width: 70%;">
                 ${typeLabel}
+                <small class="text-muted me-1">#${song.docId}</small>
                 <h5 class="mb-0 d-inline">${title}</h5>
             </div>
             <div>
@@ -146,7 +150,7 @@ function filterSongs() {
             return matchesSearch && !s.deleted;
         }
     });
-    
+
     if (showingHistory) {
         // Just sort by title for filtered history too if we want, or keep date?
         // Let's keep date for history even when filtering
@@ -266,7 +270,7 @@ function deleteSong(docId, title) {
             deleted: true,
             deletedAt: new Date().toISOString()
         }).then(() => {
-            toast("Song deleted (Soft delete)!");
+            toast("Song deleted!");
         }).catch((err) => {
             console.error(err);
             toast("Error deleting song.");
