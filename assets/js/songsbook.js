@@ -104,7 +104,10 @@ function getSlides(e) {
 				var dataArr = [];
 				var rawDocs = [];
 				querySnapshot.forEach((doc) => {
-					rawDocs.push(doc.data());
+					let data = doc.data();
+					if (!data.deleted) {
+						rawDocs.push(data);
+					}
 				});
 				rawDocs.sort((a, b) => {
 					let titleA = (a.title || "").toLowerCase();
