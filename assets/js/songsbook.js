@@ -508,7 +508,7 @@ function writeFirebaseData(name, value, num) {
 }
 
 /* =====history===================== */
-function history() {
+function loadHistory() {
 	if (histo.length == 0) histo = prefs['histo'].split(",");
 	$("#historyOptions").empty();
 	option = '';
