@@ -22,8 +22,9 @@ var firstTime = true,
 		appId: "1:945373860956:web:3ea16749c73345eb684299"
 	};
 
-function urlParam() {
+function urlParam(name) {
 	var url2 = new URL(window.location.href);
+	if (name) return url2.searchParams.get(name);
 	var param = url2.searchParams.toString().slice(0, -1);
 	return param;
 }
@@ -94,6 +95,7 @@ function getSlides(e) {
 						if (getRequest.result && getRequest.result.length > 0) {
 							dbData = getRequest.result[0];
 							loadData(dbData);
+							checkUrlAndLoad();
 						}
 					};
 				}
@@ -132,6 +134,7 @@ function getSlides(e) {
 
 					if (firstTime) {
 						loadData(dbData);
+						checkUrlAndLoad();
 					} else {
 						// update autocomplete and index dynamically
 						var myData = [];
@@ -157,7 +160,13 @@ function getSlides(e) {
 		} else {
 			if (dbData && dbData.length > 0) {
 				if (parent == true) writeFirebaseData('loadData', 0, dbData[e - 1]);
-				else loadData(dbData[e - 1]);
+				else {
+					loadData(dbData[e - 1]);
+					// Update URL for sharing
+					var newUrl = new URL(window.location.href);
+					newUrl.searchParams.set('id', e);
+					window.history.replaceState(null, '', newUrl);
+				}
 
 				if (!fromHistory) {
 					histo.push(e);
@@ -168,6 +177,24 @@ function getSlides(e) {
 		}
 	} catch (error) {
 		toast(error);
+	}
+}
+
+function checkUrlAndLoad() {
+	var songId = urlParam('id') || urlParam('s');
+	if (!songId) {
+		var match = window.location.pathname.match(/\/songsbook\/([\d\w%]+)/);
+		if (match) songId = match[1];
+	}
+	if (songId && dbData && dbData.length > 0) {
+		if (isNaN(songId)) {
+			// Try matching title
+			var index = dbData.findIndex(s => s[0].toLowerCase() === decodeURIComponent(songId).toLowerCase());
+			if (index !== -1) getSlides(index + 1);
+		} else {
+			var id = parseInt(songId);
+			if (id > 0 && id <= dbData.length) getSlides(id);
+		}
 	}
 }
 
