@@ -1,3 +1,3 @@
 ---
-redirect_to: "https://asia-southeast2-livestream-466502.cloudfunctions.net/createLivestream"
+redirect_to: "https://shalom-79206441888.asia-south1.run.app"
 ---
