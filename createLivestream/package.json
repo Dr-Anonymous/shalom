@@ -1,0 +1,14 @@
+{
+  "name": "create-livestream",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx @google-cloud/functions-framework --target=mainHandler"
+  },
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.3.0",
+    "googleapis": "^105.0.0",
+    "node-fetch": "^3.3.1"
+  }
+}

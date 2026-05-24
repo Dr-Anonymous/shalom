@@ -223,7 +223,8 @@
 		var slideIndex = 1,
 			editor,
 			videoUrl,
-			prefs = [],
+			prefs = {},
+			ytVideoLink = "",
 			songNumber = null,
 			firebaseConfig = {
 				apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
@@ -241,8 +242,11 @@
 
 		database.on('value', (snapshot) => {
 			var data = snapshot.val();
-			prefs = data["prefs"];
-			videoUrl = prefs["videoUrl"];
+			if (data) {
+				prefs = data["prefs"] || {};
+				videoUrl = prefs["videoUrl"];
+				ytVideoLink = prefs["ytVideoLink"] || "";
+			}
 		});
 
 		function setBackground() {
@@ -467,15 +471,8 @@
 			loadData(setBackground() + "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><h1 class=\"text-center\" style=\"font-size: 10vw;text-shadow: 20px 3px 4px #00000054;position: relative;\">Thankyou</h1><h1 style=\"text-align: center;position: relative;\">Have a great week ahead!</h1><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>");
 		}
 
-		{% capture live_content %}
-		{% include yt.txt %}
-		{% endcapture %}
-
-		const ytVideoLink = "{{ live_content | strip_newlines }}";
-
-		/* streaming controls*/
-
 		function startStreaming() {
+			if (!ytVideoLink) return alert("Livestream URL not loaded yet!");
 			var childWindow = window.open("https://studio.youtube.com/video/" + ytVideoLink.split('/').pop() + "/livestreaming");
 			setTimeout(function () {
 				writeFirebaseData('streaming', 'start');
@@ -484,6 +481,7 @@
 		}
 
 		function stopStreaming() {
+			if (!ytVideoLink) return alert("Livestream URL not loaded yet!");
 			window.open(ytVideoLink);
 			writeFirebaseData('streaming', 'stop');
 		}

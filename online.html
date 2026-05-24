@@ -13,6 +13,9 @@
 		<link rel="shortcut icon" href="/assets/ico/favicon.ico" />
 		<!-- javascript -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<!-- Firebase SDK -->
+		<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-database.js"></script>
 		
 </head>
 <body> <!-- Header --> <div class="container"> <div class="header row"> <div class="span12"> <div class="navbar"> <div class="navbar-inner"> <h1> <a class="brand" href="/">Shalom Worship Centre</a> </h1> <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a> <div class="nav-collapse collapse"> <ul class="nav pull-right"> <li> <a href="/"><i class="icon-home"></i><br />Home</a> </li> <li class="current-page"> <a href="/Our Ministries.html"><i class="icon-camera"></i><br />Our Ministries</a> </li> <li> <a href="/testimonies/"><i class="icon-user"></i><br />Testimonies</a> </li> <li> <a href="/messages"><i class="icon-tasks"></i><br/>Messages</a> </li><li> <a href="/contact.html"><i class="icon-envelope-alt"></i><br />Contact</a> </li> </ul> </div> </div> </div> </div> </div> </div>
@@ -31,19 +34,30 @@
 <!-- Footer --> <footer> <div class="container"> <div class="row"> <div class="social span4"> <a class="facebook" href="https://www.facebook.com/shalomworshipcentre.kkd"></a> <a class="youtube" href="https://www.youtube.com/PrasadCherukuri"></a></div><div class="copyright span4"><p>Copyright 2021 Shalom Worship Centre.</p></div> <!--Google Ads --> <div class="copyright span4 app"></div></div></div></footer>
 <!-- Javascript --> <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
 <script>
-function getLink (){
-{% capture live_content %}
-  {% include yt.txt %}
-{% endcapture %}
+var firebaseConfig = {
+	apiKey: "AIzaSyBpFCW5CcLoQP3ThnTm2gtOJoxLPAnas-A",
+	authDomain: "mydatabase-c35da.firebaseapp.com",
+	databaseURL: "https://mydatabase-c35da-default-rtdb.firebaseio.com/",
+	projectId: "mydatabase-c35da",
+	storageBucket: "mydatabase-c35da.appspot.com",
+	messagingSenderId: "945373860956",
+	appId: "1:945373860956:web:3ea16749c73345eb684299"
+};
+firebase.initializeApp(firebaseConfig);
+var database = firebase.database().ref();
 
-loadLink("{{ live_content | strip_newlines }}");
-/*$.ajax({ 
-      crossDomain: true,
-      url: "https://script.google.com/macros/s/AKfycbyYOlekh8vT2dVEXYWZ1-J1y1vDWYx-AfeScN6Xj-_eCpx_oGOhrcdw-mYbfDhAJm8p/exec?callback=loadLink",
-      method: "GET",
-      dataType: "jsonp"
-    });
-*/
+function getLink(){
+	database.child("prefs/ytVideoLink").once('value').then((snapshot) => {
+		var link = snapshot.val();
+		if (link) {
+			loadLink(link);
+		} else {
+			loadLink("https://www.youtube.com/PrasadCherukuri");
+		}
+	}).catch((err) => {
+		console.error(err);
+		loadLink("https://www.youtube.com/PrasadCherukuri");
+	});
 }
 
 function loadLink(e) {
