@@ -76,6 +76,10 @@ async function postToFacebook(message, videoUrl) {
     method: 'POST'
   });
   if (!response.ok) {
-    throw new Error('Failed to post to Facebook: ' + response.statusText);
+    let errorBody = '';
+    try {
+      errorBody = await response.text();
+    } catch (e) {}
+    throw new Error('Failed to post to Facebook: ' + response.statusText + ' - details: ' + errorBody);
   }
 }
