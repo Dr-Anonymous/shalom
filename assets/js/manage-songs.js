@@ -252,11 +252,37 @@ function addSlideField(content = "") {
     let unescaped = content.replace(/"/g, '&quot;');
     let slideHtml = `
     <div class="slide-item mb-3 p-3 border rounded position-relative bg-light text-dark">
-        <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1" onclick="$(this).parent().remove()">X</button>
+        <div class="position-absolute top-0 end-0 m-2 btn-group btn-group-sm">
+            <button type="button" class="btn btn-outline-secondary" onclick="moveSlideUp(this)" title="Move Up">
+                <i class="icon-chevron-up"></i>
+            </button>
+            <button type="button" class="btn btn-outline-secondary" onclick="moveSlideDown(this)" title="Move Down">
+                <i class="icon-chevron-down"></i>
+            </button>
+            <button type="button" class="btn btn-danger" onclick="$(this).closest('.slide-item').remove()" title="Delete">
+                <i class="icon-trash"></i>
+            </button>
+        </div>
         <label class="form-label mb-1 fw-bold">Slide Content</label>
         <textarea class="form-control slide-content-field" rows="5">${unescaped}</textarea>
     </div>`;
     $("#slides-container").append(slideHtml);
+}
+
+function moveSlideUp(btn) {
+    let currentSlide = $(btn).closest('.slide-item');
+    let prevSlide = currentSlide.prev('.slide-item');
+    if (prevSlide.length > 0) {
+        currentSlide.insertBefore(prevSlide);
+    }
+}
+
+function moveSlideDown(btn) {
+    let currentSlide = $(btn).closest('.slide-item');
+    let nextSlide = currentSlide.next('.slide-item');
+    if (nextSlide.length > 0) {
+        currentSlide.insertAfter(nextSlide);
+    }
 }
 
 function saveSong() {
