@@ -1,12 +1,11 @@
 import { google } from 'googleapis';
 import fetch from 'node-fetch';
 
-// hardcoded tokens & IDs
-const clientId = '126627498467-3c0a6d43afotdkut2ogt9pl2709m2n0r.apps.googleusercontent.com';
-const clientSecret = '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';
-const refreshToken = '1//0gnKTW9jvkX5yCgYIARAAGBASNwF-L9Irk-FxDaENmpb6HP9LWIYrVIxMVGilfxA61mfA_wXnMzljHUUsFEEfmoQI4HtqcLXqF28';
-
-const fbToken = 'EAAs6rRo4yBIBANCi9VBWbvQUFNZBpXOv9I4nXLi3Q5OFnnbsdN1mAAsLiEZACqSFgOd96GofmVNFmzZBD8FfjFchr87Xw0oQKJbmZCu3gc8O88PUtTkZAtjhpaaGXHE1pfF29Dd2tDRU5cinP8G5746Ij5e47vZCnWASnZAXcTxAMTZAfvuyn0qFE0a16RrF0aH8YEwFEvf1IQZDZD';
+// Tokens & IDs loaded from Cloud Run environment variables
+const clientId = process.env.YT_CLIENT_ID;
+const clientSecret = process.env.YT_CLIENT_SECRET;
+const refreshToken = process.env.YT_REFRESH_TOKEN;
+const fbToken = process.env.FB_ACCESS_TOKEN;
 
 export async function mainHandler(req, res) {
   try {
