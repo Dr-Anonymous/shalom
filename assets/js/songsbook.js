@@ -77,7 +77,17 @@ $(document).ready(async function () {
 
 	});
 
-
+	// Custom double-tap gesture for iOS/Safari mobile full screen
+	var lastTap = 0;
+	$('#resultHere').on('touchend', function(e) {
+		var currentTime = new Date().getTime();
+		var tapLength = currentTime - lastTap;
+		if (tapLength < 300 && tapLength > 0) {
+			toggleFullScreen();
+			e.preventDefault();
+		}
+		lastTap = currentTime;
+	});
 });
 
 function getSlides(e) {
@@ -211,6 +221,7 @@ async function loadData(e) {
 				value
 			}) => {
 				getSlides(value);
+				$('#index').hide();
 			},
 		});
 		var myData = [];
@@ -329,20 +340,29 @@ function fontSize(e) {
 }
 
 function toggleFullScreen() {
-	if (document.fullscreen || document.webkitIsFullScreen)
+	var elem = $('#show')[0];
+	var isFallbackActive = $('#show').hasClass('fullscreen-fallback');
+	var isNativeFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement || document.fullscreen || document.webkitIsFullScreen;
+
+	if (isNativeFullscreen || isFallbackActive) {
 		closeFullscreen();
-	else
-		openFullscreen($('#show')[0]);
+	} else {
+		openFullscreen(elem);
+	}
 }
 
 /* View in fullscreen */
 function openFullscreen(elem) {
 	if (elem.requestFullscreen) {
 		elem.requestFullscreen();
-	} else if (elem.webkitRequestFullscreen) { /* Safari */
+	} else if (elem.webkitRequestFullscreen) { /* Safari (macOS / iPadOS) */
 		elem.webkitRequestFullscreen();
 	} else if (elem.msRequestFullscreen) { /* IE11 */
 		elem.msRequestFullscreen();
+	} else {
+		// CSS Fallback for iPhone Safari
+		$(elem).addClass('fullscreen-fallback');
+		$('body').addClass('has-fullscreen-fallback');
 	}
 }
 
@@ -355,6 +375,10 @@ function closeFullscreen() {
 	} else if (document.msExitFullscreen) { /* IE11 */
 		document.msExitFullscreen();
 	}
+	
+	// Always clean up CSS fallback
+	$('#show').removeClass('fullscreen-fallback');
+	$('body').removeClass('has-fullscreen-fallback');
 }
 
 /*============ download to offline*/
@@ -540,10 +564,122 @@ function setCookie(cname, cvalue, exdays) {
 
 // create index
 function index() {
-	var something = '<ol style="columns: 2;">';
-	for (i in dbData) {
-		something += '<li onclick="getSlides(' + (parseInt(i) + 1) + ');$(\'#index\').toggle();$(\'#songName\').val(\'' + dbData[i][0] + '\')">' + dbData[i][0] + '</li>';
+	var indexContainer = $('#index');
+	if (indexContainer.length === 0) return;
+
+	// Group songs by character
+	var groups = {};
+	for (var i = 0; i < dbData.length; i++) {
+		var title = dbData[i][0] || '';
+		var firstChar = title.trim().charAt(0).toUpperCase();
+		
+		var groupKey = firstChar;
+		if (/[0-9]/.test(firstChar)) {
+			groupKey = '#';
+		} else if (!/[A-Z\u0c00-\u0c7f]/.test(firstChar)) {
+			groupKey = '*';
+		}
+		
+		if (!groups[groupKey]) {
+			groups[groupKey] = [];
+		}
+		groups[groupKey].push({
+			id: i + 1,
+			title: title
+		});
 	}
-	something += '</ol>';
-	$('#index').html(something);
+
+	// Sort characters (Telugu first, then A-Z, then other symbols)
+	var sortedKeys = Object.keys(groups).sort((a, b) => {
+		var aIsTelugu = /[\u0c00-\u0c7f]/.test(a);
+		var bIsTelugu = /[\u0c00-\u0c7f]/.test(b);
+		
+		if (aIsTelugu && !bIsTelugu) return -1;
+		if (!aIsTelugu && bIsTelugu) return 1;
+		
+		var aIsEnglish = /[A-Z]/.test(a);
+		var bIsEnglish = /[A-Z]/.test(b);
+		
+		if (aIsEnglish && !bIsEnglish) return -1;
+		if (!aIsEnglish && bIsEnglish) return 1;
+		
+		if (a === '#') return -1;
+		if (b === '#') return 1;
+		if (a === '*') return 1;
+		if (b === '*') return -1;
+		
+		return a.localeCompare(b);
+	});
+
+	// Build the accordion HTML
+	var html = '<div class="accordion-index">';
+	for (var j = 0; j < sortedKeys.length; j++) {
+		var key = sortedKeys[j];
+		var songs = groups[key];
+		html += '<div class="accordion-group">';
+		html += '  <button class="btn btn-light w-100 text-center accordion-header" data-key="' + key + '" style="font-weight: 600; background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 8px 10px;">';
+		html += '    ' + key;
+		html += '  </button>';
+		html += '  <div class="accordion-content" style="display: none; padding: 10px 0;">';
+		html += '    <ol class="song-index-list">';
+		for (var k = 0; k < songs.length; k++) {
+			var song = songs[k];
+			html += '      <li class="song-index-item" data-id="' + song.id + '" data-title="' + song.title.replace(/"/g, '&quot;') + '">';
+			html += '        <strong>' + song.id + '.</strong> ' + song.title;
+			html += '      </li>';
+		}
+		html += '    </ol>';
+		html += '  </div>';
+		html += '</div>';
+	}
+	html += '</div>';
+
+	indexContainer.html(html);
+
+	// Add styles for hover, active, layout responsiveness, and accordion
+	if ($('#indexStyles').length === 0) {
+		$('<style id="indexStyles">')
+			.html(
+				'#index { background-color: transparent; border: none; padding: 10px 0; color: #212529; } ' +
+				'.accordion-index { display: flex; flex-wrap: wrap; gap: 8px; } ' +
+				'.accordion-group { width: calc(50% - 4px); transition: width 0.2s ease; margin-bottom: 2px; } ' +
+				'.accordion-group.expanded { width: 100% !important; } ' +
+				'.accordion-header { padding: 8px 12px; border-radius: 6px; transition: background-color 0.2s, border-color 0.2s; color: #495057 !important; } ' +
+				'.accordion-header:hover { background-color: #e9ecef !important; border-color: #adb5bd !important; } ' +
+				'.accordion-header.active { background-color: #e9ecef !important; border-color: #6c757d !important; font-weight: bold; } ' +
+				'.song-index-list { columns: 2; list-style-type: none; padding-left: 0; margin-bottom: 0; } ' +
+				'.song-index-item { cursor: pointer; padding: 6px 12px; margin-bottom: 4px; border-radius: 4px; transition: background 0.15s, color 0.15s; color: #212529; } ' +
+				'.song-index-item:hover { background-color: #f1f3f5; color: #000; } ' +
+				'@media (max-width: 767.98px) { .song-index-list { columns: 1 !important; } }'
+			)
+			.appendTo('head');
+	}
+
+	// Set up event listeners
+	// Toggle accordion group
+	indexContainer.off('click', '.accordion-header').on('click', '.accordion-header', function () {
+		var group = $(this).closest('.accordion-group');
+		var content = $(this).next('.accordion-content');
+		var isVisible = content.is(':visible');
+
+		// Collapse all other content areas and reset active states
+		indexContainer.find('.accordion-content').slideUp(150);
+		indexContainer.find('.accordion-header').removeClass('active');
+		indexContainer.find('.accordion-group').removeClass('expanded');
+
+		if (!isVisible) {
+			group.addClass('expanded');
+			content.slideDown(150);
+			$(this).addClass('active');
+		}
+	});
+
+	// Song item click
+	indexContainer.off('click', '.song-index-item').on('click', '.song-index-item', function () {
+		var id = $(this).attr('data-id');
+		var title = $(this).attr('data-title');
+		getSlides(parseInt(id));
+		$('#index').hide();
+		$('#songName').val(title);
+	});
 }
