@@ -1,5 +1,7 @@
 const CACHE_NAME = 'live-notes-cache-v1';
 const ASSETS_TO_CACHE = [
+  '/live/',
+  '/live',
   '/live.html',
   '/assets/ico/favicon.ico',
   '/assets/ico/192.png',
@@ -12,7 +14,14 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME)
       .then(cache => {
         console.log('[Service Worker] Pre-caching offline assets');
-        return cache.addAll(ASSETS_TO_CACHE);
+        // Use individual add with catch to prevent install failure on local dev server where /live/ doesn't exist
+        return Promise.all(
+          ASSETS_TO_CACHE.map(url => {
+            return cache.add(url).catch(err => {
+              console.warn('[Service Worker] Failed to cache asset:', url, err);
+            });
+          })
+        );
       })
       .then(() => self.skipWaiting())
   );
@@ -62,7 +71,7 @@ self.addEventListener('fetch', event => {
           }
           // Return offline state if request is for the main page
           if (event.request.mode === 'navigate') {
-            return caches.match('/live.html');
+            return caches.match('/live/') || caches.match('/live') || caches.match('/live.html');
           }
         });
       })

@@ -33,7 +33,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/live.html",
+  "start_url": "/live/",
   "background_color": "#212529",
   "display": "standalone",
   "scope": "/",
