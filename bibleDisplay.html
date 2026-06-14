@@ -31,7 +31,7 @@
 var lang = "te-IN",
 	ver = "14xBeAaiu1QTfOqNK0YGabiNiFV4EUtC2QxWXApVERBg",
 	downloadingVer = false,
-	prefs = [],
+	prefs = {},
 	option = "",
 	allBooks = [
 		[0, 0, 0, 0],
@@ -122,7 +122,9 @@ $(document).ready(async function() {
 	database = firebase.database().ref();
 	database.on('value', (snapshot) => {
 			var data = snapshot.val();
-			prefs = data["prefs"];
+			if (data) {
+				prefs = (data["prefs"] && typeof data["prefs"] === 'object') ? data["prefs"] : {};
+			}
 	});
 	
 	/* default language */
@@ -873,10 +875,9 @@ function checkKey(e) {
 }
 			
 function writeFirebaseData(name, value) {
-	database.set({
+	database.update({
 		"functionName": name,
-		"value": value,
-		"prefs" : prefs
+		"value": value
 	});
 }
 

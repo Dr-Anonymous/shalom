@@ -7,7 +7,7 @@ var firstTime = true,
 	dbFirestore = null,
 	dbData = [],
 	songNumber = 'nothing',
-	prefs = [],
+	prefs = {},
 	changeFontSize = 0,
 	histo = [],
 	fromHistory = false,
@@ -55,9 +55,10 @@ $(document).ready(async function () {
 
 	if (parent == true) database.on('value', (snapshot) => {
 		var data = snapshot.val();
+		if (!data) return;
 		var value = data["value"];
-		prefs = data["prefs"];
-		if (prefs['histo']) {
+		prefs = (data["prefs"] && typeof data["prefs"] === 'object') ? data["prefs"] : {};
+		if (prefs && prefs['histo']) {
 			$("#show").removeClass('d-none');
 		}
 		switch (data["functionName"]) {
@@ -527,18 +528,24 @@ function checkCookie(e) {
 
 function writeFirebaseData(name, value, num) {
 	if (num) songNumber = num;
+	if (!prefs || typeof prefs !== 'object') prefs = {};
 	prefs["histo"] = histo.toString();
-	database.set({ "functionName": name, "value": value, "songNumber": songNumber, "prefs": prefs });
+	database.update({ "functionName": name, "value": value, "songNumber": songNumber, "prefs": prefs });
 }
 
 /* =====history===================== */
 function loadHistory() {
-	if (histo.length == 0) histo = prefs['histo'].split(",");
+	if (histo.length == 0 && prefs && typeof prefs['histo'] === 'string' && prefs['histo'].trim() !== '') {
+		histo = prefs['histo'].split(",");
+	}
 	$("#historyOptions").empty();
 	option = '';
 	for (var i = 0; i < histo.length; i++) {
-		option += '<li class="d-flex"><a class="dropdown-item" href="javascript:;" onclick="fromHistory=true;getSlides(' + histo[i] + ');">' +
-			dbData[histo[i] - 1][0] + '</a><button type="button" class="btn" onclick="histo.splice(' + i + ', 1);$(this).remove();"> X </button></li>';
+		var songIdx = parseInt(histo[i]);
+		if (!isNaN(songIdx) && dbData && dbData[songIdx - 1]) {
+			option += '<li class="d-flex"><a class="dropdown-item" href="javascript:;" onclick="fromHistory=true;getSlides(' + songIdx + ');">' +
+				dbData[songIdx - 1][0] + '</a><button type="button" class="btn" onclick="histo.splice(' + i + ', 1);$(this).remove();"> X </button></li>';
+		}
 	}
 	$("#historyOptions").append(option);
 }

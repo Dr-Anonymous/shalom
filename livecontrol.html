@@ -272,7 +272,7 @@
 			});
 		}
 		function writeFirebaseData(functionName, value) {
-			database.set({
+			database.update({
 				"functionName": functionName,
 				"value": value,
 				"songNumber": songNumber,
