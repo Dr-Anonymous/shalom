@@ -51,14 +51,21 @@ self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
   if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
 
+  // Do not attempt to cache dynamic database/API calls
+  const isDynamicAPI = url.hostname.includes('firebaseio.com') ||
+                        url.hostname.includes('api.pexels.com') ||
+                        url.hostname.includes('script.google.com');
+
   event.respondWith(
     fetch(event.request)
       .then(response => {
         // Cache successful GET responses (both basic same-origin and cors cross-origin requests like bootstrap)
-        if (response && (response.status === 200 || response.status === 0)) {
+        if (!isDynamicAPI && response && (response.status === 200 || response.status === 0)) {
           const responseToCache = response.clone();
           caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, responseToCache);
+            cache.put(event.request, responseToCache).catch(err => {
+              console.warn('[Service Worker] Cache put failed for:', event.request.url, err);
+            });
           });
         }
         return response;
