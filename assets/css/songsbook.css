@@ -95,3 +95,46 @@ body.has-fullscreen-fallback {
 #resultHere {
 	touch-action: manipulation;
 }
+
+/* Mobile responsive adjustments */
+@media (max-width: 767.98px) {
+	/* Reduce slide padding so content has space on mobile screen */
+	.mySlides {
+		padding: 15px 15px 65px 15px !important;
+	}
+	
+	/* Scale down dot pagination dimensions so they don't wrap and cover text */
+	.dot {
+		height: 32px !important;
+		width: 32px !important;
+		margin: 0 3px !important;
+		font-size: 0.8rem !important;
+	}
+	
+	/* Scale down main typography inside slides dynamically */
+	#resultHere p, .mySlides p {
+		font-size: 1.65rem !important;
+		line-height: 1.4 !important;
+	}
+	
+	/* Adjust controls padding */
+	#bottomControls {
+		padding: 5px 0 !important;
+	}
+
+	#topControls {
+		padding: 5px 0 !important;
+	}
+}
+
+/* Embedded Parent Mode Styling */
+body.embedded-parent {
+	padding-top: 55px !important; /* Prevent overlap with fixed-top controls */
+	background: transparent !important;
+}
+body.embedded-parent .page-title {
+	padding: 15px 0 !important;
+	background: transparent !important;
+	box-shadow: none !important;
+	border-bottom: 1px solid #eee;
+}

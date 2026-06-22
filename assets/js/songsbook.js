@@ -51,6 +51,8 @@ $(document).ready(async function () {
 		parent = true;
 		$('.parentControls').addClass('d-none');
 		$('.childControls').removeClass('d-none');
+		$('.header, footer').addClass('d-none');
+		$('body').addClass('embedded-parent');
 	}
 
 	if (parent == true) database.on('value', (snapshot) => {
@@ -320,7 +322,12 @@ function checkKey(e) {
 	}
 	else if (e.keyCode == '27') {
 		// esc key
-		if (parent == true) writeFirebaseData('loadData', [' ', ' ']);
+		if (parent == true) {
+			writeFirebaseData('loadData', [' ', ' ']);
+		} else {
+			loadData([' ', ' ']);
+		}
+		$('#songName').val('').focus();
 	}
 	else if (e.key == '1' || e.key == '2' || e.key == '3' || e.key == '4' || e.key == '5' || e.key == '6' || e.key == '7' || e.key == '8' || e.key == '9' || e.key == '0') {
 		// num keys

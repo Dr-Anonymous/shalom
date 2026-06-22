@@ -48,6 +48,79 @@
 		.dot:hover {
 			background-color: #717171;
 		}
+
+		/* Custom style overrides for modal iframes */
+		#songsModal .modal-dialog.modal-fullscreen,
+		#bibleModal .modal-dialog.modal-fullscreen {
+			margin: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		#songsModal .modal-content,
+		#bibleModal .modal-content {
+			height: 100vh;
+			display: flex;
+			flex-direction: column;
+			border: none;
+			border-radius: 0;
+		}
+
+		#songsModal .modal-body,
+		#bibleModal .modal-body {
+			padding: 0;
+			flex-grow: 1;
+			overflow: hidden;
+		}
+
+		#songsModal .modal-body iframe,
+		#bibleModal .modal-body iframe {
+			width: 100%;
+			height: 100%;
+			border: none;
+			display: block;
+		}
+
+		/* Make sure the control buttons look premium and scale nicely */
+		.action-btn {
+			width: 100%;
+			padding: 1.5rem 1rem;
+			font-size: 1.35rem;
+			font-weight: 600;
+			border-radius: 12px;
+			transition: all 0.2s ease-in-out;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+		}
+
+		.action-btn:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+		}
+
+		.panel-card {
+			background: #f8f9fa;
+			border: 1px solid #e9ecef;
+			border-radius: 12px;
+			padding: 1.25rem;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+			height: 100%;
+		}
+
+		.panel-card-title {
+			font-size: 0.9rem;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			font-weight: 700;
+			color: #6c757d;
+			margin-bottom: 1rem;
+		}
+
+		.btn-custom {
+			padding: 0.6rem 1rem;
+			font-size: 1rem;
+			font-weight: 500;
+			border-radius: 8px;
+		}
 	</style>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
@@ -69,20 +142,12 @@
 		<div class="modal-dialog modal-fullscreen">
 			<div class="modal-content">
 				<div class="modal-body">
-					<div class="container-fluid">
-						<div class="row">
-							<div class="col-12" style="overflow: hidden;">
-								<iframe class="embed-responsive-item"
-									style="width: 100vw;height: 100vh;position: relative;"
-									src="https://shalomworshipcentre.com/songsbook/?parent" allowfullscreen></iframe>
-							</div>
-						</div>
-					</div>
+					<iframe class="embed-responsive-item" src="songsbook.html?parent" allowfullscreen></iframe>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-secondary" onclick="setBackground();">Background</button>
-					<button class="btn btn-secondary" onclick="loadData(' ');">Clear</button>
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button class="btn btn-secondary btn-custom" onclick="setBackground();">Background</button>
+					<button class="btn btn-secondary btn-custom" onclick="loadData(' ');">Clear</button>
+					<button type="button" class="btn btn-secondary btn-custom" data-bs-dismiss="modal">Close</button>
 				</div>
 			</div>
 		</div>
@@ -93,20 +158,12 @@
 		<div class="modal-dialog modal-fullscreen">
 			<div class="modal-content">
 				<div class="modal-body">
-					<div class="container-fluid">
-						<div class="row">
-							<div class="col-12" style="overflow: hidden;">
-								<iframe class="embed-responsive-item"
-									style="width: 100vw;height: 100vh;position: relative;"
-									src="https://shalomworshipcentre.com/bibleDisplay" allowfullscreen></iframe>
-							</div>
-						</div>
-					</div>
+					<iframe class="embed-responsive-item" src="bibleDisplay.html?parent" allowfullscreen></iframe>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-secondary" onclick="setBackground();">Background</button>
-					<button class="btn btn-secondary" onclick="loadData(' ');">Clear</button>
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button class="btn btn-secondary btn-custom" onclick="setBackground();">Background</button>
+					<button class="btn btn-secondary btn-custom" onclick="loadData(' ');">Clear</button>
+					<button type="button" class="btn btn-secondary btn-custom" data-bs-dismiss="modal">Close</button>
 				</div>
 			</div>
 		</div>
@@ -117,20 +174,21 @@
 		<div class="modal-dialog modal-fullscreen">
 			<div class="modal-content">
 				<div class="modal-body">
-					<div class="container-fluid">
+					<div class="container-fluid py-3">
 
 						<div class="row">
 							<div class="col-12">
 								<!-- The toolbar will be rendered in this container. -->
-								<div id="toolbar-container"></div>
+								<div id="toolbar-container" class="mb-2"></div>
 								<!-- This container will become the editable. -->
-								<div id="editor">
+								<div id="editor" class="border p-3 bg-white"
+									style="min-height: 200px; max-height: 400px; overflow-y: auto;">
 									<h1>Enter notes here...</h1>
 								</div>
 							</div>
 						</div>
 
-						<div class="row">
+						<div class="row mt-3">
 							<div class="col-12">
 								<div id="show" class="col slideshow-container bg-dark text-light d-none">
 									<div id="resultHere"></div>
@@ -142,84 +200,103 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-secondary" id="postButton" onclick='loadData(editor.getData())'>Post</button>
+					<button class="btn btn-secondary btn-custom" id="postButton"
+						onclick='loadData(editor.getData())'>Post</button>
 					<div class="btn-group">
-						<button class="btn btn-secondary" onclick="loadData(' ');">Clear</button>
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button class="btn btn-secondary btn-custom" onclick="loadData(' ');">Clear</button>
+						<button type="button" class="btn btn-secondary btn-custom"
+							data-bs-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="container">
-		<div class="row display-1">
-			<div class="col">
-				<button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#songsModal">Songsbook</button>
+	<div class="container py-4">
+		<!-- Top Action Buttons Grid -->
+		<div class="row g-3 justify-content-center text-center mb-4">
+			<div class="col-6 col-md-3">
+				<button class="btn btn-secondary action-btn" data-bs-toggle="modal"
+					data-bs-target="#songsModal">Songsbook</button>
 			</div>
-			<div class="col">
-				<button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#bibleModal">Bible</button>
+			<div class="col-6 col-md-3">
+				<button class="btn btn-info action-btn text-white" data-bs-toggle="modal"
+					data-bs-target="#bibleModal">Bible</button>
 			</div>
-			<div class="col">
-				<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editorModal">Editor</button>
+			<div class="col-6 col-md-3">
+				<button class="btn btn-primary action-btn" data-bs-toggle="modal"
+					data-bs-target="#editorModal">Editor</button>
 			</div>
-			<div class="col">
-				<a href="/project" class="btn btn-success" target="_blank">ScreenShare</a>
+			<div class="col-6 col-md-3">
+				<a href="/project" class="btn btn-success action-btn d-flex align-items-center justify-content-center"
+					target="_blank">ScreenShare</a>
 			</div>
 		</div>
-		<div class="row display-1">
-			<div class="col">
-				<div class="btn-group">
-					<button class="btn btn-secondary"
-						onclick='loadData(setBackground() + "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><h1 class=\"text-center\" style=\"font-size: 10vw;text-shadow: 20px 3px 4px #00000054;position: relative;\">Welcome!</h1><h1 style=\"text-align: center;position: relative;\">We are glad you are here</h1><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>")'>Welcome</button>
-					<button class="btn btn-secondary"
-						onclick='loadData("<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><h2>Prasad Cherukuri</h2><h3>Church Pastor</h3>")'>Ps.name</button>
-					<button class="btn btn-secondary"
-						onclick='loadData("<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><h2><svg width=\"32px\" height=\"32px\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M21.97 18.33C21.97 18.69 21.89 19.06 21.72 19.42C21.55 19.78 21.33 20.12 21.04 20.44C20.55 20.98 20.01 21.37 19.4 21.62C18.8 21.87 18.15 22 17.45 22C16.43 22 15.34 21.76 14.19 21.27C13.04 20.78 11.89 20.12 10.75 19.29C9.6 18.45 8.51 17.52 7.47 16.49C6.44 15.45 5.51 14.36 4.68 13.22C3.86 12.08 3.2 10.94 2.72 9.81C2.24 8.67 2 7.58 2 6.54C2 5.86 2.12 5.21 2.36 4.61C2.6 4 2.98 3.44 3.51 2.94C4.15 2.31 4.85 2 5.59 2C5.87 2 6.15 2.06 6.4 2.18C6.66 2.3 6.89 2.48 7.07 2.74L9.39 6.01C9.57 6.26 9.7 6.49 9.79 6.71C9.88 6.92 9.93 7.13 9.93 7.32C9.93 7.56 9.86 7.8 9.72 8.03C9.59 8.26 9.4 8.5 9.16 8.74L8.4 9.53C8.29 9.64 8.24 9.77 8.24 9.93C8.24 10.01 8.25 10.08 8.27 10.16C8.3 10.24 8.33 10.3 8.35 10.36C8.53 10.69 8.84 11.12 9.28 11.64C9.73 12.16 10.21 12.69 10.73 13.22C11.27 13.75 11.79 14.24 12.32 14.69C12.84 15.13 13.27 15.43 13.61 15.61C13.66 15.63 13.72 15.66 13.79 15.69C13.87 15.72 13.95 15.73 14.04 15.73C14.21 15.73 14.34 15.67 14.45 15.56L15.21 14.81C15.46 14.56 15.7 14.37 15.93 14.25C16.16 14.11 16.39 14.04 16.64 14.04C16.83 14.04 17.03 14.08 17.25 14.17C17.47 14.26 17.7 14.39 17.95 14.56L21.26 16.91C21.52 17.09 21.7 17.3 21.81 17.55C21.91 17.8 21.97 18.05 21.97 18.33Z\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-miterlimit=\"10\"/><path d=\"M18.5 9C18.5 8.4 18.03 7.48 17.33 6.73C16.69 6.04 15.84 5.5 15 5.5\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M22 9C22 5.13 18.87 2 15 2\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg> 96666 15555</h2><h3>For prayer requests</h3>")'>Prayer</button>
-					<button class="btn btn-secondary"
-						onclick='loadData("<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><img class=\"col-3\" src=\"/assets/img/live.png\"/><p>&nbsp;</p><h2><svg width=\"32px\" height=\"32px\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M3.5 18V7C3.5 3 4.5 2 8.5 2H15.5C19.5 2 20.5 3 20.5 7V17C20.5 17.14 20.5 17.28 20.49 17.42\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M6.35 15H20.5V18.5C20.5 20.43 18.93 22 17 22H7C5.07 22 3.5 20.43 3.5 18.5V17.85C3.5 16.28 4.78 15 6.35 15Z\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M8 7H16\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M8 10.5H13\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>Live Notes</h2><h3>Song Lyrics/ Scripture references</h3>")'>Notes</button>
-					<button class="btn btn-secondary"
-						onclick='loadData("<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><img class=\"col-3\" src=\"/assets/img/offering.jpg\"/><p>&nbsp;</p><h2><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0z\"/><path d=\"M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1h-.003zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195l.054.012z\"/><path d=\"M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083c.058-.344.145-.678.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1H1z\"/><path d=\"M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 5.982 5.982 0 0 1 3.13-1.567z\"/></svg> 96666 15555</h2><h3>For offerings: BHIM/GPay/Paytm</h3>")'>Offering</button>
-					<button class="btn btn-secondary"
-						onclick='loadData("ఆశీర్వాదంబుల్ మా మీద వర్షింపజేయు మీశ<br>యాశతో నమ్మియున్నాము నీ సత్య వాగ్ధత్తము<br>ఇమ్మహిమీద క్రుమ్మరించుము దేవ<br>క్రమ్మర ప్రేమవర్షంబున్ గ్రుమ్మరించుము దేవా"); setTimeout(setEnd, 42000);'>Ending</button>
-					<div class="btn-group">
-						<button class="btn btn-secondary" onclick="writeFirebaseData('scroll', 'up');">Up</button>
-						<button class="btn btn-secondary" onclick="writeFirebaseData('scroll', 'down');">Down</button>
+
+		<!-- Control Row Grid -->
+		<div class="row g-3">
+			<!-- Preset controls -->
+			<div class="col-12 col-md-8">
+				<div class="panel-card">
+					<div class="panel-card-title">Live Presets</div>
+					<div class="d-flex flex-wrap gap-2">
+						<button class="btn btn-secondary btn-custom flex-grow-1"
+							onclick='loadData(setBackground() + "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><h1 class=\"text-center\" style=\"font-size: 10vw;text-shadow: 20px 3px 4px #00000054;position: relative;\">Welcome!</h1><h1 style=\"text-align: center;position: relative;\">We are glad you are here</h1><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>")'>Welcome</button>
+						<button class="btn btn-secondary btn-custom flex-grow-1"
+							onclick='loadData("<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><h2>Prasad Cherukuri</h2><h3>Church Pastor</h3>")'>Ps.name</button>
+						<button class="btn btn-secondary btn-custom flex-grow-1"
+							onclick='loadData("<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><h2><svg width=\"32px\" height=\"32px\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M21.97 18.33C21.97 18.69 21.89 19.06 21.72 19.42C21.55 19.78 21.33 20.12 21.04 20.44C20.55 20.98 20.01 21.37 19.4 21.62C18.8 21.87 18.15 22 17.45 22C16.43 22 15.34 21.76 14.19 21.27C13.04 20.78 11.89 20.12 10.75 19.29C9.6 18.45 8.51 17.52 7.47 16.49C6.44 15.45 5.51 14.36 4.68 13.22C3.86 12.08 3.2 10.94 2.72 9.81C2.24 8.67 2 7.58 2 6.54C2 5.86 2.12 5.21 2.36 4.61C2.6 4 2.98 3.44 3.51 2.94C4.15 2.31 4.85 2 5.59 2C5.87 2 6.15 2.06 6.4 2.18C6.66 2.3 6.89 2.48 7.07 2.74L9.39 6.01C9.57 6.26 9.7 6.49 9.79 6.71C9.88 6.92 9.93 7.13 9.93 7.32C9.93 7.56 9.86 7.8 9.72 8.03C9.59 8.26 9.4 8.5 9.16 8.74L8.4 9.53C8.29 9.64 8.24 9.77 8.24 9.93C8.24 10.01 8.25 10.08 8.27 10.16C8.3 10.24 8.33 10.3 8.35 10.36C8.53 10.69 8.84 11.12 9.28 11.64C9.73 12.16 10.21 12.69 10.73 13.22C11.27 13.75 11.79 14.24 12.32 14.69C12.84 15.13 13.27 15.43 13.61 15.61C13.66 15.63 13.72 15.66 13.79 15.69C13.87 15.72 13.95 15.73 14.04 15.73C14.21 15.73 14.34 15.67 14.45 15.56L15.21 14.81C15.46 14.56 15.7 14.37 15.93 14.25C16.16 14.11 16.39 14.04 16.64 14.04C16.83 14.04 17.03 14.08 17.25 14.17C17.47 14.26 17.7 14.39 17.95 14.56L21.26 16.91C21.52 17.09 21.7 17.3 21.81 17.55C21.91 17.8 21.97 18.05 21.97 18.33Z\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-miterlimit=\"10\"/><path d=\"M18.5 9C18.5 8.4 18.03 7.48 17.33 6.73C16.69 6.04 15.84 5.5 15 5.5\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M22 9C22 5.13 18.87 2 15 2\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg> 96666 15555</h2><h3>For prayer requests</h3>")'>Prayer</button>
+						<button class="btn btn-secondary btn-custom flex-grow-1"
+							onclick='loadData("<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><img class=\"col-3\" src=\"/assets/img/live.png\"/><p>&nbsp;</p><h2><svg width=\"32px\" height=\"32px\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M3.5 18V7C3.5 3 4.5 2 8.5 2H15.5C19.5 2 20.5 3 20.5 7V17C20.5 17.14 20.5 17.28 20.49 17.42\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M6.35 15H20.5V18.5C20.5 20.43 18.93 22 17 22H7C5.07 22 3.5 20.43 3.5 18.5V17.85C3.5 16.28 4.78 15 6.35 15Z\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M8 7H16\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M8 10.5H13\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>Live Notes</h2><h3>Song Lyrics/ Scripture references</h3>")'>Notes</button>
+						<button class="btn btn-secondary btn-custom flex-grow-1"
+							onclick='loadData("<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><img class=\"col-3\" src=\"/assets/img/offering.jpg\"/><p>&nbsp;</p><h2><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0z\"/><path d=\"M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1h-.003zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195l.054.012z\"/><path d=\"M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083c.058-.344.145-.678.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1H1z\"/><path d=\"M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 5.982 5.982 0 0 1 3.13-1.567z\"/></svg> 96666 15555</h2><h3>For offerings: BHIM/GPay/Paytm</h3>")'>Offering</button>
+						<button class="btn btn-secondary btn-custom flex-grow-1"
+							onclick='loadData("ఆశీర్వాదంబుల్ మా మీద వర్షింపజేయు మీశ<br>యాశతో నమ్మియున్నాము నీ సత్య వాగ్ధత్తము<br>ఇమ్మహిమీద క్రుమ్మరించుము దేవ<br>క్రమ్మర ప్రేమవర్షంబున్ గ్రుమ్మరించుము దేవా"); setTimeout(setEnd, 42000);'>Ending</button>
+
+						<!-- Scroll controls inline with presets -->
+						<button class="btn btn-dark btn-custom flex-grow-1"
+							onclick="writeFirebaseData('scroll', 'up');">Scroll Up</button>
+						<button class="btn btn-dark btn-custom flex-grow-1"
+							onclick="writeFirebaseData('scroll', 'down');">Scroll Down</button>
 					</div>
 				</div>
 			</div>
-			<div class="col">
-				<div class="btn-group">
-					<button class="btn btn-secondary" onclick="setBackground();">Background</button>
-					<button class="btn btn-secondary" onclick="setVideoUrl()"><svg xmlns="http://www.w3.org/2000/svg"
-							width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-							<path
-								d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
-							<path fill-rule="evenodd"
-								d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
-						</svg></button>
-				</div>
-			</div>
-			<div class="col">
-				<div class="btn-group">
-					<button class="btn btn-warning" onclick="startStreaming();">Stream</button>
-					<button class="btn btn-danger" onclick="stopStreaming();">Stop</button>
-				</div>
-			</div>
-			<!--
-			<div class="col">
-			<button class="btn btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#camIp">
-          		  <svg class="" xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" viewBox="0 0 16 16">
-			  <path d="M6 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM1 3a2 2 0 1 0 4 0 2 2 0 0 0-4 0z"/>
-			  <path d="M9 6h.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 7.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 16H2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h7zm6 8.73V7.27l-3.5 1.555v4.35l3.5 1.556zM1 8v6a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1z"/>
-			  <path d="M9 6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM7 3a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
-			</svg>
-			</button>
-			<textarea class="collapse" id="camIp" rows="1">192.168.1.7</textarea>
-			</div>
-			-->
-		</div>
 
+			<!-- Background Options -->
+			<div class="col-12 col-sm-6 col-md-2">
+				<div class="panel-card d-flex flex-column justify-content-between">
+					<div>
+						<div class="panel-card-title">Background</div>
+						<div class="d-grid gap-2">
+							<button class="btn btn-secondary btn-custom" onclick="setBackground();">Background</button>
+							<button class="btn btn-outline-secondary btn-custom" onclick="setVideoUrl()">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+									viewBox="0 0 16 16">
+									<path
+										d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
+									<path fill-rule="evenodd"
+										d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
+								</svg> New Video
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Stream Actions -->
+			<div class="col-12 col-sm-6 col-md-2">
+				<div class="panel-card d-flex flex-column justify-content-between">
+					<div>
+						<div class="panel-card-title">Stream Control</div>
+						<div class="d-grid gap-2">
+							<button class="btn btn-warning btn-custom text-white" onclick="startStreaming();">Start
+								Stream</button>
+							<button class="btn btn-danger btn-custom" onclick="stopStreaming();">Stop Stream</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<script>
 		var slideIndex = 1,
