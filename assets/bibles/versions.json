@@ -1,0 +1,56 @@
+[
+  {
+    "id": "te",
+    "name": "తెలుగు (BSI)",
+    "short": "తె",
+    "lang": "te-IN"
+  },
+  {
+    "id": "kjv",
+    "name": "American King James Version (1999)",
+    "short": "KJV",
+    "lang": "en-US"
+  },
+  {
+    "id": "amp",
+    "name": "Amplified Bible (1965)",
+    "short": "AMP",
+    "lang": "en-US"
+  },
+  {
+    "id": "erv",
+    "name": "Easy to Read Revised Version (2005)",
+    "short": "ERV",
+    "lang": "en-US"
+  },
+  {
+    "id": "esv",
+    "name": "English Standard Version (2001)",
+    "short": "ESV",
+    "lang": "en-US"
+  },
+  {
+    "id": "net",
+    "name": "New English Translation (2005)",
+    "short": "NET",
+    "lang": "en-US"
+  },
+  {
+    "id": "niv",
+    "name": "New International Version (UK)",
+    "short": "NIV",
+    "lang": "en-US"
+  },
+  {
+    "id": "nlt",
+    "name": "New Living Translation (1996)",
+    "short": "NLT",
+    "lang": "en-US"
+  },
+  {
+    "id": "msg",
+    "name": "The Message Bible (2002)",
+    "short": "MSG",
+    "lang": "en-US"
+  }
+]

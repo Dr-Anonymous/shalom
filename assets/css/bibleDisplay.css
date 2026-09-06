@@ -1,0 +1,504 @@
+/* ==========================================================================
+   bibleDisplay.css - Modern UI/UX Styles for Shalom Bible Presenter
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary-color: #2563eb;
+  --primary-hover: #1d4ed8;
+  --active-verse-bg: #eff6ff;
+  --active-verse-border: #3b82f6;
+  --verse-hover-bg: #f8fafc;
+  --hud-bg: #0f172a;
+  --hud-text: #f8fafc;
+  --border-color: #e2e8f0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+  padding-top: 140px !important;
+  padding-bottom: 90px !important;
+}
+
+/* Embedded parent mode */
+body.embedded-parent {
+  padding-top: 120px !important;
+  padding-bottom: 75px !important;
+  background-color: #f1f5f9;
+}
+
+/* --------------------------------------------------------------------------
+   Top Sticky Presenter HUD
+   -------------------------------------------------------------------------- */
+.presenter-hud {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1040;
+  background: var(--hud-bg);
+  color: var(--hud-text);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid #334155;
+}
+
+.presenter-hud-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 8px 16px;
+}
+
+.hud-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  gap: 10px;
+}
+
+.hud-title-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+}
+
+.hud-brand-link {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.hud-brand-link:hover {
+  color: #fff;
+}
+
+.chapter-title-badge {
+  background: #1e293b;
+  color: #f8fafc;
+  border: 1px solid #475569;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.chapter-title-badge:hover {
+  background: #334155;
+  border-color: #64748b;
+  color: #fff;
+}
+
+.live-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.live-status-pill.idle {
+  background: rgba(148, 163, 184, 0.15);
+  color: #94a3b8;
+  border-color: rgba(148, 163, 184, 0.3);
+}
+
+.hud-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Floating Live Textarea */
+.hud-display-container {
+  position: relative;
+}
+
+#display {
+  width: 100%;
+  height: 62px;
+  background: #020617;
+  color: #38bdf8;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 8px 85px 8px 12px;
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.4;
+  resize: none;
+  font-family: 'Noto Sans Telugu', 'Inter', sans-serif;
+  transition: border-color 0.2s;
+}
+#display:focus {
+  outline: none;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+.display-floating-actions {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  display: flex;
+  gap: 6px;
+}
+
+.btn-hud-icon {
+  background: #1e293b;
+  color: #94a3b8;
+  border: 1px solid #475569;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+.btn-hud-icon:hover {
+  background: #334155;
+  color: #fff;
+  border-color: #64748b;
+}
+
+/* --------------------------------------------------------------------------
+   Quick Action Bar (Book Search + Jump + Parallel Mode Switcher)
+   -------------------------------------------------------------------------- */
+.quick-action-bar {
+  max-width: 1320px;
+  margin: 10px auto 16px auto;
+  padding: 0 16px;
+}
+
+.action-card {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 10px 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.input-jump-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 260px;
+}
+
+.input-jump-group input {
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  padding: 6px 10px;
+}
+.input-jump-group input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.parallel-switcher-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* --------------------------------------------------------------------------
+   Bible Columns & Verse Presentation
+   -------------------------------------------------------------------------- */
+.bible-container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.bible-column-card {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.bible-column-header {
+  background: #f8fafc;
+  border-bottom: 1px solid var(--border-color);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #334155;
+}
+
+.bible-content-area {
+  padding: 16px;
+  flex: 1;
+}
+
+/* Individual Verse Paragraphs */
+.verse-item {
+  position: relative;
+  font-size: 1.22rem;
+  line-height: 1.85;
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  color: #1e293b;
+  user-select: text;
+}
+
+.verse-item.telugu-text {
+  font-family: 'Noto Sans Telugu', system-ui, sans-serif;
+  line-height: 1.95;
+}
+
+.verse-item.english-text {
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.75;
+  font-size: 1.15rem;
+}
+
+.verse-item:hover {
+  background-color: var(--verse-hover-bg);
+  border-color: #e2e8f0;
+}
+
+/* Active Highlighted Verse */
+.verse-item.active-verse {
+  background-color: var(--active-verse-bg) !important;
+  border-color: #bfdbfe !important;
+  border-left: 5px solid var(--active-verse-border) !important;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+}
+
+.verse-badge {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: #64748b;
+  margin-right: 6px;
+  vertical-align: middle;
+  min-width: 22px;
+}
+.verse-item.active-verse .verse-badge {
+  color: var(--primary-color);
+}
+
+.live-indicator-tag {
+  display: none;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: #2563eb;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.verse-item.active-verse .live-indicator-tag {
+  display: inline-block;
+}
+
+/* --------------------------------------------------------------------------
+   Fixed Bottom Navigation Bar
+   -------------------------------------------------------------------------- */
+.bottom-controls-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid var(--border-color);
+  padding: 8px 16px;
+  z-index: 1030;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.bottom-controls-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.btn-nav-control {
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* --------------------------------------------------------------------------
+   Quick Book & Chapter Picker Modal
+   -------------------------------------------------------------------------- */
+.picker-modal-content {
+  border-radius: 14px;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.picker-search-box {
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+}
+.picker-search-box:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.picker-nav-tabs {
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 12px;
+}
+.picker-nav-tabs .nav-link {
+  font-weight: 600;
+  color: #64748b;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 8px 14px;
+}
+.picker-nav-tabs .nav-link.active {
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+  background: transparent;
+}
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+  max-height: 420px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.book-card-btn {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 10px;
+  text-align: left;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  flex-direction: column;
+}
+.book-card-btn:hover, .book-card-btn.active {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  color: #1d4ed8;
+}
+.book-card-btn .book-secondary-name {
+  font-size: 0.72rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.chapter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+  gap: 8px;
+  max-height: 380px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.chapter-num-btn {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.chapter-num-btn:hover, .chapter-num-btn.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Responsive Adjustments
+   -------------------------------------------------------------------------- */
+@media (max-width: 767.98px) {
+  body {
+    padding-top: 135px !important;
+    padding-bottom: 75px !important;
+  }
+  
+  #display {
+    height: 54px;
+    font-size: 1rem;
+    padding-right: 70px;
+  }
+  
+  .verse-item {
+    font-size: 1.1rem;
+    padding: 8px 10px;
+  }
+  
+  .action-card {
+    padding: 8px 10px;
+  }
+  
+  .bottom-controls-bar {
+    padding: 6px 10px;
+  }
+  
+  .btn-nav-control {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+  }
+  
+  .book-grid {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  }
+}
