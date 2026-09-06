@@ -502,3 +502,17 @@ body.embedded-parent {
     grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
   }
 }
+
+/* --------------------------------------------------------------------------
+   Toast & Offline Download Progress UI
+   -------------------------------------------------------------------------- */
+#myToast {
+  min-width: 290px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+}
+#myToast .progress-bar {
+  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}

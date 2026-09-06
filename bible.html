@@ -376,36 +376,63 @@ var firstTime = true,
 	currentP,
 	playList;
 	
-async function toast(tex){
-$('#toastBody').text(tex);
-var toastBox = new bootstrap.Toast($('#myToast'))
-toastBox.show();
-return;
+function showToast(contentHtml, autohide = true, delay = 3500) {
+	const toastEl = document.getElementById('myToast');
+	if (!toastEl) return null;
+	$('#toastBody').html(contentHtml);
+	let toastInstance = bootstrap.Toast.getInstance(toastEl);
+	if (toastInstance) {
+		toastInstance.dispose();
+	}
+	toastInstance = new bootstrap.Toast(toastEl, {
+		autohide: autohide,
+		delay: delay
+	});
+	toastInstance.show();
+	return toastInstance;
+}
+
+function toast(tex) {
+	showToast(tex, true, 3000);
 }
 
 function offline(version) {
-	$("#versions li a[ver='" + version + "']").next().remove();
-	downloadingVer = version;
+	if (downloadingVer) {
+		toast('Kindly wait for the current download to complete.');
+		return;
+	}
 	const normVer = normalizeVersion(version);
+	downloadingVer = normVer;
 	const vInfo = getVersionInfo(normVer);
 
-	toast('Download of ' + vInfo.name + ' started.');
+	// Hide download button immediately
+	$("#versions li a[ver='" + normVer + "']").next('button').remove();
+
+	showToast(`
+		<div class="mb-1 fw-bold">Downloading ${vInfo.name}</div>
+		<div class="progress my-2" style="height: 12px;">
+			<div id="downloadProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 0%; font-size: 11px; line-height: 12px; transition: width 0.15s ease;">0%</div>
+		</div>
+		<div id="downloadProgressText" class="small text-muted">Starting download...</div>
+	`, false);
+
 	downloadVersionOffline(normVer, (done, total, pct) => {
-		$('#toastBody').html(
-			'<div><strong>Downloading ' + vInfo.name + '</strong></div>' +
-			'<div class="progress mt-1" style="height: 10px;">' +
-				'<div class="progress-bar progress-bar-striped progress-bar-animated" style="width: ' + pct + '%"></div>' +
-			'</div>' +
-			'<small class="text-muted">' + done + ' of ' + total + ' books cached (' + pct + '%)</small>'
-		);
-		const toastBox = new bootstrap.Toast($('#myToast'));
-		toastBox.show();
+		const bar = document.getElementById('downloadProgressBar');
+		const txt = document.getElementById('downloadProgressText');
+		if (bar) {
+			bar.style.width = pct + '%';
+			bar.textContent = pct + '%';
+		}
+		if (txt) {
+			txt.textContent = `${done} of ${total} books cached (${pct}%)`;
+		}
 	}).then(() => {
-		toast(vInfo.name + ' available offline.');
-		$("#versions li a[ver='" + downloadingVer + "']").attr('offline', 'true');
+		showToast(`<div class="text-success fw-bold">✓ ${vInfo.name} is now available offline!</div>`, true, 3500);
+		$("#versions li a[ver='" + normVer + "']").next('button').remove();
+		$("#versions li a[ver='" + normVer + "']").attr('offline', 'true');
 		downloadingVer = false;
 	}).catch((err) => {
-		toast('Offline download failed: ' + err.message);
+		showToast(`<div class="text-danger fw-bold">Offline download failed: ${err.message}</div>`, true, 4000);
 		downloadingVer = false;
 	});
 }
@@ -733,7 +760,7 @@ async function checkCookie() {
 		const link = $($("#versions li a")[i]);
 		const v = link.attr('ver');
 		if (await isVersionOffline(v)) {
-			link.next().remove();
+			link.next('button').remove();
 			link.attr('offline', 'true');
 		}
 	}

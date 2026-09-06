@@ -308,7 +308,7 @@ $(document).ready(async function() {
 	}
 
 	// Populate Version Dropdowns
-	populateVersionDropdowns();
+	await populateVersionDropdowns();
 
 	// Populate Book Quick Picker
 	buildQuickPickerUI();
@@ -320,27 +320,9 @@ $(document).ready(async function() {
 /* --------------------------------------------------------------------------
    Version Dropdown Management
    -------------------------------------------------------------------------- */
-function populateVersionDropdowns() {
+async function populateVersionDropdowns() {
 	$("#primaryVerDropdown").empty();
 	$("#secondaryVerDropdown").empty();
-
-	// Primary versions
-	BIBLE_VERSIONS.forEach(v => {
-		const isSelected = (normalizeVersion(ver) === v.id);
-		const li = `
-			<li class="d-flex align-items-center justify-content-between px-2 py-1">
-				<a class="dropdown-item ${isSelected ? 'active fw-bold' : ''}" href="javascript:;" onclick="changePrimaryVersion('${v.id}')">
-					${v.name}
-				</a>
-				<button type="button" class="btn btn-sm btn-link text-muted p-0 ms-2" onclick="handleOfflineDownload('${v.id}'); event.stopPropagation();" title="Download for offline use">
-					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
-						<path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-						<path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-					</svg>
-				</button>
-			</li>`;
-		$("#primaryVerDropdown").append(li);
-	});
 
 	// Secondary versions (including "None / Single View")
 	const noneActive = (secondVer === 'none');
@@ -353,19 +335,55 @@ function populateVersionDropdowns() {
 		<li><hr class="dropdown-divider"></li>
 	`);
 
+	// Check offline status for all versions in parallel
+	const offlineStatuses = await Promise.all(
+		BIBLE_VERSIONS.map(v => isVersionOffline(v.id))
+	);
+	const offlineMap = {};
+	BIBLE_VERSIONS.forEach((v, idx) => {
+		offlineMap[v.id] = offlineStatuses[idx];
+	});
+
+	// Primary versions
+	BIBLE_VERSIONS.forEach(v => {
+		const isSelected = (normalizeVersion(ver) === v.id);
+		const isOffline = !!offlineMap[v.id];
+		const downloadBtn = isOffline ? '' : `
+			<button type="button" class="btn btn-sm btn-link text-muted p-0 ms-2" onclick="handleOfflineDownload('${v.id}'); event.stopPropagation();" title="Download for offline use">
+				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+					<path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+					<path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+				</svg>
+			</button>`;
+
+		const li = `
+			<li class="d-flex align-items-center justify-content-between px-2 py-1">
+				<a class="dropdown-item ${isSelected ? 'active fw-bold' : ''}" href="javascript:;" onclick="changePrimaryVersion('${v.id}')">
+					${v.name}
+				</a>
+				${downloadBtn}
+			</li>`;
+		$("#primaryVerDropdown").append(li);
+	});
+
+	// Secondary version items
 	BIBLE_VERSIONS.forEach(v => {
 		const isSelected = (normalizeVersion(secondVer) === v.id);
+		const isOffline = !!offlineMap[v.id];
+		const downloadBtn = isOffline ? '' : `
+			<button type="button" class="btn btn-sm btn-link text-muted p-0 ms-2" onclick="handleOfflineDownload('${v.id}'); event.stopPropagation();" title="Download for offline use">
+				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+					<path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+					<path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+				</svg>
+			</button>`;
+
 		const li = `
 			<li class="d-flex align-items-center justify-content-between px-2 py-1">
 				<a class="dropdown-item ${isSelected ? 'active fw-bold' : ''}" href="javascript:;" onclick="changeSecondaryVersion('${v.id}')">
 					${v.name}
 				</a>
-				<button type="button" class="btn btn-sm btn-link text-muted p-0 ms-2" onclick="handleOfflineDownload('${v.id}'); event.stopPropagation();" title="Download for offline use">
-					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
-						<path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-						<path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-					</svg>
-				</button>
+				${downloadBtn}
 			</li>`;
 		$("#secondaryVerDropdown").append(li);
 	});
@@ -713,28 +731,47 @@ function history() {
    Offline Download Handler
    -------------------------------------------------------------------------- */
 async function handleOfflineDownload(versionId) {
+	if (downloadingVer) {
+		toast("A download is already in progress. Please wait...");
+		return;
+	}
+
 	const norm = normalizeVersion(versionId);
 	const vInfo = getVersionInfo(norm);
+	downloadingVer = norm;
 
-	toast(`Starting download for ${vInfo.name}...`);
+	// Remove download buttons for this version immediately while downloading
+	$(`button[onclick*="handleOfflineDownload('${norm}')"]`).remove();
+
+	showToast(`
+		<div class="mb-1 fw-bold">Downloading ${vInfo.name}</div>
+		<div class="progress my-2" style="height: 12px;">
+			<div id="downloadProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 0%; font-size: 11px; line-height: 12px; transition: width 0.15s ease;">0%</div>
+		</div>
+		<div id="downloadProgressText" class="small text-muted">Starting download...</div>
+	`, false);
 
 	try {
 		await downloadVersionOffline(norm, (done, total, pct) => {
-			$('#toastBody').html(`
-				<div class="mb-1"><strong>Downloading ${vInfo.name}</strong></div>
-				<div class="progress" style="height: 12px;">
-					<div class="progress-bar progress-bar-striped progress-bar-animated" style="width: ${pct}%">${pct}%</div>
-				</div>
-				<small class="text-muted">${done} of ${total} books cached</small>
-			`);
-			var toastBox = new bootstrap.Toast($('#myToast'), { delay: 5000 });
-			toastBox.show();
+			const bar = document.getElementById('downloadProgressBar');
+			const txt = document.getElementById('downloadProgressText');
+			if (bar) {
+				bar.style.width = pct + '%';
+				bar.textContent = pct + '%';
+			}
+			if (txt) {
+				txt.textContent = `${done} of ${total} books cached (${pct}%)`;
+			}
 		});
 
-		toast(`✓ ${vInfo.name} is now available offline!`);
+		downloadingVer = false;
+		showToast(`<div class="text-success fw-bold">✓ ${vInfo.name} is now available offline!</div>`, true, 3500);
+		await populateVersionDropdowns();
 	} catch (err) {
 		console.error("Offline download failed:", err);
-		toast("Offline download failed: " + err.message);
+		downloadingVer = false;
+		showToast(`<div class="text-danger fw-bold">Offline download failed: ${err.message}</div>`, true, 4000);
+		await populateVersionDropdowns();
 	}
 }
 
@@ -885,10 +922,24 @@ function writeFirebaseData(name, value) {
 	}
 }
 
+function showToast(contentHtml, autohide = true, delay = 3500) {
+	const toastEl = document.getElementById('myToast');
+	if (!toastEl) return null;
+	$('#toastBody').html(contentHtml);
+	let toastInstance = bootstrap.Toast.getInstance(toastEl);
+	if (toastInstance) {
+		toastInstance.dispose();
+	}
+	toastInstance = new bootstrap.Toast(toastEl, {
+		autohide: autohide,
+		delay: delay
+	});
+	toastInstance.show();
+	return toastInstance;
+}
+
 function toast(tex) {
-	$('#toastBody').html(tex);
-	const toastBox = new bootstrap.Toast($('#myToast'));
-	toastBox.show();
+	showToast(tex, true, 3000);
 }
 
 window.onbeforeunload = function() {
