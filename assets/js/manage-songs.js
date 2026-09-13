@@ -17,6 +17,11 @@ var showingHistory = false;
 $(document).ready(function () {
     firebase.initializeApp(firebaseConfig);
     dbFirestore = firebase.firestore();
+    dbFirestore.settings({
+        experimentalForceLongPolling: true,
+        useFetchStreams: false,
+        ignoreUndefinedProperties: true
+    });
 
     var myModalEl = document.getElementById('songEditorModal');
     if (myModalEl) {
@@ -66,12 +71,15 @@ function refreshView() {
 function toggleHistoryView() {
     showingHistory = !showingHistory;
     let btn = $("#toggleViewBtn");
+    let addBtn = $("#addSongBtn");
     if (showingHistory) {
-        btn.text("Back to Songs").removeClass("btn-outline-primary").addClass("btn-primary");
+        btn.text("Back to Songs").removeClass("btn-outline-primary ms-2").addClass("btn-primary");
         $("h3").text("Song History");
+        addBtn.addClass("d-none");
     } else {
-        btn.text("History").removeClass("btn-primary").addClass("btn-outline-primary");
+        btn.text("History").removeClass("btn-primary").addClass("btn-outline-primary ms-2");
         $("h3").text("Manage Songs");
+        addBtn.removeClass("d-none");
     }
     refreshView();
 }
@@ -309,6 +317,22 @@ function saveSong() {
 
     $("#saveSongBtn").prop("disabled", true).text("Saving...");
 
+    let saveTimeout = setTimeout(() => {
+        $("#saveSongBtn").prop("disabled", false).text("Save changes");
+        toast("Saving is taking longer than expected. Please check your connection.");
+    }, 15000);
+
+    const finishSave = (success, message) => {
+        clearTimeout(saveTimeout);
+        $("#saveSongBtn").prop("disabled", false).text("Save changes");
+        if (success) {
+            toast(message);
+            editorModal.hide();
+        } else {
+            toast(message);
+        }
+    };
+
     // Find current song state to compare for history
     let existingSong = allSongs.find(s => s.docId === docId);
 
@@ -323,43 +347,37 @@ function saveSong() {
         payload.createdAt = new Date().toISOString();
         dbFirestore.collection("songs").add(payload)
             .then(() => {
-                toast("Song added successfully!");
-                editorModal.hide();
-                $("#saveSongBtn").prop("disabled", false).text("Save changes");
+                finishSave(true, "Song added successfully!");
             })
             .catch(error => {
-                console.error(error);
-                toast("Error adding song");
-                $("#saveSongBtn").prop("disabled", false).text("Save changes");
+                console.error("Error adding song:", error);
+                finishSave(false, "Error adding song: " + (error.message || "Failed"));
             });
     } else {
         // Existing song: check for edits
         if (existingSong) {
-            let titleChanged = existingSong.title !== title;
-            let slidesChanged = JSON.stringify(existingSong.slides) !== JSON.stringify(slides);
+            let titleChanged = (existingSong.title || "") !== title;
+            let slidesChanged = JSON.stringify(existingSong.slides || []) !== JSON.stringify(slides);
             
             if (titleChanged || slidesChanged) {
                 let editHistoryEntry = {
                     editedAt: new Date().toISOString(),
-                    oldTitle: existingSong.title,
-                    oldSlides: existingSong.slides
+                    oldTitle: existingSong.title || "",
+                    oldSlides: existingSong.slides || []
                 };
                 
-                payload.editHistory = existingSong.editHistory || [];
+                payload.editHistory = Array.isArray(existingSong.editHistory) ? [...existingSong.editHistory] : [];
                 payload.editHistory.push(editHistoryEntry);
             }
         }
 
-        dbFirestore.collection("songs").doc(docId).update(payload)
+        dbFirestore.collection("songs").doc(docId).set(payload, { merge: true })
             .then(() => {
-                toast("Song updated successfully!");
-                editorModal.hide();
-                $("#saveSongBtn").prop("disabled", false).text("Save changes");
+                finishSave(true, "Song updated successfully!");
             })
             .catch(error => {
-                console.error(error);
-                toast("Error updating song");
-                $("#saveSongBtn").prop("disabled", false).text("Save changes");
+                console.error("Error updating song:", error);
+                finishSave(false, "Error updating song: " + (error.message || "Failed"));
             });
     }
 }

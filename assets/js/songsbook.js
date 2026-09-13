@@ -38,6 +38,11 @@ $(document).ready(async function () {
 	// Get a reference to the database service
 	database = firebase.database().ref();
 	dbFirestore = firebase.firestore();
+	dbFirestore.settings({
+		experimentalForceLongPolling: true,
+		useFetchStreams: false,
+		ignoreUndefinedProperties: true
+	});
 
 	if (checkCookie('jumbleFonts')) {
 		$("button[onclick='changeFont();']").removeClass('btn-outline-secondary').addClass('btn-secondary');
